@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<title>Rust: Memory, Ownership and Borrowing</title>
+<meta property="og:title" content="Rust: Memory, Ownership and Borrowing" />
+<meta name="twitter:title" content="Rust: Memory, Ownership and Borrowing" />
+<meta name="embedx:title" content="Rust: Memory, Ownership and Borrowing" />
+<meta name="description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
+<meta property="og:description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
+<meta name="twitter:description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
+<meta name="embedx:description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="twitter:card" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
+<meta property="og:site_name" content="thearyanahmed.com" />
+<link rel="canonical" href="https://thearyanahmed.com/blog/articles/rust-memory-ownership-and-borrowing" />
+<meta property="article:Rust: Memory, Ownership and Borrowing" content="Rust: Memory, Ownership and Borrowing" />
+<meta property="article:Kubernetes Cluster Architecture" content="Kubernetes Cluster Architecture" />
+<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
+<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
+<meta property="article:Choosing the Right String Type in Rust: A Journey of a Novice" content="Choosing the Right String Type in Rust: A Journey of a Novice" />
+<meta property="article:Concurrency in Golang - Part 1" content="Concurrency in Golang - Part 1" />
+<meta property="article:Building a Passwordless Login System with Laravel in minutes" content="Building a Passwordless Login System with Laravel in minutes" />
+<meta property="article:Prepared statements in SQL" content="Prepared statements in SQL" />
+<meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+    <link href="https://thearyanahmed.com/css/app.css" rel="stylesheet">
+
+    <style>
+        #offset {
+            animation: text-flicker 2s linear infinite;
+        }
+
+        .rotate {
+            animation: rotateAnimation 5s infinite;
+        }
+
+        @keyframes  rotateAnimation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes  text-flicker {
+            0% {
+                opacity: 0.1;
+                text-shadow: 0px 0px 29px rgba(242, 22, 22, 1);
+            }
+
+            2% {
+                opacity: 1;
+                text-shadow: 0px 0px 29px rgba(242, 22, 22, 1);
+            }
+
+            8% {
+                opacity: 0.1;
+                text-shadow: 0px 0px 29px rgba(242, 22, 22, 1);
+            }
+
+            9% {
+                opacity: 1;
+                text-shadow: 0px 0px 29px rgba(242, 22, 22, 1);
+            }
+
+            12% {
+                opacity: 0.1;
+                text-shadow: 0px 0px rgba(242, 22, 22, 1);
+            }
+
+            20% {
+                opacity: 1;
+                text-shadow: 0px 0px 29px rgba(242, 22, 22, 1);
+                color: #ff6666;
+            }
+
+            25% {
+                opacity: 0.3;
+                text-shadow: 0px 0px 29px rgba(242, 22, 22, 1)
+            }
+
+            30% {
+                opacity: 1;
+                text-shadow: 0px 0px 29px rgba(242, 22, 22, 1)
+            }
+
+            70% {
+                opacity: 0.7;
+                text-shadow: 0px 0px 29px rgba(242, 22, 22, 1);
+                color: #ff6666;
+            }
+
+            72% {
+                opacity: 0.2;
+                text-shadow: 0px 0px 29px rgba(242, 22, 22, 1)
+            }
+
+            77% {
+                opacity: .9;
+                text-shadow: 0px 0px 29px rgba(242, 22, 22, 1)
+            }
+
+            100% {
+                opacity: .9;
+                text-shadow: 0px 0px 29px rgba(242, 22, 22, 1)
+            }
+        }
+    </style>
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J6T32XKMF1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-J6T32XKMF1');
+</script>
+</head>
+
+<body class="antialiased text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
+
+    <div class="sticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-transparent">
+    <nav class="w-full mx-auto bg-white">
+        <div class="px-2 sm:px-6 lg:px-8">
+            <div class="relative flex justify-between h-16">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <!-- Mobile menu button -->
+                    <button onclick="toggleMobileMenu()" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="justify-center w-full mx-auto hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="https://thearyanahmed.com" title="thearyanahmed's blog" target="_self" class="text-gray-800 font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base  ">
+                            Home
+                        </a>
+
+                        <a href="https://thearyanahmed.com/blog" title="thearyanahmed's blog" class="text-gray-800 font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base  ">
+                            Blog
+                        </a>
+
+                        <a href="https://thearyanahmed.com/project-skridi" title="thearyanahmed's blog" class="text-gray-800 font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base  ">
+                            Project Skridi
+                        </a>
+
+                        <a href="https://www.deviantart.com/thearyanahmed" title="thearyanahmed's deviantart profile" target="_blank" class="text-gray-800 font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            Art
+                        </a>
+
+                        <a href="https://thearyanahmed.com/portfolio" title="thearyanahmed's deviantart profile" target="_self" class="text-gray-800 font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base  ">
+                            Portfolio
+                        </a>
+
+                        <a href="https://github.com/thearyanahmed" title="thearyanahmed's github" class="text-gray-900 inline-flex items-center px-1 pt-1 text-base  " target="_blank">
+                            <svg width="24" height="24" fill="currentColor" class="text-gray-800 font-aquawaxalt mr-3 text-opacity-50 transform">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.463 2 11.97c0 4.404 2.865 8.14 6.839 9.458.5.092.682-.216.682-.48 0-.236-.008-.864-.013-1.695-2.782.602-3.369-1.337-3.369-1.337-.454-1.151-1.11-1.458-1.11-1.458-.908-.618.069-.606.069-.606 1.003.07 1.531 1.027 1.531 1.027.892 1.524 2.341 1.084 2.91.828.092-.643.35-1.083.636-1.332-2.22-.251-4.555-1.107-4.555-4.927 0-1.088.39-1.979 1.029-2.675-.103-.252-.446-1.266.098-2.638 0 0 .84-.268 2.75 1.022A9.606 9.606 0 0112 6.82c.85.004 1.705.114 2.504.336 1.909-1.29 2.747-1.022 2.747-1.022.546 1.372.202 2.386.1 2.638.64.696 1.028 1.587 1.028 2.675 0 3.83-2.339 4.673-4.566 4.92.359.307.678.915.678 1.846 0 1.332-.012 2.407-.012 2.734 0 .267.18.577.688.48C19.137 20.107 22 16.373 22 11.969 22 6.463 17.522 2 12 2z"></path>
+                            </svg>
+                        </a>
+                        <a href="https://linkedin.com/in/thearyanahmed" title="thearyanahmed's linkedin" class="text-gray-900 inline-flex items-center px-1 pt-1 text-base  " target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-linkedin h-5 w-5 text-gray-800 font-aquawaxalt mr-3 text-opacity-50 transform" viewBox="0 0 16 16">
+                                <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
+                            </svg>
+                        </a>
+
+                        <a href="mailto:thearyanahmed@gmail.com" target="thearyanahmed's mail" class="text-gray-900 inline-flex items-center px-1 pt-1 text-base  " target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 font-aquawaxalt mr-3 text-opacity-50 transform" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M2.94 6.412A2 2 0 002 8.108V16a2 2 0 002 2h12a2 2 0 002-2V8.108a2 2 0 00-.94-1.696l-6-3.75a2 2 0 00-2.12 0l-6 3.75zm2.615 2.423a1 1 0 10-1.11 1.664l5 3.333a1 1 0 001.11 0l5-3.333a1 1 0 00-1.11-1.664L10 11.798 5.555 8.835z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+
+                        <a href="" title="schedule a meeting with thearyanahmed" class="text-gray-900 inline-flex items-center px-1 pt-1 text-base  " onclick="Calendly.initPopupWidget({url: 'https://calendly.com/thearyanahmed'});return false;">
+                            <img style="height: 23px;" src="https://thearyanahmed.com/coffee.png" alt="schedule a meeting with Aryan">
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="hidden" id="mobile-menu">
+            <div class="pt-2 pb-4 space-y-1">
+                <a href="https://thearyanahmed.com" class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base  ">Home</a>
+                <a href="https://thearyanahmed.com/project-skridi" class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base  ">Project Skridi</a>
+                <a href="https://thearyanahmed.com/blog" class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base  ">Blog</a>
+                <a href="https://thearyanahmed.com/tags" class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base  ">Tags</a>
+                <a href="https://www.deviantart.com/thearyanahmed" target="_blank" class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base  ">Art</a>
+                <a href="https://thearyanahmed.com/portfolio" class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base  ">Portfolio</a>
+                <a href="https://github.com/thearyanahmed" target="_blank" class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base  ">Github</a>
+                <a href="https://linkedin.com/in/thearyanahmed" target="_blank" class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base  ">Linkedin</a>
+                <a href="mailto:thearyanahmed@gmail.com" class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base  ">Email</a>
+                <a href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/thearyanahmed'});return false;" class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base  ">Schedule a meeting with Aryan</a>
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+    <main class="lg:relative">
+        <div class="max-w-3xl mx-auto px-4">
+        <div class="relative py-16 bg-white overflow-hidden">
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
+                <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
+                    <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)" />
+                    </svg>
+                    <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)" />
+                    </svg>
+                    <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)" />
+                    </svg>
+                </div>
+            </div>
+            <div class="relative px-4 sm:px-6 lg:px-8">
+                <div class="text-lg max-w-prose">
+                    <h1 class="mt-2 block text-6xl text-center font-aquawaxalxt fredericka-the-great tracking-tight text-gray-900">
+                        Rust: Memory, Ownership and Borrowing
+                    </h1>
+                    <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
+                        Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code.
+                    </p>
+                </div>
+                <div class="mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
+                    <div ><p>Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code.</p>
+<p>It’s the ownership model. That keeps us safe and lets us sleep at night after we deploy we rust code to production. This is also how rust avoids a garbage collector.</p>
+<p>This is my take on the matter, as I’m learning, I might have made a mistake while writing, feel free to point it out.</p>
+<p>Lets get started,</p>
+<h2 id="the-stack">The Stack</h2>
+<blockquote>
+<p>*In computer science, a stack is an abstract data type that serves as a collection of elements, with two main principal operations: *Push, which adds an element to the collection, and Pop, which removes the most recently added element that was not yet removed. — WikiPedia</p>
+</blockquote>
+<p>So, a stack, the idea is to say have objects on top of another. When we add an object, we add it to the top. And when we remove anything from it, we also do it from the top.</p>
+<h2 id="the-stack-frame">The Stack Frame</h2>
+<p>Our code, in terms of execution, think that it is loaded in the stack. So, for rust, we start from the main function. We put our main function on the stack.</p>
+<p>How to put it…? Imagine our stack frame is a sheet of paper. And the function body is on the sheet of paper.</p>
+<p>And imagine our processor is a person, who reads the current sheet of paper in-front of him, and does what’s instructed.</p>
+<p>The current stackframe is also, in other words the scope.</p>
+<h2 id="when-a-function-is-called">When a function is called</h2>
+<p>When a function is called, that is when we actually put our sheet of paper on top of our stack. Lets take a look at the following code,</p>
+<pre class="shiki" style="background-color: #faf4ed"><code><span class="line"><span style="color: #286983">fn</span><span style="color: #575279"> </span><span style="color: #D7827E">main</span><span style="color: #797593">()</span><span style="color: #575279"> </span><span style="color: #797593">{</span></span>
+<span class="line"><span style="color: #575279">  </span><span style="color: #D7827E">println!</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;Hello, World&quot;</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #575279"> </span></span>
+<span class="line"><span style="color: #575279">  </span><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">x</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #D7827E">10</span><span style="color: #797593">;</span></span>
+<span class="line"><span style="color: #575279">  </span><span style="color: #D7827E">println</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">{}</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">,</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">x</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #575279"> </span></span>
+<span class="line"><span style="color: #575279">  </span><span style="color: #D7827E">print_another_variable</span><span style="color: #797593">();</span></span>
+<span class="line"><span style="color: #797593">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #286983">fn</span><span style="color: #575279"> </span><span style="color: #D7827E">print_another_variable</span><span style="color: #797593">()</span><span style="color: #575279"> </span><span style="color: #797593">{</span></span>
+<span class="line"><span style="color: #575279">  </span><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">k</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #D7827E">11</span><span style="color: #797593">;</span></span>
+<span class="line"><span style="color: #575279">  </span><span style="color: #D7827E">println!</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">{}</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">,</span><span style="color: #575279; font-style: italic">k</span><span style="color: #797593">)</span></span>
+<span class="line"><span style="color: #797593">}</span></span>
+<span class="line"></span></code></pre>
+<p>Our first stackframe is the main() function body. It writes Hello, World, then assigns the value 10 to x, then prints it. Then calls another function print_another_variable().</p>
+<p>print_another_variable() is written in another sheet of paper. When we call it in our main function, we put print_another_variable() sheet on top of our main() sheet.</p>
+<p>Now our processor person is reading from what to do from the function write in front of him. Our processor person can only see (access) the page right in front of him. Not the pages beneath.</p>
+<p>After the function has been completed, the sheet of paper is torn apart. And we back to the line this function was called from, and move forward.</p>
+<blockquote>
+<p>Stack is very fast</p>
+</blockquote>
+<p>Now, when we put something on the stack, we need to tell it how much memory we need. For an i32 for example, the size is know. It’s a 32 bit signed integer.</p>
+<p>If we try to remember, the maximum value for an integer is 2147483647. If we try to put anything beyond that, it’ll overflow. But the key point is we know the bits. 32 bits fixed. Putting something bigger won’t make it 33 bits. It’ll always be 32 bits.</p>
+<blockquote>
+<p>Size Unknown
+Putting stuff on the stack works fine when the size is known. But what about the times we don’t know the size? For example a slice or vector? Or a string (not a char) .</p>
+</blockquote>
+<p>Let’s think for a moment, we want to store dynamic values. Where the value can grow or shrink. Take an array. Array’s has a fixed length. An array[5] can hold 5 elements at max.</p>
+<p>But a vector can grow, you can start with 5 elements, end up having N where N is &lt;, = or &gt; than 5. We can not ask our stack to give us unlimited space.</p>
+<p>For these problems, let’s add a layer in between. We don’t directly put the growable data in to the stack, we put our growable dynamic data somewhere else. And, we put a pointer, which’s size is known, we put the point to our stack.</p>
+<blockquote>
+<p>Heap
+Our heap is not as fast and efficient as our stack, but it gives us support for handling dynamic content like strings or vectors.</p>
+</blockquote>
+<p>Putting our growable dynamic data somewhere else. This somewhere else is our heap.</p>
+<p>Lets take a look at the code below,</p>
+<pre class="shiki" style="background-color: #faf4ed"><code><span class="line"><span style="color: #286983">fn</span><span style="color: #575279"> </span><span style="color: #D7827E">main</span><span style="color: #797593">()</span><span style="color: #575279"> </span><span style="color: #797593">{</span></span>
+<span class="line"><span style="color: #575279">    </span><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #56949F">String</span><span style="color: #286983">::</span><span style="color: #D7827E">from</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;Hello, World&quot;</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #797593">}</span></span>
+<span class="line"></span></code></pre>
+<p>For this piece of code, we tell the heap to store “Hello, World” string into memory. It checks how much space does it need based on what we have currently. We have 12 characters (comma and space included).</p>
+<p>The heap takes say memory address 0xAB0001 (lets assume), and starts putting our string. Imagine the sequence goes on like this 0xAB0001, 0xAB0002 … 0xABN.</p>
+<p>Our hello world string ends at 0xAB0012. But what do we store in our stack? Our stack holds the following values,</p>
+<p>ptr = 0xAB0001 # a pointer to our first memory address
+cap = 12 # cap stands for capacity
+len = 12 # len stands for length
+If we update the string to Hello, our capacity still remain 12, but our length will be 5.</p>
+<p>And we know the size of the pointer variable itself. If we break down capacity and length, we know their value too.</p>
+<p>So we have a solution. Let’s take a look at the 3 rules of ownership rust tells us about.</p>
+<h2 id="3-rules-of-ownership">3 Rules of Ownership</h2>
+<ol>
+<li>Each value in Rust has a variable that’s called its owner.</li>
+<li>There can only be one owner at a time.</li>
+<li>When the owner goes out of scope, the value will be dropped.</li>
+</ol>
+<h2 id="copy-amp-pointer">Copy &amp; Pointer</h2>
+<p>Lets take this example for a moment</p>
+<pre class="shiki" style="background-color: #faf4ed"><code><span class="line"><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">x</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #D7827E">100</span><span style="color: #797593">;</span></span>
+<span class="line"><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">y</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">x</span><span style="color: #797593">;</span></span>
+<span class="line"></span></code></pre>
+<p>This will trigger a COPY. Copy of the value 100. Cause x in this case is an integer, or in other words, a known sized variable. Same for other known sized. It’s cheap and fast to copy them around.</p>
+<p>But, for the following code,</p>
+<pre class="shiki" style="background-color: #faf4ed"><code><span class="line"><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #56949F">String</span><span style="color: #286983">::</span><span style="color: #D7827E">from</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;Hello&quot;</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">b</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #575279"> </span><span style="color: #797593">;</span></span>
+<span class="line"></span></code></pre>
+<p>So, like before, a should be a pointer to the heap memory, holding the data “Hello”. If so, now when we assign b, if it copies the pointer like we would do for an integer or known sized data type, then our “Hello” would have two owners.</p>
+<h2 id="2-owners-amp-double-free-error">2 Owners &amp; Double Free Error</h2>
+<p>For our analogy mentioned above, Hello has two owners. But if one changes, there isn’t any way for the other one to know that something has changed.</p>
+<p>Maybe for a we have changed it to “Hello, Universe, this is from the Milky Way galaxy.”, <strong>the capacity and length both has changed. But for b, it doesn’t know yet! The pointers get out of sync</strong>.</p>
+<p>Now when it’s time to clean up the memory, both owners a and b tries to clear the memory. That will trigger error, cause say a clears the memory at first, and then (imagine), even if it is the very next step b tries to clear the memory.</p>
+<p>But it has already been cleared!</p>
+<p>Let’s think of another scenario, our capacity was 12. Now we assign a very long string, and make the length (and capacity) of the string 500.</p>
+<p>These are 500 characters of single chars. They need to sit next to one another. Just like an array. Remember array takes a fixed memory, so all the elements sits next to another according to the sequence?</p>
+<p>Now, the CPU sees that there isn’t 500 free blocks of memory from that 0xAB0001. Meaning, we would need from 0xAB0001 to 0xAB0500 continuous.</p>
+<p>Seeing that the space is not available, it reassigns the value to a next memory address. Maybe 0xQQ0001 to OxQQ0500.</p>
+<p>But for b, there is no way to know that the string *ptr -&gt; should not longer point to 0xAB0001. Resulting in garbage value.</p>
+<h2 id="rusts-solution">Rust’s solution</h2>
+<p>So for rust, when assigning let b = a where a is a string or of unknown sized data type, it triggers a move instead of copy. Meaning, the pointer information that was stored in a, is now stored in b, and a doesn’t have that information.</p>
+<p>If we run the following program, it’ll cause an error, saying `move occurs because a has type String, which does not implement the Copy.</p>
+<pre class="shiki" style="background-color: #faf4ed"><code><span class="line"><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #56949F">String</span><span style="color: #286983">::</span><span style="color: #D7827E">from</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;Hello&quot;</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #D7827E">println!</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">{}</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">,</span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">b</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D7827E">println!</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;b = </span><span style="color: #797593">{}</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">,</span><span style="color: #575279; font-style: italic">b</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #D7827E">println!</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;a = </span><span style="color: #797593">{}</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">,</span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">);</span></span>
+<span class="line"></span></code></pre>
+<h2 id="copying-the-unknown-sized-data">Copying the unknown sized data</h2>
+<p>If we wanted to copy the actual value “Hello” to be, we need to do a Clone instead like let b = a.clone(). And take a moment to realise that these solutions abide by the rules of ownership.</p>
+<h2 id="rule-3-out-of-scopes">Rule 3 — Out of scopes</h2>
+<p>Take a look at the following,</p>
+<pre class="shiki" style="background-color: #faf4ed"><code><span class="line"><span style="color: #286983">fn</span><span style="color: #575279"> </span><span style="color: #D7827E">main</span><span style="color: #797593">()</span><span style="color: #575279"> </span><span style="color: #797593">{</span></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #56949F">String</span><span style="color: #286983">::</span><span style="color: #D7827E">from</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;Hello&quot;</span><span style="color: #797593">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #D7827E">print_something</span><span style="color: #797593">(</span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #D7827E">println!</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;a in main =&gt; </span><span style="color: #797593">{}</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">,</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #797593">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #286983">fn</span><span style="color: #575279"> </span><span style="color: #D7827E">print_something</span><span style="color: #797593">(</span><span style="color: #575279; font-style: italic">a</span><span style="color: #575279"> </span><span style="color: #286983">:</span><span style="color: #575279"> </span><span style="color: #56949F">String</span><span style="color: #797593">)</span><span style="color: #575279"> </span><span style="color: #797593">{</span></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #D7827E">println!</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;inside the function =&gt; </span><span style="color: #797593">{}</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">,</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #797593">}</span></span>
+<span class="line"></span></code></pre>
+<p>Function params behave in a similar way. In this print_something() function, we pass in an argument a : String . See the function does not return anything.</p>
+<p>So, the variable’s pointer information is passed to that function’s a parameter. Just like let b = a example mentioned above. Also, remember that functions are like a sheet of paper? So when the call ends, it’s torn apart.</p>
+<p>In rust’s words, the value is dropped.</p>
+<p>What happens here? This program will throw an error. Once the ownership of a has been passed to print_something, and print_something has been executed, it goes out of scope. And as the function doesn’t return anything, all the value inside it is dropped.</p>
+<p>Therefore, in the main function, we don’t have any value for a. We gave the ownership away. Now running println!(“a in main =&gt; {}”, a); after calling print_something() will trigger an error.</p>
+<p>But if we called the print_something() function after println, then it would not be a problem cause during println, the a variable still holds the information.</p>
+<h2 id="returning-the-ownership">Returning the ownership</h2>
+<p>Another way to solve it is to return a value from the function. Take the following code and it will run just fine.</p>
+<pre class="shiki" style="background-color: #faf4ed"><code><span class="line"><span style="color: #286983">fn</span><span style="color: #575279"> </span><span style="color: #D7827E">main</span><span style="color: #797593">()</span><span style="color: #575279"> </span><span style="color: #797593">{</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #9893A5; font-style: italic"> // added `mut` here</span></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #286983">mut</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #56949F">String</span><span style="color: #286983">::</span><span style="color: #D7827E">from</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;Hello&quot;</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #575279">  </span></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #D7827E">print_something</span><span style="color: #797593">(</span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #575279"> </span></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #D7827E">println!</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;a in main =&gt; </span><span style="color: #797593">{}</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">,</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #797593">}</span></span>
+<span class="line"><span style="color: #9893A5; font-style: italic">// Notice the &quot; -&gt; String&quot;, it means it is gonna return a string</span></span>
+<span class="line"><span style="color: #286983">fn</span><span style="color: #575279"> </span><span style="color: #D7827E">print_something</span><span style="color: #797593">(</span><span style="color: #575279; font-style: italic">a</span><span style="color: #575279"> </span><span style="color: #286983">:</span><span style="color: #575279"> </span><span style="color: #56949F">String</span><span style="color: #797593">)</span><span style="color: #575279"> </span><span style="color: #286983">-&gt;</span><span style="color: #575279"> </span><span style="color: #56949F">String</span><span style="color: #575279"> </span><span style="color: #797593">{</span></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #D7827E">println!</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;inside the function =&gt; </span><span style="color: #797593">{}</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">,</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #575279"> </span></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #9893A5; font-style: italic"> // here we are returning a string value</span></span>
+<span class="line"><span style="color: #797593">}</span></span>
+<span class="line"></span></code></pre>
+<p>We needed to add mut because rust’s variables are by default immutable. But the key point here is in a = print_something(a), we are getting back a string from the print_something() function.</p>
+<h2 id="borrowing-passing-the-reference">Borrowing | Passing the reference</h2>
+<p>Another solution would be to pass the reference. Take the following example</p>
+<pre class="shiki" style="background-color: #faf4ed"><code><span class="line"><span style="color: #286983">fn</span><span style="color: #575279"> </span><span style="color: #D7827E">main</span><span style="color: #797593">()</span><span style="color: #575279"> </span><span style="color: #797593">{</span></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #56949F">String</span><span style="color: #286983">::</span><span style="color: #D7827E">from</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;Hello&quot;</span><span style="color: #797593">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #9893A5; font-style: italic">  // we are passing a reference, denoted by &#39;&amp;&#39;</span></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #D7827E">print_something</span><span style="color: #797593">(</span><span style="color: #286983">&amp;</span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #575279"> </span></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #D7827E">println!</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;a in main =&gt; </span><span style="color: #797593">{}</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">,</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #797593">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #9893A5; font-style: italic">// see I&#39;ve added &#39;&amp;&#39; before String</span></span>
+<span class="line"><span style="color: #286983">fn</span><span style="color: #575279"> </span><span style="color: #D7827E">print_something</span><span style="color: #797593">(</span><span style="color: #575279; font-style: italic">a</span><span style="color: #575279"> </span><span style="color: #286983">:</span><span style="color: #575279"> </span><span style="color: #286983">&amp;</span><span style="color: #56949F">String</span><span style="color: #797593">)</span><span style="color: #575279"> </span><span style="color: #797593">{</span></span>
+<span class="line"><span style="color: #575279"> </span><span style="color: #D7827E">println!</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;inside the function =&gt; </span><span style="color: #797593">{}</span><span style="color: #EA9D34">&quot;</span><span style="color: #797593">,</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">);</span></span>
+<span class="line"><span style="color: #797593">}</span></span>
+<span class="line"></span></code></pre>
+<p>This also runs well.</p>
+<h2 id="single-mutable-borrow-at-a-time">Single mutable borrow at a time</h2>
+<p>Rust allows single mutable borrow at a time. You can have multiple immutable or read only borrows. But you can not have</p>
+<pre class="shiki" style="background-color: #faf4ed"><code><span class="line"><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #286983">mut</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #56949F">String</span><span style="color: #286983">::</span><span style="color: #D7827E">from</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;a&quot;</span><span style="color: #797593">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">b</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #286983">&amp;mut</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">;</span></span>
+<span class="line"><span style="color: #286983">let</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">c</span><span style="color: #575279"> </span><span style="color: #286983">=</span><span style="color: #575279"> </span><span style="color: #286983">&amp;mut</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">a</span><span style="color: #797593">;</span></span>
+<span class="line"></span></code></pre>
+<p>It’ll throw an error. Going back to the same problem, imagine b changes some data but c doesn’t know about it.</p>
+<p>Ownership, Read only borrow , Mutable borrow and Returning ownership
+You can tell what a function do.</p>
+<pre class="shiki" style="background-color: #faf4ed"><code><span class="line"><span style="color: #286983">fn</span><span style="color: #575279"> </span><span style="color: #D7827E">a_func</span><span style="color: #797593">(</span><span style="color: #575279; font-style: italic">takes_ownership</span><span style="color: #286983">:</span><span style="color: #575279"> </span><span style="color: #56949F">String</span><span style="color: #797593">,</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">read_only_borrow</span><span style="color: #286983">:</span><span style="color: #575279"> </span><span style="color: #286983">&amp;</span><span style="color: #56949F">str</span><span style="color: #797593">,</span><span style="color: #575279"> </span><span style="color: #575279; font-style: italic">mutable_borrow</span><span style="color: #286983">:</span><span style="color: #575279"> </span><span style="color: #286983">&amp;mut</span><span style="color: #575279"> </span><span style="color: #56949F">String</span><span style="color: #797593">){}</span></span>
+<span class="line"></span></code></pre>
+<p>// add '-&gt; String' before the first curly brace if you want it to return some ownership.// add '-&gt; String' before the first curly brace if you want it to return some ownership.
+<strong>Update</strong>: I would like add the following two sections based on the feedback I’ve received.</p>
+<h2 id="borrow-vs-move-under-the-hood">Borrow vs Move under the hood</h2>
+<blockquote>
+<p>that “borrow” keeps the data at the same place on the stack and passes a memory pointer only, but “move” always copies it from one place of the stack to other one. Therefore, only sized data can be moved, and it can cause a performance issue. In this way lifetime is automatically ensured by how stack works.
+-Tibor Erdelyi , Lead Software Engineer at Upland BA Insight</p>
+</blockquote>
+<p>Multiple mutation</p>
+<blockquote>
+<p>While technically Rust offers only one mutable borrow, with Cell&lt;T&gt; you can have multiple &amp;Cell&lt;T&gt; which allow mutation of the contents using Cell::&lt;T&gt;::set(&amp;self, T) associated function.</p>
+</blockquote>
+<ul>
+<li>Dmitrii Demenev</li>
+</ul>
+<h2 id="footnote">Footnote</h2>
+<p>Why write this article? Because, when I started reading the rust book I thought it might be simply like some other language. Some string functions to lowercase and uppercase and finding length or concatenating.</p>
+<h2 id="i-was-wrong">I was wrong.</h2>
+<p>Rust book gave me a very good tour of the stack and heap mechanism. It was a nice reminder but a lot to take in. Specially coming from PHP, JavaScript.</p>
+<p>And soon after, though I continued to read the book, I had forgotten about the ownership and borrowing.</p>
+<p>So I thought I write it down, after looking at some videos and reading the chapter again.</p>
+</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-2xl mx-auto px-4">
+            <p class="my-2 font-aquawaxalt font-medium text-gray-500">
+                Here are some of my articles..
+            </p>
+            <div class="space-y-2">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/kubernetes-cluster-architecture">
+            Kubernetes Cluster Architecture
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-27 10:00:00">October 27th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/differences-between-ssl-and-tls">
+            Differences Between SSL and TLS
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-25 10:00:00">October 25th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/dynamic-trait-to-a-concrete-type-in-rust">
+            Dynamic trait to a concrete type in Rust
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-17 10:00:00">October 17th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/choosing-the-right-string-type-in-rust-a-journey-of-a-novice">
+            Choosing the Right String Type in Rust: A Journey of a Novice
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-09-01 10:00:00">September 1st, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/concurrency-in-golang-part-1">
+            Concurrency in Golang - Part 1
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-30 10:00:00">August 30th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/building-a-passwordless-login-system-with-laravel-in-minutes">
+            Building a Passwordless Login System with Laravel in minutes
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-19 10:00:00">August 19th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/prepared-statements-in-sql">
+            Prepared statements in SQL
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-19 10:00:00">August 19th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/building-a-url-shortener-with-rust-and-redis">
+            Building a URL shortener with Rust and Redis
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-09 10:00:00">August 9th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                            </div>
+        </div>
+
+        <div class="h-20"></div>
+    </div>
+    </main>
+
+    <!-- Calendly link widget begin -->
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+    <script src="https://thearyanahmed.com/js/functions.js"></script>
+</body>
+
+</html>
