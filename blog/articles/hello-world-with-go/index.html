@@ -328,6 +328,7 @@
 <p>এই কয়েক লাইন লিখে <code>main.go</code> নামে একটি file এ save করে, <code>go run main.go</code> command দিলে terminal এ <code>Hello World</code> লিখা আসবে।
 আর এইতো, শুরু হয়ে গেলো :)</p>
 <p><a href="https://go.dev/play/p/oXGayDtoLPh">Go playground</a></p>
+<p><img src="art::gophers/gopher-in-blue.jpeg" alt="A gopher :)" /></p>
 </div>
                 </div>
             </div>
@@ -492,6 +493,21 @@
     <!-- Calendly link widget begin -->
         <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
         <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+        <script type="module">
+            const imgs = document.getElementsByTagName('img')
+
+            for(let i = 0; i < imgs.length; i++) {
+                const img = imgs[i]
+
+                let src = img.getAttribute('src')
+
+                if (src.startsWith('art::')) {
+                    src = src.replace('art::','https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    img.setAttribute('src', src)
+                }
+            }
+        </script>
 
     <script src="https://thearyanahmed.com/js/functions.js"></script>
 </body>

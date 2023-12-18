@@ -588,6 +588,21 @@
         <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
         <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 
+        <script type="module">
+            const imgs = document.getElementsByTagName('img')
+
+            for(let i = 0; i < imgs.length; i++) {
+                const img = imgs[i]
+
+                let src = img.getAttribute('src')
+
+                if (src.startsWith('art::')) {
+                    src = src.replace('art::','https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    img.setAttribute('src', src)
+                }
+            }
+        </script>
+
     <script src="https://thearyanahmed.com/js/functions.js"></script>
 </body>
 
