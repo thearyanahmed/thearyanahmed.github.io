@@ -307,7 +307,8 @@
 <p><strong>Go</strong> is a statically typed, compiled high-level programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. It is syntactically similar to C, but also has memory safety, garbage collection, structural typing, and CSP-style concurrency.</p>
 </blockquote>
 <p>Go-এর development বেশ কয়েকটি বিষয় কে address করে,</p>
-<p><strong>Evolving with computing landscape</strong> Existing language গুলো, যেমন C/C++ did not adapt well to the changing computing landscape, prompting the need for a new systems language. Specially যখন concurrency, parallelism, simplicity of learning, memory managed, statically typed বিষয়গুলো নিয়ে চিন্তা করা হয়।</p>
+<h2 id="evolving-with-computing-landscape">Evolving with computing landscape</h2>
+<p>Existing language গুলো, যেমন C/C++ did not adapt well to the changing computing landscape, prompting the need for a new systems language. Specially যখন concurrency, parallelism, simplicity of learning, memory managed, statically typed বিষয়গুলো নিয়ে চিন্তা করা হয়।</p>
 <p>C/C++ এর imporper memory management অনেক critical bug তৈরি করেছে, over the years. যখন একটি নতুন language কেউ শিখি, আমাদের অনেকগুলো বিষয় খেয়াল রাখা উচিত।</p>
 <blockquote>
 <p>It's not about the syntax.</p>
@@ -316,13 +317,13 @@
 <p>সব কিছু মিলিয়ে Go অনেক recent (2009 এ) এবং বর্তমান software development &amp; maintenance issue গুলোকে মাথায় রেখে design করা এটি programming language.</p>
 <p>Go-এর ডিজাইনের লক্ষ্যগুলির মধ্যে আছে network communication, concurrency and parallelization. মেমরি ম্যানেজমেন্টের জন্য Go এর support উল্লেখযোগ্য , with a  small runtime,  garbage collected, ease of use । সামগ্রিক লক্ষ্য ছিল গতিশীল ভাষার সহজে স্ট্যাটিক টাইপিং এবং সংকলনের সুবিধাগুলি একত্রিত করে প্রোগ্রামিংকে আরও উপভোগ্য করে তোলা।</p>
 <h2 id="hello-world">Hello World</h2>
-<pre class="shiki" style="background-color: #faf4ed"><code><span class="line"><span style="color: #286983">package</span><span style="color: #575279"> </span><span style="color: #D7827E">main</span></span>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">package</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #286983">import</span><span style="color: #575279"> </span><span style="color: #EA9D34">&quot;</span><span style="color: #D7827E">fmt</span><span style="color: #EA9D34">&quot;</span></span>
+<span class="line"><span style="color: #3E8FB0">import</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;</span><span style="color: #EA9A97">fmt</span><span style="color: #F6C177">&quot;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #286983">func</span><span style="color: #575279"> </span><span style="color: #D7827E">main</span><span style="color: #797593">()</span><span style="color: #575279"> </span><span style="color: #797593">{</span></span>
-<span class="line"><span style="color: #575279">	fmt</span><span style="color: #797593">.</span><span style="color: #B4637A; font-style: italic">Println</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;Hello World&quot;</span><span style="color: #797593">)</span></span>
-<span class="line"><span style="color: #797593">}</span></span>
+<span class="line"><span style="color: #3E8FB0">func</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">	fmt</span><span style="color: #908CAA">.</span><span style="color: #EB6F92; font-style: italic">Println</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello World&quot;</span><span style="color: #908CAA">)</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
 <span class="line"></span></code></pre>
 <p>এই কয়েক লাইন লিখে <code>main.go</code> নামে একটি file এ save করে, <code>go run main.go</code> command দিলে terminal এ <code>Hello World</code> লিখা আসবে।
 আর এইতো, শুরু হয়ে গেলো :)</p>
