@@ -301,6 +301,11 @@
                     <h1 class="mt-2 block text-6xl text-center font-aquawaxalxt fredericka-the-great tracking-tight text-gray-900">
                         Rust: Memory, Ownership and Borrowing
                     </h1>
+                </div>
+
+                                <img src="https://raw.githubusercontent.com/thearyanahmed/art/master/EhLBLssH95N5iEyFvZ1Mfd4Z7acVTpiZmPnH2lKA.png" loading="lazy" class="rounded-xl py-2">
+                
+                <div class="text-lg max-w-prose">
                     <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
                         Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code.
                     </p>
@@ -668,13 +673,13 @@ You can tell what a function do.</p>
         <script type="module">
             const imgs = document.getElementsByTagName('img')
 
-            for(let i = 0; i < imgs.length; i++) {
+            for (let i = 0; i < imgs.length; i++) {
                 const img = imgs[i]
 
                 let src = img.getAttribute('src')
 
                 if (src.startsWith('art::')) {
-                    src = src.replace('art::','https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
                     img.setAttribute('src', src)
                 }
             }

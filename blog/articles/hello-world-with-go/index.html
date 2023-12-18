@@ -292,8 +292,13 @@
                     <h1 class="mt-2 block text-6xl text-center font-aquawaxalxt fredericka-the-great tracking-tight text-gray-900">
                         Hello World with Go
                     </h1>
+                </div>
+
+                                <img src="https://raw.githubusercontent.com/thearyanahmed/art/master/gophers/gopher-in-blue.jpeg" loading="lazy" class="rounded-xl py-2">
+                
+                <div class="text-lg max-w-prose">
                     <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
-                        Go একটি statically typed compiled language, এটাকে অনেকসময় 21st century&#039;র  C বলা হয়। এটা অনেক popular choice high-performance server-side applications। Google এ 2007 এ শুরু হয় Go এর যাত্রা ।
+                        Go একটি statically typed compiled language, এটাকে অনেকসময় 21st century&#039;র  C বলা হয়। High-performance server-side applications এর জন্য  Go একটি পপুলার choice । Google এ 2007 এ শুরু হয় Go এর যাত্রা ।
                     </p>
                 </div>
                 <div class="article-content-markdown mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
@@ -301,7 +306,7 @@
 <blockquote>
 <p>Everything is a tradeoff</p>
 </blockquote>
-<p>Software engineer এ সব কিছুর ই tradeoff আছে। একইসাথে সব কিছুর most ideal থাকে না। এতগুলো programming language থাকার এটাও আরেকটি কারণ। কিছু language dynamically typed, কিছু অনেক fast, কিছু low level / systems programming এর জন্য ভালো, কিছু হয়ত generalised. আমার কাছে Go একটি balanced language. Simple, statically typed, very fast, parallelism handle করতে পারে, given the hardware, আর খুবি সুন্দর, powerful concurrency support আছে।</p>
+<p>Software engineer এ সব কিছুর ই tradeoff আছে। একইসাথে সব কিছুর best টা পাওয়া যায় না। এতগুলো programming language থাকার এটাও আরেকটি কারণ। কিছু language dynamically typed, কিছু অনেক fast, কিছু low level / systems programming এর জন্য ভালো, কিছু হয়ত generalised. আমার কাছে Go একটি balanced language. Simple, statically typed, very fast, parallelism handle করতে পারে, given the hardware, আর খুবি সুন্দর powerful concurrency support আছে।</p>
 <p>From wikipedia,</p>
 <blockquote>
 <p><strong>Go</strong> is a statically typed, compiled high-level programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. It is syntactically similar to C, but also has memory safety, garbage collection, structural typing, and CSP-style concurrency.</p>
@@ -314,8 +319,8 @@
 <p>It's not about the syntax.</p>
 </blockquote>
 <p>অনেকেই মনে করেন এটা একটি নতুন language শেখা মানে শুধু নতুন syntax শেখা। আসলে সেটা হয়ত কম গুরুত্বপূর্ণ আর সহজ বিষয়। আমাদের দেখা উচিত নতুন language টা কি কি কাজে ভালো perform করে, ecosystem এ কি কি library বা framework আছে, কারা ব্যবহার করছে আর তারা কি কারণে ব্যবহার করে।</p>
-<p>সব কিছু মিলিয়ে Go অনেক recent (2009 এ) এবং বর্তমান software development &amp; maintenance issue গুলোকে মাথায় রেখে design করা এটি programming language.</p>
-<p>Go-এর ডিজাইনের লক্ষ্যগুলির মধ্যে আছে network communication, concurrency and parallelization. মেমরি ম্যানেজমেন্টের জন্য Go এর support উল্লেখযোগ্য , with a  small runtime,  garbage collected, ease of use । সামগ্রিক লক্ষ্য ছিল গতিশীল ভাষার সহজে স্ট্যাটিক টাইপিং এবং সংকলনের সুবিধাগুলি একত্রিত করে প্রোগ্রামিংকে আরও উপভোগ্য করে তোলা।</p>
+<p>সব কিছু মিলিয়ে Go অনেক recent (2009 এ) এবং বর্তমান software development &amp; maintenance issue গুলোকে মাথায় রেখে design করা একটি  programming language.</p>
+<p>Go-এর ডিজাইনের লক্ষ্যগুলির মধ্যে আছে network communication, concurrency and parallelization. মেমরি ম্যানেজমেন্টের জন্য Go এর support উল্লেখযোগ্য, with a  small runtime,  garbage collected, ease of use । Overall লক্ষ্য ছিল language টিকে সহজে স্ট্যাটিক টাইপিং এবং উপরে বলা বিষয়গুলিকে একত্রিত করে প্রোগ্রামিংকে আরও উপভোগ্য করে তোলা।</p>
 <h2 id="hello-world">Hello World</h2>
 <pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">package</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span></span>
 <span class="line"></span>
@@ -328,7 +333,6 @@
 <p>এই কয়েক লাইন লিখে <code>main.go</code> নামে একটি file এ save করে, <code>go run main.go</code> command দিলে terminal এ <code>Hello World</code> লিখা আসবে।
 আর এইতো, শুরু হয়ে গেলো :)</p>
 <p><a href="https://go.dev/play/p/oXGayDtoLPh">Go playground</a></p>
-<p><img src="art::gophers/gopher-in-blue.jpeg" alt="A gopher :)" /></p>
 </div>
                 </div>
             </div>
@@ -497,13 +501,13 @@
         <script type="module">
             const imgs = document.getElementsByTagName('img')
 
-            for(let i = 0; i < imgs.length; i++) {
+            for (let i = 0; i < imgs.length; i++) {
                 const img = imgs[i]
 
                 let src = img.getAttribute('src')
 
                 if (src.startsWith('art::')) {
-                    src = src.replace('art::','https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
                     img.setAttribute('src', src)
                 }
             }

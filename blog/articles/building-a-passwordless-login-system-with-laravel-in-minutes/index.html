@@ -299,6 +299,10 @@
                     <h1 class="mt-2 block text-6xl text-center font-aquawaxalxt fredericka-the-great tracking-tight text-gray-900">
                         Building a Passwordless Login System with Laravel in minutes
                     </h1>
+                </div>
+
+                
+                <div class="text-lg max-w-prose">
                     <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
                         Implement passwordless authentication in Laravel: Collect user email, send signed URL, validate callback. Secure and convenient login without passwords.
                     </p>
@@ -591,13 +595,13 @@
         <script type="module">
             const imgs = document.getElementsByTagName('img')
 
-            for(let i = 0; i < imgs.length; i++) {
+            for (let i = 0; i < imgs.length; i++) {
                 const img = imgs[i]
 
                 let src = img.getAttribute('src')
 
                 if (src.startsWith('art::')) {
-                    src = src.replace('art::','https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
                     img.setAttribute('src', src)
                 }
             }

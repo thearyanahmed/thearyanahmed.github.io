@@ -295,6 +295,10 @@
                     <h1 class="mt-2 block text-6xl text-center font-aquawaxalxt fredericka-the-great tracking-tight text-gray-900">
                         Differences Between SSL and TLS
                     </h1>
+                </div>
+
+                
+                <div class="text-lg max-w-prose">
                     <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
                         In the world of online security, SSL and TLS are two terms that often come up when discussing encrypted communication. They both play a crucial role in ensuring that our sensitive data remains safe while traversing the vast expanses of the internet.
                     </p>
@@ -484,13 +488,13 @@
         <script type="module">
             const imgs = document.getElementsByTagName('img')
 
-            for(let i = 0; i < imgs.length; i++) {
+            for (let i = 0; i < imgs.length; i++) {
                 const img = imgs[i]
 
                 let src = img.getAttribute('src')
 
                 if (src.startsWith('art::')) {
-                    src = src.replace('art::','https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
                     img.setAttribute('src', src)
                 }
             }
