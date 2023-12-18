@@ -11,28 +11,18 @@
 <meta name="author" content="Aryan Ahmed" />
 <meta name="author" content="Aryan Ahmed Anik" />
 <meta name="author" content="Aryan Ahmed Anik" />
+<title>Go নিয়ে শুরুর কিছু কথা</title>
+<meta property="og:title" content="Go নিয়ে শুরুর কিছু কথা" />
+<meta name="twitter:title" content="Go নিয়ে শুরুর কিছু কথা" />
+<meta name="embedx:title" content="Go নিয়ে শুরুর কিছু কথা" />
+<meta name="description" content="Go একটি statically typed compiled language, এটাকে অনেকসময় 21st century&#039;র  C বলা হয়। এটা অনেক popular choice high-performance server-side applications। Google এ 2007 এ শুরু হয় Go এর যাত্রা ।" />
+<meta property="og:description" content="Go একটি statically typed compiled language, এটাকে অনেকসময় 21st century&#039;র  C বলা হয়। এটা অনেক popular choice high-performance server-side applications। Google এ 2007 এ শুরু হয় Go এর যাত্রা ।" />
+<meta name="twitter:description" content="Go একটি statically typed compiled language, এটাকে অনেকসময় 21st century&#039;র  C বলা হয়। এটা অনেক popular choice high-performance server-side applications। Google এ 2007 এ শুরু হয় Go এর যাত্রা ।" />
+<meta name="embedx:description" content="Go একটি statically typed compiled language, এটাকে অনেকসময় 21st century&#039;র  C বলা হয়। এটা অনেক popular choice high-performance server-side applications। Google এ 2007 এ শুরু হয় Go এর যাত্রা ।" />
 <meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<title>Rust: Memory, Ownership and Borrowing</title>
-<meta property="og:title" content="Rust: Memory, Ownership and Borrowing" />
-<meta name="twitter:title" content="Rust: Memory, Ownership and Borrowing" />
-<meta name="embedx:title" content="Rust: Memory, Ownership and Borrowing" />
-<meta name="description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
-<meta property="og:description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
-<meta name="twitter:description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
-<meta name="embedx:description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="twitter:card" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
+<meta name="twitter:card" content="Go একটি statically typed compiled language, এটাকে অনেকসময় 21st century&#039;র  C বলা হয়। এটা অনেক popular choice high-performance server-side applications। Google এ 2007 এ শুরু হয় Go এর যাত্রা ।" />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/blog/articles/rust-memory-ownership-and-borrowing" />
-<meta property="article:Rust: Memory, Ownership and Borrowing" content="Rust: Memory, Ownership and Borrowing" />
+<link rel="canonical" href="https://thearyanahmed.com/blog/articles/hello-world-with-go" />
 <meta property="article:Hello World with Go" content="Hello World with Go" />
 <meta property="article:Kubernetes Cluster Architecture" content="Kubernetes Cluster Architecture" />
 <meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
@@ -42,6 +32,7 @@
 <meta property="article:Building a Passwordless Login System with Laravel in minutes" content="Building a Passwordless Login System with Laravel in minutes" />
 <meta property="article:Prepared statements in SQL" content="Prepared statements in SQL" />
 <meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
+<meta property="article:Rust: Memory, Ownership and Borrowing" content="Rust: Memory, Ownership and Borrowing" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -266,27 +257,135 @@
 </div>
 
     <main class="lg:relative">
-        <div class="max-w-2xl mx-auto space-y-2 mt-20 px-4">
-        <div class="flex justify-end">
-            <p class="text-gray-300 font-sm">
-                if you are looking for something, use ctrl / cmd + f to search.
-            </p>
+        <div class="max-w-3xl mx-auto px-4">
+        <div class="relative py-16 bg-white overflow-hidden">
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
+                <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
+                    <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)" />
+                    </svg>
+                    <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)" />
+                    </svg>
+                    <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)" />
+                    </svg>
+                </div>
+            </div>
+            <div class="relative px-4 sm:px-6 lg:px-8">
+                <div class="text-lg max-w-prose">
+                    <h1 class="mt-2 block text-6xl text-center font-aquawaxalxt fredericka-the-great tracking-tight text-gray-900">
+                        Hello World with Go
+                    </h1>
+                    <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
+                        Go একটি statically typed compiled language, এটাকে অনেকসময় 21st century&#039;র  C বলা হয়। এটা অনেক popular choice high-performance server-side applications। Google এ 2007 এ শুরু হয় Go এর যাত্রা ।
+                    </p>
+                </div>
+                <div class="article-content-markdown mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
+                    <div ><h2 id="surur-kichu-ktha">শুরুর কিছু কথা</h2>
+<blockquote>
+<p>Everything is a tradeoff</p>
+</blockquote>
+<p>Software engineer এ সব কিছুর ই tradeoff আছে। একইসাথে সব কিছুর most ideal থাকে না। এতগুলো programming language থাকার এটাও আরেকটি কারণ। কিছু language dynamically typed, কিছু অনেক fast, কিছু low level / systems programming এর জন্য ভালো, কিছু হয়ত generalised. আমার কাছে Go একটি balanced language. Simple, statically typed, very fast, parallelism handle করতে পারে, given the hardware, আর খুবি সুন্দর, powerful concurrency support আছে।</p>
+<p>From wikipedia,</p>
+<blockquote>
+<p><strong>Go</strong> is a statically typed, compiled high-level programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. It is syntactically similar to C, but also has memory safety, garbage collection, structural typing, and CSP-style concurrency.</p>
+</blockquote>
+<p>Go-এর development বেশ কয়েকটি বিষয় কে address করে,</p>
+<p><strong>Evolving with computing landscape</strong> Existing language গুলো, যেমন C/C++ did not adapt well to the changing computing landscape, prompting the need for a new systems language. Specially যখন concurrency, parallelism, simplicity of learning, memory managed, statically typed বিষয়গুলো নিয়ে চিন্তা করা হয়।</p>
+<p>C/C++ এর imporper memory management অনেক critical bug তৈরি করেছে, over the years. যখন একটি নতুন language কেউ শিখি, আমাদের অনেকগুলো বিষয় খেয়াল রাখা উচিত।</p>
+<blockquote>
+<p>It's not about the syntax.</p>
+</blockquote>
+<p>অনেকেই মনে করেন এটা একটি নতুন language শেখা মানে শুধু নতুন syntax শেখা। আসলে সেটা হয়ত কম গুরুত্বপূর্ণ আর সহজ বিষয়। আমাদের দেখা উচিত নতুন language টা কি কি কাজে ভালো perform করে, ecosystem এ কি কি library বা framework আছে, কারা ব্যবহার করছে আর তারা কি কারণে ব্যবহার করে।</p>
+<p>সব কিছু মিলিয়ে Go অনেক recent (2009 এ) এবং বর্তমান software development &amp; maintenance issue গুলোকে মাথায় রেখে design করা এটি programming language.</p>
+<p>Go-এর ডিজাইনের লক্ষ্যগুলির মধ্যে আছে network communication, concurrency and parallelization. মেমরি ম্যানেজমেন্টের জন্য Go এর support উল্লেখযোগ্য , with a  small runtime,  garbage collected, ease of use । সামগ্রিক লক্ষ্য ছিল গতিশীল ভাষার সহজে স্ট্যাটিক টাইপিং এবং সংকলনের সুবিধাগুলি একত্রিত করে প্রোগ্রামিংকে আরও উপভোগ্য করে তোলা।</p>
+<h2 id="hello-world">Hello World</h2>
+<pre class="shiki" style="background-color: #faf4ed"><code><span class="line"><span style="color: #286983">package</span><span style="color: #575279"> </span><span style="color: #D7827E">main</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #286983">import</span><span style="color: #575279"> </span><span style="color: #EA9D34">&quot;</span><span style="color: #D7827E">fmt</span><span style="color: #EA9D34">&quot;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #286983">func</span><span style="color: #575279"> </span><span style="color: #D7827E">main</span><span style="color: #797593">()</span><span style="color: #575279"> </span><span style="color: #797593">{</span></span>
+<span class="line"><span style="color: #575279">	fmt</span><span style="color: #797593">.</span><span style="color: #B4637A; font-style: italic">Println</span><span style="color: #797593">(</span><span style="color: #EA9D34">&quot;Hello World&quot;</span><span style="color: #797593">)</span></span>
+<span class="line"><span style="color: #797593">}</span></span>
+<span class="line"></span></code></pre>
+<p>এই কয়েক লাইন লিখে <code>main.go</code> নামে একটি file এ save করে, <code>go run main.go</code> command দিলে terminal এ <code>Hello World</code> লিখা আসবে।
+আর এইতো, শুরু হয়ে গেলো :)</p>
+<p><a href="https://go.dev/play/p/oXGayDtoLPh">Go playground</a></p>
+</div>
+                </div>
+            </div>
         </div>
-        
-            
-            <div class="py-4 px-2">
-                <p class="font-aquawaxalt text-2xl font-bold hover:text-gray-500">
-                    / <a href="#it-is-not-a-link">
-                        rust
-                    </a>
-                </p>
-                <p class="text-sm text-gray-300">
-                    contains 3 articles
-                </p>
 
-                <div class="mt-4"></div>
-
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+        <div class="max-w-2xl mx-auto px-4">
+            <p class="my-2 font-aquawaxalt font-medium text-gray-500">
+                Here are some of my articles..
+            </p>
+            <div class="space-y-2">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/kubernetes-cluster-architecture">
+            Kubernetes Cluster Architecture
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-27 10:00:00">October 27th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/differences-between-ssl-and-tls">
+            Differences Between SSL and TLS
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-25 10:00:00">October 25th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/dynamic-trait-to-a-concrete-type-in-rust">
+            Dynamic trait to a concrete type in Rust
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-17 10:00:00">October 17th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
         <a class="font-aquawaxalt font-medium group-hover:underline"
             href="https://thearyanahmed.com/blog/articles/choosing-the-right-string-type-in-rust-a-journey-of-a-novice">
@@ -302,7 +401,55 @@
         </dl>
     </div>
 </article>
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/concurrency-in-golang-part-1">
+            Concurrency in Golang - Part 1
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-30 10:00:00">August 30th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/building-a-passwordless-login-system-with-laravel-in-minutes">
+            Building a Passwordless Login System with Laravel in minutes
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-19 10:00:00">August 19th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline"
+            href="https://thearyanahmed.com/blog/articles/prepared-statements-in-sql">
+            Prepared statements in SQL
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-19 10:00:00">August 19th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
         <a class="font-aquawaxalt font-medium group-hover:underline"
             href="https://thearyanahmed.com/blog/articles/building-a-url-shortener-with-rust-and-redis">
@@ -318,7 +465,7 @@
         </dl>
     </div>
 </article>
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
         <a class="font-aquawaxalt font-medium group-hover:underline"
             href="https://thearyanahmed.com/blog/articles/rust-memory-ownership-and-borrowing">
@@ -335,7 +482,10 @@
     </div>
 </article>
                             </div>
-            </div>
+        </div>
+
+        <div class="h-20"></div>
+    </div>
     </main>
 
     <!-- Calendly link widget begin -->
