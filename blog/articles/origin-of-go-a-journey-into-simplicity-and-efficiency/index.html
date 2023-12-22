@@ -10,17 +10,29 @@
 <meta name="author" content="Aryan Ahmed Anik" />
 <meta name="author" content="Aryan Ahmed" />
 <meta name="author" content="Aryan Ahmed Anik" />
-<title>Tags | Aryan&#039;s Journal</title>
-<meta property="og:title" content="Tags | Aryan&#039;s Journal" />
-<meta name="twitter:title" content="Tags | Aryan&#039;s Journal" />
-<meta name="embedx:title" content="Tags | Aryan&#039;s Journal" />
-<meta name="description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta property="og:description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta name="twitter:description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta name="embedx:description" content="My personal site, recording my journey, writing some articles, sometimes." />
 <meta name="author" content="Aryan Ahmed Anik" />
-<meta name="twitter:card" content="My personal site, recording my journey, writing some articles, sometimes." />
+<title>Origin of Go: A Journey into Simplicity and Efficiency</title>
+<meta property="og:title" content="Origin of Go: A Journey into Simplicity and Efficiency" />
+<meta name="twitter:title" content="Origin of Go: A Journey into Simplicity and Efficiency" />
+<meta name="embedx:title" content="Origin of Go: A Journey into Simplicity and Efficiency" />
+<meta name="description" content="Explore the genesis of Go, a language born at Google for simplicity and efficiency. Discover its unique features, comparing favorably with other languages, and uncover real-world successes. Join the journey into Go&#039;s elegant and efficient coding world" />
+<meta property="og:description" content="Explore the genesis of Go, a language born at Google for simplicity and efficiency. Discover its unique features, comparing favorably with other languages, and uncover real-world successes. Join the journey into Go&#039;s elegant and efficient coding world" />
+<meta name="twitter:description" content="Explore the genesis of Go, a language born at Google for simplicity and efficiency. Discover its unique features, comparing favorably with other languages, and uncover real-world successes. Join the journey into Go&#039;s elegant and efficient coding world" />
+<meta name="embedx:description" content="Explore the genesis of Go, a language born at Google for simplicity and efficiency. Discover its unique features, comparing favorably with other languages, and uncover real-world successes. Join the journey into Go&#039;s elegant and efficient coding world" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="twitter:card" content="Explore the genesis of Go, a language born at Google for simplicity and efficiency. Discover its unique features, comparing favorably with other languages, and uncover real-world successes. Join the journey into Go&#039;s elegant and efficient coding world" />
 <meta property="og:site_name" content="thearyanahmed.com" />
+<link rel="canonical" href="https://thearyanahmed.com/blog/articles/origin-of-go-a-journey-into-simplicity-and-efficiency" />
+<meta property="article:Origin of Go: A Journey into Simplicity and Efficiency" content="Origin of Go: A Journey into Simplicity and Efficiency" />
+<meta property="article:Kubernetes Cluster Architecture" content="Kubernetes Cluster Architecture" />
+<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
+<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
+<meta property="article:Choosing the Right String Type in Rust: A Journey of a Novice" content="Choosing the Right String Type in Rust: A Journey of a Novice" />
+<meta property="article:Concurrency in Golang - Part 1" content="Concurrency in Golang - Part 1" />
+<meta property="article:Building a Passwordless Login System with Laravel in minutes" content="Building a Passwordless Login System with Laravel in minutes" />
+<meta property="article:Prepared statements in SQL" content="Prepared statements in SQL" />
+<meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
+<meta property="article:Rust: Memory, Ownership and Borrowing" content="Rust: Memory, Ownership and Borrowing" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -163,27 +175,139 @@
 </div>
 
     <main class="lg:relative">
-        <div class="max-w-2xl mx-auto space-y-2 mt-20 px-4">
-        <div class="flex justify-end">
-            <p class="text-gray-300 font-sm">
-                if you are looking for something, use ctrl / cmd + f to search.
-            </p>
+        <div class="max-w-3xl mx-auto px-4">
+        <div class="relative py-16 bg-white overflow-hidden">
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
+                <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
+                    <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)" />
+                    </svg>
+                    <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)" />
+                    </svg>
+                    <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)" />
+                    </svg>
+                </div>
+            </div>
+            <div class="relative px-4 sm:px-6 lg:px-8">
+                <div class="text-lg max-w-prose">
+                    <h1 class="mt-2 block text-6xl text-center font-aquawaxalxt fredericka-the-great tracking-tight text-gray-900">
+                        Origin of Go: A Journey into Simplicity and Efficiency
+                    </h1>
+                </div>
+
+                
+                <div class="text-lg max-w-prose">
+                    <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
+                        Explore the genesis of Go, a language born at Google for simplicity and efficiency. Discover its unique features, comparing favorably with other languages, and uncover real-world successes. Join the journey into Go&#039;s elegant and efficient coding world
+                    </p>
+                </div>
+                <div class="article-content-markdown mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
+                    <div ><p>In the fast-paced world of programming languages, each one has its unique story and purpose. One language that has steadily gained prominence for its simplicity, efficiency, and performance is Go. Developed by the tech giants at Google, Go, or Golang, was born out of the necessity to address the challenges faced in large-scale software development.</p>
+<h2 id="a-collaborative-creation">A Collaborative Creation</h2>
+<p>In the early 2000s, a trio of accomplished software engineers—<a href="https://en.wikipedia.org/wiki/Rob_Pike">Rob Pike</a>, <a href="https://en.wikipedia.org/wiki/Ken_Thompson">Ken Thompson</a>, and <a href="https://en.wikipedia.org/wiki/Robert_Griesemer">Robert Griesemer</a>—set out on a mission to create a language that would alleviate the complexities of software development at scale. This collaborative effort resulted in the birth of Go, an open-source language designed to make coding efficient, readable, and scalable.</p>
+<h2 id="the-motivation-behind-go">The Motivation Behind Go</h2>
+<p>Go was conceived as a response to the limitations and complexities of existing languages. The creators sought to develop a language that could address the following key goals:</p>
+<p><strong>Simplicity</strong> The language needs to have a simplistic appraoch. Go was designed with simplicity in mind. The syntax is clear, concise, and easy to understand, minimizing the need for boilerplate code. This simplicity enhances readability and reduces the likelihood of errors, making Go an excellent choice for both seasoned developers and those new to programming.</p>
+<p><strong>Efficiency</strong> Go prioritizes efficiency without compromising on performance. It is statically typed, allowing for early error detection, and features a garbage collector for efficient memory management. These attributes contribute to the language's ability to handle concurrent tasks with ease.</p>
+<p><strong>Concurrency</strong> One of the standout features of Go is its native support for concurrent programming. Goroutines, lightweight threads managed by the Go runtime, enable developers to write concurrent code more simply and effectively. This feature makes Go particularly well-suited for building scalable and concurrent applications.</p>
+<h2 id="key-design-principles">Key Design Principles</h2>
+<p>The development of Go was guided by a set of fundamental design principles that laid the foundation for its success:</p>
+<p><strong>Readability Matters</strong></p>
+<blockquote>
+<p>Code is read more often than it's written</p>
+</blockquote>
+<p>Go code is designed to be readable and understandable. The language avoids unnecessary symbols and conventions, making it easy for developers to grasp the intent of the code quickly.</p>
+<blockquote>
+<p>GOOD CODE is a love letter to the next developer who will maintain it
+<em>Though the quote is about good code, but readability is a key attribute of good code.</em></p>
+</blockquote>
+<p><strong>Minimalist Syntax</strong> : Go embraces a minimalist syntax that focuses on essentials. This deliberate design choice reduces the learning curve and allows developers to express complex ideas in a straightforward manner.</p>
+<p>For example, some languages have 7-10 or even more functions for an array. Eg: in javascript, we have <code>concat</code>, <code>filter</code>, <code>map</code>, <code>reduce</code>,  <code>find</code>, <code>indexOf</code>, <code>slice</code>, <code>splice</code>, <code>push</code>, <code>pop</code>, <code>shift</code>, <code>unshift</code>, <code>some</code>, <code>every</code>.</p>
+<p>On top of that, there are 3-4 types of foor loops.<code>forEach</code>, <code>for</code>, <code>for in</code> etc. However, you can achieve the same using 1 for loop. And that would be the <code>go</code> way. Go have only one kind of loop. <code>for</code> loop (more on loops later).</p>
+<p>In go, there are two different ways you can write a for loop, one the regular <code>for loop</code> and another <code>for range</code>. However, the other functions are <code>append</code>, <code>cap</code> and <code>len</code>. Unlike javascript, these are for different things.</p>
+<p>One might argue, it would've been easier to have all those functions in Go, while it can be a matter of preference. But the creators of Go and the community decided having only one kind of loop (<code>for</code>) is more than enough. This way, you don't need to keep track of which functions do what and focus on the business logic.</p>
+<p><strong>Efficient Compilation</strong>: Go's compiler is fast, enabling quick iterations during the development process. This efficiency is crucial for large-scale projects where fast compilation times contribute to a more streamlined workflow.</p>
+<h2 id="comparing-go-to-other-languages">Comparing Go to Other Languages</h2>
+<p>As we evaluate the significance of Go, it's essential to understand how it compares to other programming languages. Go distinguishes itself by offering a unique blend of features:</p>
+<p><strong>Concurrency Model</strong>: Unlike many languages, Go natively supports concurrency through goroutines and channels. This feature simplifies the development of concurrent systems, making it a standout choice for modern, distributed applications.</p>
+<p><strong>Performance</strong>: Go is designed for performance, and its compiled nature ensures that applications run swiftly. This characteristic makes it competitive with languages like C and C++.</p>
+<h2 id="real-world-success-stories">Real-World Success Stories</h2>
+<p>Numerous organizations have adopted Go and experienced tangible benefits. From Google, where Go originated, to tech giants like <strong>Uber</strong>, <strong>Docker</strong>, <strong>Kubernetes</strong> and <strong>Dropbox</strong>, the language has proven its worth in developing efficient, scalable, and maintainable software solutions. Go has become a cornerstone in the technology stacks of companies aiming for simplicity without compromising on performance.</p>
+<h2 id="embracing-the-future-with-go">Embracing the Future with Go</h2>
+<p>As we delve into the origin of Go, it becomes clear that this language was crafted with a vision for the future of software development. Its simplicity, efficiency, and concurrent programming support position it as a powerful tool for building robust applications in a rapidly evolving technological landscape. Whether you are a seasoned developer looking to expand your skill set or a newcomer eager to enter the world of programming, Go offers a compelling journey into the realm of elegant and efficient coding. As we embark on this exploration of Go, we invite you to discover the countless possibilities that this remarkable language has to offer.</p>
+</div>
+                </div>
+            </div>
         </div>
-        
-            
-            <div class="py-4 px-2">
-                <p class="font-aquawaxalt text-2xl font-bold hover:text-gray-500">
-                    / <a href="https://thearyanahmed.com/tags/rust">
-                        rust
-                    </a>
-                </p>
-                <p class="text-sm text-gray-300">
-                    contains 3 articles
-                </p>
 
-                <div class="mt-4"></div>
-
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+        <div class="max-w-2xl mx-auto px-4">
+            <p class="my-2 font-aquawaxalt font-medium text-gray-500">
+                Here are some of my articles..
+            </p>
+            <div class="space-y-2">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/kubernetes-cluster-architecture">
+            Kubernetes Cluster Architecture
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-27 10:00:00">October 27th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/differences-between-ssl-and-tls">
+            Differences Between SSL and TLS
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-25 10:00:00">October 25th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/dynamic-trait-to-a-concrete-type-in-rust">
+            Dynamic trait to a concrete type in Rust
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-17 10:00:00">October 17th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
         <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/choosing-the-right-string-type-in-rust-a-journey-of-a-novice">
             Choosing the Right String Type in Rust: A Journey of a Novice
@@ -198,127 +322,22 @@
         </dl>
     </div>
 </article>
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
-        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/building-a-url-shortener-with-rust-and-redis">
-            Building a URL shortener with Rust and Redis
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/concurrency-in-golang-part-1">
+            Concurrency in Golang - Part 1
         </a>
     </p>
     <div class="mt-auto flex flex-row-reverse items-center justify-end">
         <dl>
             <dt class="sr-only">Date</dt>
             <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
-                <time datetime="2023-08-09 10:00:00">August 9th, 2023</time>
+                <time datetime="2023-08-30 10:00:00">August 30th, 2023</time>
             </dd>
         </dl>
     </div>
 </article>
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
-    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
-        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/rust-memory-ownership-and-borrowing">
-            Rust: Memory, Ownership and Borrowing
-        </a>
-    </p>
-    <div class="mt-auto flex flex-row-reverse items-center justify-end">
-        <dl>
-            <dt class="sr-only">Date</dt>
-            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
-                <time datetime="2023-06-27 10:00:00">June 27th, 2023</time>
-            </dd>
-        </dl>
-    </div>
-</article>
-                            </div>
-        
-            
-            <div class="py-4 px-2">
-                <p class="font-aquawaxalt text-2xl font-bold hover:text-gray-500">
-                    / <a href="https://thearyanahmed.com/tags/programming">
-                        programming
-                    </a>
-                </p>
-                <p class="text-sm text-gray-300">
-                    contains 4 articles
-                </p>
-
-                <div class="mt-4"></div>
-
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
-    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
-        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/origin-of-go-a-journey-into-simplicity-and-efficiency">
-            Origin of Go: A Journey into Simplicity and Efficiency
-        </a>
-    </p>
-    <div class="mt-auto flex flex-row-reverse items-center justify-end">
-        <dl>
-            <dt class="sr-only">Date</dt>
-            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
-                <time datetime="2023-12-21 11:00:00">December 21st, 2023</time>
-            </dd>
-        </dl>
-    </div>
-</article>
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
-    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
-        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/choosing-the-right-string-type-in-rust-a-journey-of-a-novice">
-            Choosing the Right String Type in Rust: A Journey of a Novice
-        </a>
-    </p>
-    <div class="mt-auto flex flex-row-reverse items-center justify-end">
-        <dl>
-            <dt class="sr-only">Date</dt>
-            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
-                <time datetime="2023-09-01 10:00:00">September 1st, 2023</time>
-            </dd>
-        </dl>
-    </div>
-</article>
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
-    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
-        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/building-a-url-shortener-with-rust-and-redis">
-            Building a URL shortener with Rust and Redis
-        </a>
-    </p>
-    <div class="mt-auto flex flex-row-reverse items-center justify-end">
-        <dl>
-            <dt class="sr-only">Date</dt>
-            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
-                <time datetime="2023-08-09 10:00:00">August 9th, 2023</time>
-            </dd>
-        </dl>
-    </div>
-</article>
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
-    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
-        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/rust-memory-ownership-and-borrowing">
-            Rust: Memory, Ownership and Borrowing
-        </a>
-    </p>
-    <div class="mt-auto flex flex-row-reverse items-center justify-end">
-        <dl>
-            <dt class="sr-only">Date</dt>
-            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
-                <time datetime="2023-06-27 10:00:00">June 27th, 2023</time>
-            </dd>
-        </dl>
-    </div>
-</article>
-                            </div>
-        
-            
-            <div class="py-4 px-2">
-                <p class="font-aquawaxalt text-2xl font-bold hover:text-gray-500">
-                    / <a href="https://thearyanahmed.com/tags/laravel">
-                        laravel
-                    </a>
-                </p>
-                <p class="text-sm text-gray-300">
-                    contain 1 article
-                </p>
-
-                <div class="mt-4"></div>
-
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
         <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/building-a-passwordless-login-system-with-laravel-in-minutes">
             Building a Passwordless Login System with Laravel in minutes
@@ -333,52 +352,7 @@
         </dl>
     </div>
 </article>
-                            </div>
-        
-            
-            <div class="py-4 px-2">
-                <p class="font-aquawaxalt text-2xl font-bold hover:text-gray-500">
-                    / <a href="https://thearyanahmed.com/tags/php">
-                        php
-                    </a>
-                </p>
-                <p class="text-sm text-gray-300">
-                    contain 1 article
-                </p>
-
-                <div class="mt-4"></div>
-
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
-    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
-        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/building-a-passwordless-login-system-with-laravel-in-minutes">
-            Building a Passwordless Login System with Laravel in minutes
-        </a>
-    </p>
-    <div class="mt-auto flex flex-row-reverse items-center justify-end">
-        <dl>
-            <dt class="sr-only">Date</dt>
-            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
-                <time datetime="2023-08-19 10:00:00">August 19th, 2023</time>
-            </dd>
-        </dl>
-    </div>
-</article>
-                            </div>
-        
-            
-            <div class="py-4 px-2">
-                <p class="font-aquawaxalt text-2xl font-bold hover:text-gray-500">
-                    / <a href="https://thearyanahmed.com/tags/sql">
-                        sql
-                    </a>
-                </p>
-                <p class="text-sm text-gray-300">
-                    contain 1 article
-                </p>
-
-                <div class="mt-4"></div>
-
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
         <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/prepared-statements-in-sql">
             Prepared statements in SQL
@@ -393,73 +367,61 @@
         </dl>
     </div>
 </article>
-                            </div>
-        
-            
-            <div class="py-4 px-2">
-                <p class="font-aquawaxalt text-2xl font-bold hover:text-gray-500">
-                    / <a href="https://thearyanahmed.com/tags/golang">
-                        golang
-                    </a>
-                </p>
-                <p class="text-sm text-gray-300">
-                    contain 1 article
-                </p>
-
-                <div class="mt-4"></div>
-
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
-        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/origin-of-go-a-journey-into-simplicity-and-efficiency">
-            Origin of Go: A Journey into Simplicity and Efficiency
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/building-a-url-shortener-with-rust-and-redis">
+            Building a URL shortener with Rust and Redis
         </a>
     </p>
     <div class="mt-auto flex flex-row-reverse items-center justify-end">
         <dl>
             <dt class="sr-only">Date</dt>
             <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
-                <time datetime="2023-12-21 11:00:00">December 21st, 2023</time>
+                <time datetime="2023-08-09 10:00:00">August 9th, 2023</time>
             </dd>
         </dl>
     </div>
 </article>
-                            </div>
-        
-            
-            <div class="py-4 px-2">
-                <p class="font-aquawaxalt text-2xl font-bold hover:text-gray-500">
-                    / <a href="https://thearyanahmed.com/tags/go">
-                        go
-                    </a>
-                </p>
-                <p class="text-sm text-gray-300">
-                    contain 1 article
-                </p>
-
-                <div class="mt-4"></div>
-
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
-        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/origin-of-go-a-journey-into-simplicity-and-efficiency">
-            Origin of Go: A Journey into Simplicity and Efficiency
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/rust-memory-ownership-and-borrowing">
+            Rust: Memory, Ownership and Borrowing
         </a>
     </p>
     <div class="mt-auto flex flex-row-reverse items-center justify-end">
         <dl>
             <dt class="sr-only">Date</dt>
             <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
-                <time datetime="2023-12-21 11:00:00">December 21st, 2023</time>
+                <time datetime="2023-06-27 10:00:00">June 27th, 2023</time>
             </dd>
         </dl>
     </div>
 </article>
                             </div>
-            </div>
+        </div>
+
+        <div class="h-20"></div>
+    </div>
     </main>
 
     <!-- Calendly link widget begin -->
         <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
         <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+        <script type="module">
+            const imgs = document.getElementsByTagName('img')
+
+            for (let i = 0; i < imgs.length; i++) {
+                const img = imgs[i]
+
+                let src = img.getAttribute('src')
+
+                if (src.startsWith('art::')) {
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    img.setAttribute('src', src)
+                }
+            }
+        </script>
 
     <script src="https://thearyanahmed.com/js/functions.js"></script>
 </body>
