@@ -11,33 +11,18 @@
 <meta name="author" content="Aryan Ahmed" />
 <meta name="author" content="Aryan Ahmed Anik" />
 <meta name="author" content="Aryan Ahmed Anik" />
+<title>Hello World; Intro to Data Types</title>
+<meta property="og:title" content="Hello World; Intro to Data Types" />
+<meta name="twitter:title" content="Hello World; Intro to Data Types" />
+<meta name="embedx:title" content="Hello World; Intro to Data Types" />
+<meta name="description" content />
+<meta property="og:description" content />
+<meta name="twitter:description" content />
+<meta name="embedx:description" content />
 <meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<title>Rust: Memory, Ownership and Borrowing</title>
-<meta property="og:title" content="Rust: Memory, Ownership and Borrowing" />
-<meta name="twitter:title" content="Rust: Memory, Ownership and Borrowing" />
-<meta name="embedx:title" content="Rust: Memory, Ownership and Borrowing" />
-<meta name="description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
-<meta property="og:description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
-<meta name="twitter:description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
-<meta name="embedx:description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="twitter:card" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
+<meta name="twitter:card" content />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/blog/articles/rust-memory-ownership-and-borrowing" />
-<meta name="image" content="https://raw.githubusercontent.com/thearyanahmed/art/master/EhLBLssH95N5iEyFvZ1Mfd4Z7acVTpiZmPnH2lKA.png" />
-<meta property="og:image" content="https://raw.githubusercontent.com/thearyanahmed/art/master/EhLBLssH95N5iEyFvZ1Mfd4Z7acVTpiZmPnH2lKA.png" />
-<meta name="twitter:image" content="https://raw.githubusercontent.com/thearyanahmed/art/master/EhLBLssH95N5iEyFvZ1Mfd4Z7acVTpiZmPnH2lKA.png" />
-<meta name="embedx:image" content="https://raw.githubusercontent.com/thearyanahmed/art/master/EhLBLssH95N5iEyFvZ1Mfd4Z7acVTpiZmPnH2lKA.png" />
-<meta property="article:Rust: Memory, Ownership and Borrowing" content="Rust: Memory, Ownership and Borrowing" />
+<link rel="canonical" href="https://thearyanahmed.com/blog/articles/hello-world-intro-to-data-types" />
 <meta property="article:Hello World; Intro to Data Types" content="Hello World; Intro to Data Types" />
 <meta property="article:Origin of Go: A Journey into Simplicity and Efficiency" content="Origin of Go: A Journey into Simplicity and Efficiency" />
 <meta property="article:Kubernetes Cluster Architecture" content="Kubernetes Cluster Architecture" />
@@ -48,6 +33,7 @@
 <meta property="article:Building a Passwordless Login System with Laravel in minutes" content="Building a Passwordless Login System with Laravel in minutes" />
 <meta property="article:Prepared statements in SQL" content="Prepared statements in SQL" />
 <meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
+<meta property="article:Rust: Memory, Ownership and Borrowing" content="Rust: Memory, Ownership and Borrowing" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -190,27 +176,75 @@
 </div>
 
     <main class="lg:relative">
-        <div class="max-w-2xl mx-auto space-y-2 mt-20 px-4">
-        <div class="flex justify-end">
-            <p class="text-gray-300 font-sm">
-                if you are looking for something, use ctrl / cmd + f to search.
-            </p>
+        <div class="max-w-3xl mx-auto px-4">
+        <div class="relative py-16 bg-white overflow-hidden">
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
+                <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
+                    <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)" />
+                    </svg>
+                    <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)" />
+                    </svg>
+                    <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)" />
+                    </svg>
+                </div>
+            </div>
+            <div class="relative px-4 sm:px-6 lg:px-8">
+                <div class="text-lg max-w-prose">
+                    <h1 class="mt-2 block text-6xl text-center font-aquawaxalxt fredericka-the-great tracking-tight text-gray-900">
+                        Hello World; Intro to Data Types
+                    </h1>
+                </div>
+
+                
+                <div class="text-lg max-w-prose">
+                    <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
+                        
+                    </p>
+                </div>
+                <div class="article-content-markdown mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
+                    <div ><p>In the vast realm of programming, data types play a crucial role. They're the building blocks that help us organize and manipulate data efficiently. Imagine them as the DNA of your code – guiding how it behaves and interacts.</p>
+<h2 id="hello-world-with-go">Hello World with Go</h2>
+<p>Before we go deep, let's start with a classic &quot;Hello World&quot; using fmt.Println(). This simple line of code lays the foundation for our journey into Golang's syntax.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"></span>
+<span class="line"><span style="color: #3E8FB0">package</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #3E8FB0">import</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;</span><span style="color: #EA9A97">fmt</span><span style="color: #F6C177">&quot;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #3E8FB0">func</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    fmt</span><span style="color: #908CAA">.</span><span style="color: #EB6F92; font-style: italic">Println</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello, Gophers!&quot;</span><span style="color: #908CAA">)</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="intro-data-types">Intro : Data Types</h2>
+<p>Now, let's meet the Golang family of basic data types: <code>integers</code>, <code>floats</code>, <code>strings</code>, and <code>bools</code>. Each has its own unique role in handling different kinds of information.</p>
+</div>
+                </div>
+            </div>
         </div>
-        
-            
-            <div class="py-4 px-2">
-                <p class="font-aquawaxalt text-2xl font-bold hover:text-gray-500">
-                    / <a href="#it-is-not-a-link">
-                        programming
-                    </a>
-                </p>
-                <p class="text-sm text-gray-300">
-                    contains 4 articles
-                </p>
 
-                <div class="mt-4"></div>
-
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+        <div class="max-w-2xl mx-auto px-4">
+            <p class="my-2 font-aquawaxalt font-medium text-gray-500">
+                Here are some of my articles..
+            </p>
+            <div class="space-y-2">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
         <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/origin-of-go-a-journey-into-simplicity-and-efficiency">
             Origin of Go: A Journey into Simplicity and Efficiency
@@ -225,7 +259,52 @@
         </dl>
     </div>
 </article>
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/kubernetes-cluster-architecture">
+            Kubernetes Cluster Architecture
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-27 10:00:00">October 27th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/differences-between-ssl-and-tls">
+            Differences Between SSL and TLS
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-25 10:00:00">October 25th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/dynamic-trait-to-a-concrete-type-in-rust">
+            Dynamic trait to a concrete type in Rust
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-17 10:00:00">October 17th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
         <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/choosing-the-right-string-type-in-rust-a-journey-of-a-novice">
             Choosing the Right String Type in Rust: A Journey of a Novice
@@ -240,7 +319,52 @@
         </dl>
     </div>
 </article>
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/concurrency-in-golang-part-1">
+            Concurrency in Golang - Part 1
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-30 10:00:00">August 30th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/building-a-passwordless-login-system-with-laravel-in-minutes">
+            Building a Passwordless Login System with Laravel in minutes
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-19 10:00:00">August 19th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/prepared-statements-in-sql">
+            Prepared statements in SQL
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-19 10:00:00">August 19th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
         <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/building-a-url-shortener-with-rust-and-redis">
             Building a URL shortener with Rust and Redis
@@ -255,7 +379,7 @@
         </dl>
     </div>
 </article>
-                                    <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
         <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/rust-memory-ownership-and-borrowing">
             Rust: Memory, Ownership and Borrowing
@@ -271,12 +395,30 @@
     </div>
 </article>
                             </div>
-            </div>
+        </div>
+
+        <div class="h-20"></div>
+    </div>
     </main>
 
     <!-- Calendly link widget begin -->
         <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
         <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+        <script type="module">
+            const imgs = document.getElementsByTagName('img')
+
+            for (let i = 0; i < imgs.length; i++) {
+                const img = imgs[i]
+
+                let src = img.getAttribute('src')
+
+                if (src.startsWith('art::')) {
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    img.setAttribute('src', src)
+                }
+            }
+        </script>
 
     <script src="https://thearyanahmed.com/js/functions.js"></script>
 </body>
