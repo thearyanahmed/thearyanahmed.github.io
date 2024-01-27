@@ -11,25 +11,18 @@
 <meta name="author" content="Aryan Ahmed" />
 <meta name="author" content="Aryan Ahmed Anik" />
 <meta name="author" content="Aryan Ahmed Anik" />
+<title>The cover generator for my articles</title>
+<meta property="og:title" content="The cover generator for my articles" />
+<meta name="twitter:title" content="The cover generator for my articles" />
+<meta name="embedx:title" content="The cover generator for my articles" />
+<meta name="description" content="A ChatGPT generated article." />
+<meta property="og:description" content="A ChatGPT generated article." />
+<meta name="twitter:description" content="A ChatGPT generated article." />
+<meta name="embedx:description" content="A ChatGPT generated article." />
 <meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
-<title>Concurrency in Golang - Part 1</title>
-<meta property="og:title" content="Concurrency in Golang - Part 1" />
-<meta name="twitter:title" content="Concurrency in Golang - Part 1" />
-<meta name="embedx:title" content="Concurrency in Golang - Part 1" />
-<meta name="description" content="Concurrency refers to the simultaneous and autonomous execution of multiple processes." />
-<meta property="og:description" content="Concurrency refers to the simultaneous and autonomous execution of multiple processes." />
-<meta name="twitter:description" content="Concurrency refers to the simultaneous and autonomous execution of multiple processes." />
-<meta name="embedx:description" content="Concurrency refers to the simultaneous and autonomous execution of multiple processes." />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="twitter:card" content="Concurrency refers to the simultaneous and autonomous execution of multiple processes." />
+<meta name="twitter:card" content="A ChatGPT generated article." />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/blog/articles/concurrency-in-golang-part-1" />
-<meta property="article:Concurrency in Golang - Part 1" content="Concurrency in Golang - Part 1" />
+<link rel="canonical" href="https://thearyanahmed.com/blog/articles/the-cover-generator-for-my-articles" />
 <meta property="article:The cover generator for my articles" content="The cover generator for my articles" />
 <meta property="article:Hello World; Intro to Data Types" content="Hello World; Intro to Data Types" />
 <meta property="article:Origin of Go: A Journey into Simplicity and Efficiency" content="Origin of Go: A Journey into Simplicity and Efficiency" />
@@ -37,6 +30,7 @@
 <meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
 <meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
 <meta property="article:Choosing the Right String Type in Rust: A Journey of a Novice" content="Choosing the Right String Type in Rust: A Journey of a Novice" />
+<meta property="article:Concurrency in Golang - Part 1" content="Concurrency in Golang - Part 1" />
 <meta property="article:Building a Passwordless Login System with Laravel in minutes" content="Building a Passwordless Login System with Laravel in minutes" />
 <meta property="article:Prepared statements in SQL" content="Prepared statements in SQL" />
 <meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
@@ -215,98 +209,36 @@
             <div class="relative px-4 sm:px-6 lg:px-8">
                 <div class="text-lg max-w-prose">
                     <h1 class="mt-2 block text-6xl text-center font-aquawaxalxt fredericka-the-great tracking-tight text-gray-900">
-                        Concurrency in Golang - Part 1
+                        The cover generator for my articles
                     </h1>
                 </div>
 
                 
                 <div class="text-lg max-w-prose">
                     <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
-                        Concurrency refers to the simultaneous and autonomous execution of multiple processes.
+                        A ChatGPT generated article.
                     </p>
                 </div>
                 <div class="article-content-markdown mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
-                    <div ><p>This approach ensures that when multiple threads share or access a common resource, undesirable scenarios such as race conditions or deadlocks are avoided. Concurrency also enables disparate computations to yield identical results regardless of the order in which they are performed.</p>
-<h2 id="what-is-concurrency">What is Concurrency?</h2>
-<p>Concurrency refers to the simultaneous and autonomous execution of multiple processes. This approach ensures that when multiple threads share or access a common resource, undesirable scenarios such as race conditions or deadlocks are avoided. Concurrency also enables disparate computations to yield identical results regardless of the order in which they are performed.</p>
-<p>In the context of single-core hardware, concurrency can be attained through context switching. Conversely, in multicore hardware, parallelism comes into play to achieve concurrency.</p>
-<blockquote>
-<p>“Concurrency is about dealing with lots of things at once. Parallelism is about doing lots of things at once.” — Rob Pike</p>
-</blockquote>
-<p>https://www.youtube.com/watch?v=oV9rvDllKEg&amp;ab_channel=gnbitcom</p>
-<p>Before going into patterns, I would like to talk about a few concepts, relevant for writing concurrent code.</p>
-<h2 id="deadlock">Deadlock</h2>
-<p>A deadlock is a situation when a task is waiting for something that will never happen. For freshers, a job needs experience, and to have experience you need a job is sort of like a deadlock situation.<br />
-For simplicity,</p>
-<blockquote>
-<p>In a deadlock, two processes wait for each other.</p>
-</blockquote>
-<p>In terms of go, both of the following will result in a deadlock. The <code>make(chan int)</code> creates an unbuffered channel.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">package</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">func</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">	</span><span style="color: #E0DEF4; font-style: italic">channel</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:=</span><span style="color: #E0DEF4"> </span><span style="color: #EB6F92; font-style: italic">make</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">chan</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">int</span><span style="color: #908CAA">)</span></span>
-<span class="line"><span style="color: #E0DEF4">	</span><span style="color: #3E8FB0">&lt;-</span><span style="color: #E0DEF4">channel</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> or </span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic">  channel &lt;- 1</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
-<h2 id="livelock">Livelock</h2>
-<p>A livelock situation is a scenario where the processes are trying to resolve the issue within themselves but, they do not succeed. Imagine in an aeroplane isle, only one person can walk. If two people wants to go to the opposite end, they'll be blocked by each other in the middle. In a livelock situation, they'd go back or try in a different way to cross the isle together, individually, but at the same time (timeframe), but will fail cause the isle only allows one person at a time.</p>
-<p>Though they are trying to solve it, they'll not be able to (unless one of them goes back to the starting point and waits for the other person two cross).</p>
-<h2 id="race-condition">Race condition</h2>
-<p>Race condition is a scenario where two or more threads have access to the same data and wants to update it simultaneously. But due to the lack of order, the changes are committed.</p>
-<p>Take the following code for example, we have a simple for loop that calls an anonymous function to increment the value of <code>x</code> by 1. We call it 5 times. Though in synchronous code, the final result will be 5, in this code, the value will be <code>0</code>.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">0</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">fmt</span><span style="color: #908CAA">.</span><span style="color: #EB6F92; font-style: italic">Println</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Initial value of x is &quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> x</span><span style="color: #908CAA">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">for</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">i</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">0</span><span style="color: #908CAA">;</span><span style="color: #E0DEF4"> i </span><span style="color: #3E8FB0">&lt;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">5</span><span style="color: #908CAA">;</span><span style="color: #E0DEF4"> i</span><span style="color: #3E8FB0">++</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">go</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">func</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> spawn goroutines here</span></span>
-<span class="line"><span style="color: #E0DEF4">		x</span><span style="color: #3E8FB0">++</span></span>
-<span class="line"><span style="color: #E0DEF4">	</span><span style="color: #908CAA">}()</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">fmt</span><span style="color: #908CAA">.</span><span style="color: #EB6F92; font-style: italic">Println</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Final value of x is &quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> x</span><span style="color: #908CAA">)</span></span>
-<span class="line"></span></code></pre>
-<p>The reason for this is when the nested function reads the value of <code>x</code> it is still <code>0</code>, and it increses by 1, but by these time, all other spwaned goroutines have read the same value and increased by 1.</p>
-<p><strong>Sidenote</strong>  Why <code>0</code> then? Why not <code>1</code> ? <code>goroutines</code> does not wait for this operation to finish and therefore, by the time the final <code>println</code> is called, the value is still 0.</p>
-<h2 id="starvation">Starvation</h2>
-<p>One of the ways to solve this race condition would be to use a mutex lock. But imagine a scenario, we have different tasks with different priorities, and what if a task with higher prirority keeps executing (and keeps the CPU busy)? Or the scheduler schedules more high priority tasks and pushes them in the middle?</p>
-<p>In this scenario the lower priority task/s will never get executed or will execute after a long delay.</p>
-<h2 id="synchronization-sync">Synchronization (sync)</h2>
-<p>It is essential that we sync our tasks when writing concurrent programs. There are a few concepts in these scenarios that we can follow. Golang also has libraries for them. I'll talk about <strong>mutex</strong>, <strong>atomic</strong> and <strong>waitgroups</strong>.</p>
-<h2 id="mutex">Mutex</h2>
-<blockquote>
-<p>A mutex is a synchronization primitive used in concurrent programming to control access to shared resources, such as variables, data structures, or code sections, in a way that ensures only one thread or process can access the resource at a time.</p>
-</blockquote>
-<p>Mutex is short for <code>mutual exclusion</code>. A mutex provides two functionalities, acquiring and releasing (a) lock. When we are working with shared data, before starting to work with it, we put a <code>lock</code> in it, so other threads can not update the value until we release the lock. After our operation is done, we <code>release</code> the lock.</p>
-<h2 id="atomic">Atomic</h2>
-<p>The <code>sync/atomic</code> package provides low-level atomic memory operations for basic types, allowing you to perform atomic operations on variables shared by multiple <code>goroutines</code> without the need for explicit locking. This is crucial for writing safe and efficient concurrent programs.</p>
-<h2 id="waitgroup">WaitGroup</h2>
-<p>The <code>sync.WaitGroup</code> type in Go is a synchronization primitive used to wait for a collection of goroutines to finish their execution. It provides a way to block the execution of a program until a specified number of goroutines complete their work. This is particularly useful when you have a set of concurrent tasks and you need to ensure that all of them have finished before proceeding with the rest of the program.</p>
-<h2 id="channels">Channels</h2>
-<p>A channel is like a pathway that lets different functions talk to each other while they're running at the same time. You can send and get data through it, like numbers or words. When you've got lots of tasks happening all together, channels make it easy for them to share information. Think of them as the connections between these tasks. Channels are kind of like pointers, so you can easily give them to tasks and use them to pass data back and forth.</p>
-<p>It is one of the most important features of golang. Go has two types of channels. Buffered and unbuffered. Buffered channels are simply a channel with some capacities. It can hold values. While you can think of channels being pipes, buffered channels are pipes with buckets (to store something).</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"></span>
-<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> unbuffered channel</span></span>
-<span class="line"><span style="color: #3E8FB0">var</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">unbufferedChannel</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">chan</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">int</span></span>
-<span class="line"><span style="color: #E0DEF4; font-style: italic">unbufferedChannel</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EB6F92; font-style: italic">make</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">chan</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">int</span><span style="color: #908CAA">)</span></span>
-<span class="line"><span style="color: #3E8FB0">go</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">func</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">  unbufferedChannel </span><span style="color: #3E8FB0">&lt;-</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span></span>
-<span class="line"><span style="color: #908CAA">}()</span></span>
-<span class="line"><span style="color: #E0DEF4">fmt</span><span style="color: #908CAA">.</span><span style="color: #EB6F92; font-style: italic">Println</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;unbuffered channel &quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&lt;-</span><span style="color: #E0DEF4">unbufferedChannel</span><span style="color: #908CAA">)</span></span>
-<span class="line"></span>
-<span class="line"></span>
-<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> buffered channel</span></span>
-<span class="line"><span style="color: #E0DEF4; font-style: italic">bufferedChannel</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:=</span><span style="color: #E0DEF4"> </span><span style="color: #EB6F92; font-style: italic">make</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">chan</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">int</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">2</span><span style="color: #908CAA">)</span></span>
-<span class="line"><span style="color: #E0DEF4">bufferedChannel </span><span style="color: #3E8FB0">&lt;-</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span></span>
-<span class="line"><span style="color: #E0DEF4">bufferedChannel </span><span style="color: #3E8FB0">&lt;-</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">2</span></span>
-<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> bufferedChannel &lt;- 3 // uncommeting this line will block cause the capaticity is 2 </span></span>
-<span class="line"><span style="color: #E0DEF4">fmt</span><span style="color: #908CAA">.</span><span style="color: #EB6F92; font-style: italic">Println</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;first channel &quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&lt;-</span><span style="color: #E0DEF4">bufferedChannel</span><span style="color: #908CAA">)</span></span>
-<span class="line"><span style="color: #E0DEF4">fmt</span><span style="color: #908CAA">.</span><span style="color: #EB6F92; font-style: italic">Println</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;first channel&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&lt;-</span><span style="color: #E0DEF4">bufferedChannel</span><span style="color: #908CAA">)</span></span>
-<span class="line"></span></code></pre>
+                    <div ><p>This article was created using chatGPT.</p>
+<p>Visit <a href="/cover-generator">thearyanahmed.com/cover-generator</a>,</p>
+<p>Just add query parameters to your URL, and watch the magic happen.</p>
+<h2 id="for-title-and-excerpt-content">For Title and Excerpt Content:</h2>
+<ul>
+<li>Append ?title=YourTitle to set a custom title.</li>
+<li>Append ?excerpt=YourExcerpt to set a custom excerpt.</li>
+</ul>
+<h2 id="for-styling">For Styling:</h2>
+<ul>
+<li>Append ?title-font-size=3.75rem to set a custom title font size.</li>
+<li>Append ?title-line-height=1em to set a custom title line height.</li>
+<li>Append ?excerpt-font-size=1.7em to set a custom excerpt font size.</li>
+<li>Append ?excerpt-line-height=1.5em to set a custom excerpt line height.</li>
+</ul>
+<p>Open your browser, add those parameters to your URL, and see your page transform dynamically. Want a bigger title? Just add ?title-font-size=5rem. Need a different excerpt? Toss in ?excerpt=AnotherExcitingText.</p>
+<p>It's like having a magic wand for your webpage! 🪄 Feel free to experiment, and make your page truly yours.</p>
+<p>URL : <a href="/cover-generator">thearyanahmed.com/cover-generator</a></p>
+<p>Happy customizing! ✨</p>
 </div>
                 </div>
             </div>
@@ -317,21 +249,6 @@ For simplicity,</p>
                 Here are some of my articles..
             </p>
             <div class="space-y-2">
-                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
-    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
-        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/the-cover-generator-for-my-articles">
-            The cover generator for my articles
-        </a>
-    </p>
-    <div class="mt-auto flex flex-row-reverse items-center justify-end">
-        <dl>
-            <dt class="sr-only">Date</dt>
-            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
-                <time datetime="2024-01-26 11:00:00">January 26th, 2024</time>
-            </dd>
-        </dl>
-    </div>
-</article>
                                 <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
     <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
         <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/hello-world-intro-to-data-types">
@@ -418,6 +335,21 @@ For simplicity,</p>
             <dt class="sr-only">Date</dt>
             <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
                 <time datetime="2023-09-01 10:00:00">September 1st, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/concurrency-in-golang-part-1">
+            Concurrency in Golang - Part 1
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-30 10:00:00">August 30th, 2023</time>
             </dd>
         </dl>
     </div>
