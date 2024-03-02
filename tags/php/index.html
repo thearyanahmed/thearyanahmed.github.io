@@ -21,17 +21,29 @@
 <meta name="author" content="Aryan Ahmed Anik" />
 <meta name="author" content="Aryan Ahmed Anik" />
 <meta name="author" content="Aryan Ahmed Anik" />
-<meta name="author" content="Aryan Ahmed Anik" />
 <meta property="article:Prepared statements in SQL" content="Prepared statements in SQL" />
 <meta name="author" content="Aryan Ahmed Anik" />
-<meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
+<meta property="article:Building a Passwordless Login System with Laravel in minutes" content="Building a Passwordless Login System with Laravel in minutes" />
 <meta name="author" content="Aryan Ahmed Anik" />
+<meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
+<title>Rust: Memory, Ownership and Borrowing</title>
+<meta property="og:title" content="Rust: Memory, Ownership and Borrowing" />
+<meta name="twitter:title" content="Rust: Memory, Ownership and Borrowing" />
+<meta name="embedx:title" content="Rust: Memory, Ownership and Borrowing" />
+<meta name="description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
+<meta property="og:description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
+<meta name="twitter:description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
+<meta name="embedx:description" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="twitter:card" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
+<meta property="og:site_name" content="thearyanahmed.com" />
 <link rel="canonical" href="https://thearyanahmed.com/blog/articles/rust-memory-ownership-and-borrowing" />
 <meta name="image" content="https://raw.githubusercontent.com/thearyanahmed/art/master/EhLBLssH95N5iEyFvZ1Mfd4Z7acVTpiZmPnH2lKA.png" />
 <meta property="og:image" content="https://raw.githubusercontent.com/thearyanahmed/art/master/EhLBLssH95N5iEyFvZ1Mfd4Z7acVTpiZmPnH2lKA.png" />
 <meta name="twitter:image" content="https://raw.githubusercontent.com/thearyanahmed/art/master/EhLBLssH95N5iEyFvZ1Mfd4Z7acVTpiZmPnH2lKA.png" />
 <meta name="embedx:image" content="https://raw.githubusercontent.com/thearyanahmed/art/master/EhLBLssH95N5iEyFvZ1Mfd4Z7acVTpiZmPnH2lKA.png" />
 <meta property="article:Rust: Memory, Ownership and Borrowing" content="Rust: Memory, Ownership and Borrowing" />
+<meta property="article:Saying goodbye to &lt;span class=&#039;text-green-500 font-medium hover:text-red-400&#039;&gt;Evernote;&lt;/span&gt; finally" content="Saying goodbye to &lt;span class=&#039;text-green-500 font-medium hover:text-red-400&#039;&gt;Evernote;&lt;/span&gt; finally" />
 <meta property="article:Understanding fundamentals, JavaScript &amp; The Lack There Of" content="Understanding fundamentals, JavaScript &amp; The Lack There Of" />
 <meta property="article:The cover generator for my articles" content="The cover generator for my articles" />
 <meta property="article:Hello World; Intro to Data Types" content="Hello World; Intro to Data Types" />
@@ -41,18 +53,6 @@
 <meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
 <meta property="article:Choosing the Right String Type in Rust: A Journey of a Novice" content="Choosing the Right String Type in Rust: A Journey of a Novice" />
 <meta property="article:Concurrency in Golang - Part 1" content="Concurrency in Golang - Part 1" />
-<meta property="article:Building a Passwordless Login System with Laravel in minutes" content="Building a Passwordless Login System with Laravel in minutes" />
-<title>Fallen leaves of Berlin</title>
-<meta property="og:title" content="Fallen leaves of Berlin" />
-<meta name="twitter:title" content="Fallen leaves of Berlin" />
-<meta name="embedx:title" content="Fallen leaves of Berlin" />
-<meta name="description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta property="og:description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta name="twitter:description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta name="embedx:description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta name="author" content="Aryan Ahmed Anik" />
-<meta name="twitter:card" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta property="og:site_name" content="thearyanahmed.com" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -129,10 +129,12 @@
                             Blog
                         </a>
 
+<!--
                         <a href="https://thearyanahmed.com/wall-of-memories" title="thearyanahmed's blog"
                             class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
                             Wall of Memories
-                        </a>
+</a>
+-->
                         
 
                         <!--
@@ -201,12 +203,12 @@
                 <!-- '9ae9768b-6ebd-438a-bf1d-6228a64fdf10' -->
                 
 
-
+<!--
                 <a href="https://thearyanahmed.com/wall-of-memories"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Wall
                     of memories</a>
 
-
+-->
 
                 <!-- <a href="https://thearyanahmed.com/blog/bengali" class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">বাংলায় কিছু</a> -->
 
