@@ -362,7 +362,6 @@ On line 5, if we add the <code>mut</code> keyword before the variable name, it w
 <span class="line"></span>
 <span class="line"><span style="color: #6E6A86; font-style: italic">// let out_of_index = a[50]; // Throws an error, as index 50 does not exist.</span></span>
 <span class="line"></span></code></pre>
-<p>How arrays take up space in your memory block</p>
 <p><strong>Understanding Array Memory Allocation</strong></p>
 <ul>
 <li>
@@ -370,7 +369,9 @@ On line 5, if we add the <code>mut</code> keyword before the variable name, it w
 <li>
 <strong>Predetermined Size:</strong> At compile time (when your code is translated into machine code), the compiler typically determines the size of the array based on the declaration (e.g., int numbers[10];). This size remains fixed throughout the program's execution.</li>
 </ul>
-<p><img src="art::learning-rust/part-02-memory-allocation.png" alt="art::learning-rust/part-02-memory-allocation.png" /></p>
+<p><img src="art::learning-rust/part-02-memory-allocation.png" alt="How arrays take up space in your memory block" /></p>
+<p>Imagine this is your system's memory. Part of your program or other programs running on the systems are using chunks of memories here and there. When you declare an array, your system needs to have enough <strong>contiguous memory</strong> blocks. In the art here, if you declare an array with the length of 5, it'll <strong>not</strong> start from the top left (row 0, col 0). The program will look for an area where it can fit 5 elements (one in each block). So it looks for empty / usable contiguous cell of 5 or more.</p>
+<p>If we declared an array of 6, it would go to the second row, marked in orange with <code>array (7)</code>.</p>
 <p>⠀<strong>Memory Considerations</strong></p>
 <ul>
 <li>
