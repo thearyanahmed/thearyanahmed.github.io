@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="author" content="Aryan Ahmed" />
+<title>Learning Rust : Part Two - Variables and Data Types</title>
+<meta property="og:title" content="Learning Rust : Part Two - Variables and Data Types" />
+<meta name="twitter:title" content="Learning Rust : Part Two - Variables and Data Types" />
+<meta name="embedx:title" content="Learning Rust : Part Two - Variables and Data Types" />
+<meta name="description" content="Explore the intricacies of data types and variables in Rust. From variable declaration to type definition and compiler insights, this article delves deep into Rust&#039;s type system." />
+<meta property="og:description" content="Explore the intricacies of data types and variables in Rust. From variable declaration to type definition and compiler insights, this article delves deep into Rust&#039;s type system." />
+<meta name="twitter:description" content="Explore the intricacies of data types and variables in Rust. From variable declaration to type definition and compiler insights, this article delves deep into Rust&#039;s type system." />
+<meta name="embedx:description" content="Explore the intricacies of data types and variables in Rust. From variable declaration to type definition and compiler insights, this article delves deep into Rust&#039;s type system." />
+<meta name="author" content="Aryan Ahmed Anik" />
+<meta name="twitter:card" content="Explore the intricacies of data types and variables in Rust. From variable declaration to type definition and compiler insights, this article delves deep into Rust&#039;s type system." />
+<meta property="og:site_name" content="thearyanahmed.com" />
+<link rel="canonical" href="https://thearyanahmed.com/blog/articles/learning-rust-part-two-variables-and-data-types" />
+<meta property="article:Learning Rust : Part Two - Variables and Data Types" content="Learning Rust : Part Two - Variables and Data Types" />
+<meta property="article:Learning Rust : Part One - Intro to Rust" content="Learning Rust : Part One - Intro to Rust" />
+<meta property="article:Saying goodbye to &lt;span class=&#039;text-green-500 font-medium hover:text-red-400&#039;&gt;Evernote;&lt;/span&gt; finally" content="Saying goodbye to &lt;span class=&#039;text-green-500 font-medium hover:text-red-400&#039;&gt;Evernote;&lt;/span&gt; finally" />
+<meta property="article:Understanding fundamentals, JavaScript &amp; The Lack There Of" content="Understanding fundamentals, JavaScript &amp; The Lack There Of" />
+<meta property="article:The cover generator for my articles" content="The cover generator for my articles" />
+<meta property="article:Origin of Go: A Journey into Simplicity and Efficiency" content="Origin of Go: A Journey into Simplicity and Efficiency" />
+<meta property="article:Kubernetes Cluster Architecture" content="Kubernetes Cluster Architecture" />
+<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
+<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
+<meta property="article:Choosing the Right String Type in Rust: A Journey of a Novice" content="Choosing the Right String Type in Rust: A Journey of a Novice" />
+<meta property="article:Concurrency in Golang - Part 1" content="Concurrency in Golang - Part 1" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+    <link href="https://thearyanahmed.com/css/app.css" rel="stylesheet">
+    
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-90CDQWTTNW"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-90CDQWTTNW');
+</script>
+</head>
+
+<body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
+
+    <div
+    class="notsticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-transparent">
+    <nav class="w-full mx-auto bg-white">
+        <div class="px-2 sm:px-6 lg:px-8 dotted-bg">
+            <div class="relative flex justify-between h-16">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <!-- Mobile menu button -->
+                    <button onclick="toggleMobileMenu()" type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="justify-center w-full mx-auto hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="https://thearyanahmed.com" title="thearyanahmed's blog" target="_self"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            Home
+                        </a>
+
+                        <a href="https://thearyanahmed.com/blog" title="thearyanahmed's blog"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            Blog
+                        </a>
+
+                        <a href="https://thearyanahmed.com/portfolio" title="thearyanahmed's deviantart profile" target="_self"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            Portfolio
+                        </a>
+
+
+                        <a href="https://github.com/thearyanahmed" title="thearyanahmed's github"
+                            class="text-gray-900 inline-flex items-center px-1 pt-1 text-base" target="_blank">
+                            <svg width="24" height="24" fill="currentColor"
+                                class="text-gray-800 hover:underline font-aquawaxalt mr-3 text-opacity-50 transform">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.463 2 11.97c0 4.404 2.865 8.14 6.839 9.458.5.092.682-.216.682-.48 0-.236-.008-.864-.013-1.695-2.782.602-3.369-1.337-3.369-1.337-.454-1.151-1.11-1.458-1.11-1.458-.908-.618.069-.606.069-.606 1.003.07 1.531 1.027 1.531 1.027.892 1.524 2.341 1.084 2.91.828.092-.643.35-1.083.636-1.332-2.22-.251-4.555-1.107-4.555-4.927 0-1.088.39-1.979 1.029-2.675-.103-.252-.446-1.266.098-2.638 0 0 .84-.268 2.75 1.022A9.606 9.606 0 0112 6.82c.85.004 1.705.114 2.504.336 1.909-1.29 2.747-1.022 2.747-1.022.546 1.372.202 2.386.1 2.638.64.696 1.028 1.587 1.028 2.675 0 3.83-2.339 4.673-4.566 4.92.359.307.678.915.678 1.846 0 1.332-.012 2.407-.012 2.734 0 .267.18.577.688.48C19.137 20.107 22 16.373 22 11.969 22 6.463 17.522 2 12 2z">
+                                </path>
+                            </svg>
+                        </a>
+
+                        <a href="https://linkedin.com/in/thearyanahmed" title="thearyanahmed's linkedin"
+                            class="text-gray-900 inline-flex items-center px-1 pt-1 text-base" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-linkedin h-5 w-5 text-gray-800 hover:underline font-aquawaxalt mr-3 text-opacity-50 transform"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
+                            </svg>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="hidden dotted-bg" id="mobile-menu">
+            <div class="pt-6 pb-4 space-y-1">
+                <a href="https://thearyanahmed.com"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Home</a>
+
+                <a href="https://thearyanahmed.com/blog"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Blog</a>
+
+
+                <a href="https://thearyanahmed.com/portfolio"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Portfolio</a>
+
+
+                <a href="https://github.com/thearyanahmed" target="_blank"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Github</a>
+
+                <a href="https://linkedin.com/in/thearyanahmed" target="_blank"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Linkedin</a>
+
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+    <main class="lg:relative">
+        <div class="max-w-3xl mx-auto px-4">
+        <div class="relative py-16 bg-white overflow-hidden">
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full dotted-bg">
+                <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
+                    <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)" />
+                    </svg>
+                    <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)" />
+                    </svg>
+                    <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)" />
+                    </svg>
+                </div>
+            </div>
+            <div class="relative px-4 sm:px-6 lg:px-8">
+                <div class="text-lg max-w-prose">
+                    <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
+                        Learning Rust : Part Two - Variables and Data Types
+                    </h1>
+                </div>
+
+                
+                <div class="text-lg max-w-prose">
+                    <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
+                        Explore the intricacies of data types and variables in Rust. From variable declaration to type definition and compiler insights, this article delves deep into Rust&#039;s type system.
+                    </p>
+                </div>
+                <div class="article-content-markdown mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
+                    <div ><p>This chapter is part of a series Learning Rust. In this chapter, I’ll discuss about the common programming concepts like variables, data types, functions and control flow. You can find the first chapter here <a href="https://thearyanahmed.com/blog/articles/learning-rust-part-one-intro-to-rust/">Learning Rust : Part One - Intro to Rust</a> and all the chapters here <a href="https://thearyanahmed.com/series/learning-rust">Learning Rust</a>.</p>
+<h3 id="variables">Variables</h3>
+<p>In rust, there are a couple of ways to define a variable. We’ll start with the most simplest one.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;The value of the variable is </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span></code></pre>
+<p>We’ll be talking about data types  in a bit. But, here, declear the variable x and set its value to 1. On the next line, we are printing using the variable.
+We can do simple stuff like,</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">2</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">3</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">sum</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">+</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">product</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">*</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">sub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;sum </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">sum</span><span style="color: #908CAA">);</span></span>
+<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;product </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">product</span><span style="color: #908CAA">);</span></span>
+<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;sub </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">sub</span><span style="color: #908CAA">);</span><span style="color: #E0DEF4"> </span></span>
+<span class="line"></span></code></pre>
+<p>In rust, all the variables must be used. Else the compiler will throw an warning during cargo run. And if you run cargo build, it’ll also fail.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">	</span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">hello</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<p>The output for this build would be</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #e0def4">warning: unused variable: `hello`</span></span>
+<span class="line"><span style="color: #e0def4">  --&gt; src/main.rs:12:9</span></span>
+<span class="line"><span style="color: #e0def4">   |</span></span>
+<span class="line"><span style="color: #e0def4">12 |     let hello = 123;</span></span>
+<span class="line"><span style="color: #e0def4">   |         ^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_unused_variable</span></span>
+<span class="line"><span style="color: #e0def4">`</span></span>
+<span class="line"><span style="color: #e0def4">   |</span></span>
+<span class="line"><span style="color: #e0def4">   = note: `#[warn(unused_variables)]` on by default</span></span>
+<span class="line"><span style="color: #e0def4"></span></span>
+<span class="line"><span style="color: #e0def4">warning: `hello_world` (bin &quot;hello_world&quot;) generated 1 warning (run `cargo fix --bin &quot;hello_world&quot;` to app</span></span>
+<span class="line"><span style="color: #e0def4">ly 1 suggestion)</span></span>
+<span class="line"><span style="color: #e0def4">    Finished dev [unoptimized + debuginfo] target(s) in 0.00s</span></span>
+<span class="line"><span style="color: #e0def4"></span></span></code></pre>
+<p>Here, I want to talk about the compiler’s suggestions. It says there <code>hello</code> is unused. And specifies the line number. It also suggests to prefix the variable with an underscore if that is intentional.
+Updating the code to <code>let _hello = 123;</code> would remove the error. Rust wants us to ensure that all the resource we are gonna use in our program are for a valid reason. Imaging holding a variable that stores data with a big footprint but for no reason would be using unnecessary resources of the computer.</p>
+<p>Now, lets add another variable and try to add it to <code>sum</code>.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">2</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">3</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">sum</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">+</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">c</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">10</span><span style="color: #908CAA">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4; font-style: italic">sum</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">sum</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">+</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">c</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;total sum is </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">sum</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span></code></pre>
+<p>This simple code, as expected to add 10 to the already declared <code>sum</code> variable would not work. In many languages, variables are <code>mutable</code>. You can change the values even after declaration. However, with rust, you need to explicitely tell the compiler that this variable will be changed in the future.</p>
+<p>If you are using any LSP / IDE with rust enabled, you’ll have something like the following,</p>
+<p><img src="art::learning-rust/part-02-mut.png" alt="art::learning-rust/part-02-mut.png" /></p>
+<p>You’ll get something similar if you try to run it with <code>cargo run</code> . As it says, on line 9, the actual error,</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #e0def4">cannot assign twice to immutable variable `sum`</span></span>
+<span class="line"><span style="color: #e0def4"></span></span></code></pre>
+<p>On line 5, it asks us to consider making the variable mutable.
+On line 5, if we add <code>mut</code> keyword before the variable name would make the following variable mutable and solve our problem.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">sum</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">+</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">c</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">10</span><span style="color: #908CAA">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4; font-style: italic">sum</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">sum</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">+</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">c</span><span style="color: #908CAA">;</span></span>
+<span class="line"></span></code></pre>
+<p>This code will work as expected.</p>
+<h3 id="bit-about-mut">Bit about Mut</h3>
+<p>Mut ( <code>mutable</code> ) is explicite, because in rust, we can not have multiple mutable references to a variable. Which can lead to problems down the line in multi-threaded programming (eg: mutliple write from different references). This comes as rust’s attempt to memory safety. We’ll talk in details about mutable reference in the future inshallah.</p>
+<p>Back to our example, as rust is strictly typped, you can not just re-assign one variable to a different data type.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;hello&quot;</span><span style="color: #908CAA">;</span><span style="color: #E0DEF4"> # </span><span style="color: #E0DEF4; font-style: italic">mismatch</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">types</span></span>
+<span class="line"></span></code></pre>
+<p>We need to ensure all the data types match. Even adding a <code>float</code> and <code>int</code> would require a conversion between one of them to match the other one.</p>
+<h3 id="shadowing">Shadowing</h3>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #6E6A86; font-style: italic">// &lt;-- Scope A Starts</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">f32</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">12</span><span style="color: #908CAA">.</span><span style="color: #EA9A97">0</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span></span>
+<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;x is originally </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #908CAA">);</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span></span>
+<span class="line"><span style="color: #908CAA">{</span><span style="color: #6E6A86; font-style: italic"> // &lt;-- Scope B Starts</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4">  </span><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">as</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">i32</span><span style="color: #908CAA">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">	</span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a_string</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;hello&quot;</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;The value x inside the scope </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">/</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">2</span><span style="color: #908CAA">);</span></span>
+<span class="line"><span style="color: #E0DEF4">	</span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;a_string is </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4; font-style: italic">a_string</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #908CAA">}</span><span style="color: #6E6A86; font-style: italic"> // &lt;-- Scope B Ends, drops the value of x that is inside the Scoep B</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span></span>
+<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Outside the scope, the value of scope is </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;a_string outside the scope is </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a_string</span><span style="color: #908CAA">);</span><span style="color: #6E6A86; font-style: italic"> // Error: cannot find value `a_string` in this scope</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6E6A86; font-style: italic">// println!(&quot;Trying to divide the original floating point x by 2 (int) {}&quot;, x / 2);</span></span>
+<span class="line"><span style="color: #6E6A86; font-style: italic">// Uncommenting this line of code above would give us </span></span>
+<span class="line"><span style="color: #6E6A86; font-style: italic">// &quot;cannot divide `f32` by `{integer}` ...&quot;</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6E6A86; font-style: italic">// &lt;-- Scope A Ends</span></span>
+<span class="line"></span></code></pre>
+<p>Output of the program</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #e0def4">x is originally 12</span></span>
+<span class="line"><span style="color: #e0def4">The value x inside the scope 6</span></span>
+<span class="line"><span style="color: #e0def4">Outside the scope, the value of scope is 12</span></span>
+<span class="line"><span style="color: #e0def4"></span></span></code></pre>
+<p>Within Rust's scoping system, shadowing lets you introduce a new variable with the same name as an existing one. This creates a hidden copy, effectively blocking access to the original variable for the rest of the current scope, be it a code block, function, or loop. This power extends to data type changes.</p>
+<p>You can redeclare the shadowed variable with a different type, allowing for conversions on the fly. Shadowing is also useful for temporary modifications. Imagine a loop counter variable; you can shadow it to perform calculations without affecting the original loop iteration value. However, while shadowing offers flexibility, overuse can make code harder to understand. Use it strategically for clarity.</p>
+<p>In the code above, there is also a way to handle scopes. There are two scopes. The outter (Scope A), inside that, we have a nested scope Scope B. Within the inner scope, we have access to the parent scope or outter scope here. But after the scope ends ( &lt;-- Scope B Ends ), the values are dropped (more on this dropping of value later) and we have no access outside the nested scope.</p>
+<h2 id="data-types">Data Types</h2>
+<p>Rust is a statically typed language. Meaning,
+<strong>Statically typed:</strong> This means the types of all variables must be known at compile time. The compiler checks to make sure you're assigning values of the correct type to variables. This helps catch errors early in the development process.</p>
+<p>So, every value in rust must be of a certain type. For data types, we have <strong>Scalar types</strong> and <strong>Compound types</strong>. Scalar types are of single value. And rust has 4 types. <code>integer</code>, <code>float</code> , <code>boolean</code> and <code>characters</code>. <code>integer</code> and <code>floats</code> have different sizes, based on the size of the value you want to store inside them. <code>bool</code> and <code>char</code> takes <code>1 byte</code> and <code>4 bytes</code> respectively.</p>
+<p>Boolean holds one <code>truthy</code> of <code>falsey</code> value. Where <code>char</code> holds one single character.</p>
+<blockquote>
+<p><code>char</code> is written with single quotes.</p>
+</blockquote>
+<p>Declarign a variable with double quotes would result it in a <code>string</code> type, <strong>NOT <code>char</code></strong>.</p>
+<h3 id="scalar-types">Scalar Types</h3>
+<p>Rust has support for <code>8</code>, <code>16</code>, <code>32</code>, <code>64</code>, <code>128</code>, <code>arch</code> bits, each of them are prefixed by <code>i</code> or <code>u</code>. <code>i</code> for signed and <code>u</code> for unsigned. So, integer 32 would be <code>i32</code> and if it is unsigned, then <code>u32</code> .</p>
+<p>Rust has a special <code>arch</code> type. It denotes <code>architecture</code> . Assigning the data type of <code>isize</code> or <code>usize</code> would fall back into the architecture of the system. If the system is running on 64 bit, then it will be 64 bit value. If 32 bit, that will fall back to 32 bit value.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">integer_8</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">i8</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic">     // Range: -128 to 127</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">integer_16</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">i16</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic">   // Range: -32,768 to 32,767</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">integer_32</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">i32</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic">   // Range: -2,147,483,648 to 2,147,483,647</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">integer_64</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">i64</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic">   // Range: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">integer_128</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">i128</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic"> // Range: -170,141,183,460,469,231,731,687,303,715,884,105,728 </span></span>
+<span class="line"><span style="color: #6E6A86; font-style: italic">                                //        to 170,141,183,460,469,231,731,687,303,715,884,105,727</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span></span>
+<span class="line"><span style="color: #6E6A86; font-style: italic">    // Unsigned integers</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">uinteger_8</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">u8</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic">    // Range: 0 to 255</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">uinteger_16</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">u16</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic">  // Range: 0 to 65,535</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">uinteger_32</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">u32</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic">  // Range: 0 to 4,294,967,295</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">uinteger_64</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">u64</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic">  // Range: 0 to 18,446,744,073,709,551,615</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">uinteger_128</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">u128</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic">// Range: 0 to 340,282,366,920,938,463,463,374,607,431,768,211,455</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span></span>
+<span class="line"><span style="color: #6E6A86; font-style: italic">    // Floating-point types</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">float_32</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">f32</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">.</span><span style="color: #EA9A97">0</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic">   // IEEE-754 single-precision floating point</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">float_64</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">f64</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">.</span><span style="color: #EA9A97">0</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic">   // IEEE-754 double-precision floating point</span></span>
+<span class="line"></span>
+<span class="line"></span></code></pre>
+<blockquote>
+<p>We’ll cover about Integer overflow and how rust handles them in a future article.</p>
+</blockquote>
+<h3 id="compound-types">Compound Types</h3>
+<p>Compound types are groups of multiple values into a single type. Rust has mainly two primitive compound types. <code>Tuples</code> and <code>Arrays</code>.</p>
+<p>Arrays hold multiple values of the same data type. Array is of fixed size, allocated on the stack. If you create an array, it’ll take up the blocks next ot each other. Each elemenet can be accessed by their index value, starting from 0.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #6E6A86; font-style: italic">// Create array, of type i32, with the length 5</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">[</span><span style="color: #9CCFD8">i32</span><span style="color: #908CAA">;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">5</span><span style="color: #908CAA">]</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">[</span><span style="color: #EA9A97">1</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">2</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">3</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">4</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">5</span><span style="color: #908CAA">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6E6A86; font-style: italic">// Create an array with 5 elements, each of them has the value 10</span></span>
+<span class="line"><span style="color: #6E6A86; font-style: italic">// let a: [i32; 5] = [10; 5]; </span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">second</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">[</span><span style="color: #EA9A97">1</span><span style="color: #908CAA">];</span><span style="color: #6E6A86; font-style: italic"> // arrays are zero based. The first element would be a[0];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6E6A86; font-style: italic">// let out_of_index = a[50]; // Throws an error, as index 50 does not exists.</span></span>
+<span class="line"></span></code></pre>
+<p>How arrays take up space in your memory block</p>
+<p><strong>Understanding Array Memory Allocation</strong></p>
+<ul>
+<li>
+<strong>Contiguous Memory:</strong> When you declare an array in most programming languages, the system allocates a contiguous block of memory to store all the elements. This means the elements are placed sequentially in memory, making access efficient.</li>
+<li>
+<strong>Predetermined Size:</strong> At compile time (when your code is translated into machine code), the compiler typically determines the size of the array based on the declaration (e.g., int numbers[10];). This size remains fixed throughout the program's execution.</li>
+</ul>
+<p><img src="art::learning-rust/part-02-memory-allocation.png" alt="art::learning-rust/part-02-memory-allocation.png" /></p>
+<p>⠀<strong>Memory Considerations</strong></p>
+<ul>
+<li>
+<strong>Limited Memory Resources:</strong> Every system has a finite amount of memory available for running programs. Other applications and the operating system itself also consume memory.</li>
+<li>
+<strong>Allocation Failure:</strong> If the requested array size exceeds the available contiguous memory, the allocation might fail. This can lead to a program crash or runtime error if not handled properly.</li>
+</ul>
+<p>In tuples, we can group multiple values with multiple types. Rust offers custom data types using structs but tuples can be used for many of those cases. For example, you can have color tuple that represents RBGa value.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">rbga_red</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #9CCFD8">u8</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">u8</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">u8</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">f32</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #EA9A97">255</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">0</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">0</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">0</span><span style="color: #908CAA">.</span><span style="color: #EA9A97">75</span><span style="color: #908CAA">);</span><span style="color: #E0DEF4"> </span></span>
+<span class="line"></span></code></pre>
+<p>There are two ways to access the values for tuples, using indexs and destructuring.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">color</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #9CCFD8">u8</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">u8</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">u8</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">f32</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #EA9A97">255</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">0</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">0</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">0</span><span style="color: #908CAA">.</span><span style="color: #EA9A97">75</span><span style="color: #908CAA">);</span><span style="color: #E0DEF4"> </span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6E6A86; font-style: italic">// index based</span></span>
+<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;red : </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">, green : </span><span style="color: #908CAA">{}</span><span style="color: #F6C177"> , blue : </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">, opacity: </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4">  </span><span style="color: #E0DEF4; font-style: italic">color</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">0</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">color</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">1</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">color</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">2</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">color</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">3</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6E6A86; font-style: italic">// destructuring</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">red</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">green</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">blue</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">opacity</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">color</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;red : </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">, green : </span><span style="color: #908CAA">{}</span><span style="color: #F6C177"> , blue : </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">, opacity: </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">red</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">green</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">blue</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">opacity</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span></code></pre>
+<h2 id="inferred-types">Inferred Types</h2>
+<p>Sometimes it is obvious of the data type of a value, in those scenarios we don’t need to speicify what is the type. Rust infers the data type, which reduces boilerplate code, improves readablity in some scenarios.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">f32</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">.</span><span style="color: #EA9A97">0</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">.</span><span style="color: #EA9A97">0</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic"> // f32, rust inferred the data type understanding it is a floating point.</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">c</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">f64</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">.</span><span style="color: #EA9A97">0</span><span style="color: #908CAA">;</span><span style="color: #6E6A86; font-style: italic"> // specify data type</span></span>
+<span class="line"></span></code></pre>
+<p>These were the primitive data types that rust has to offer. We can obviously make our own custom data types using structs but more on in a future chapter inshallah. Next, we’ll be talking about functions a bit.</p>
+</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-2xl mx-auto px-4">
+            <p class="my-2 font-aquawaxalt font-medium text-gray-500">
+                Here are some of my articles..
+            </p>
+            <div class="space-y-2">
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/learning-rust-part-one-intro-to-rust">
+            Learning Rust : Part One - Intro to Rust
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2024-03-22 11:00:00">March 22nd, 2024</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/saying-goodbye-to-evernote-finally">
+            Saying goodbye to <span class='text-green-500 font-medium hover:text-red-400'>Evernote;</span> finally
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2024-03-02 05:00:00">March 2nd, 2024</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/understanding-fundamentals-java-script-the-lack-there-of">
+            Understanding fundamentals, JavaScript & The Lack There Of
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2024-02-20 11:00:00">February 20th, 2024</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/the-cover-generator-for-my-articles">
+            The cover generator for my articles
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2024-01-26 11:00:00">January 26th, 2024</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/origin-of-go-a-journey-into-simplicity-and-efficiency">
+            Origin of Go: A Journey into Simplicity and Efficiency
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-12-21 11:00:00">December 21st, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/kubernetes-cluster-architecture">
+            Kubernetes Cluster Architecture
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-27 10:00:00">October 27th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/differences-between-ssl-and-tls">
+            Differences Between SSL and TLS
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-25 10:00:00">October 25th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/dynamic-trait-to-a-concrete-type-in-rust">
+            Dynamic trait to a concrete type in Rust
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-10-17 10:00:00">October 17th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/choosing-the-right-string-type-in-rust-a-journey-of-a-novice">
+            Choosing the Right String Type in Rust: A Journey of a Novice
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-09-01 10:00:00">September 1st, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-4 text-gray-600 text-xl dark:text-gray-200">
+        <a class="font-aquawaxalt font-medium group-hover:underline" href="https://thearyanahmed.com/blog/articles/concurrency-in-golang-part-1">
+            Concurrency in Golang - Part 1
+        </a>
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd class="text-sm text-gray-500 font-aquawaxalt leading-6 dark:text-gray-400 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-30 10:00:00">August 30th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                            </div>
+        </div>
+
+        <div class="h-20"></div>
+    </div>
+    </main>
+
+    
+    
+
+    <!-- Calendly link widget begin -->
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+        <script type="module">
+            const imgs = document.getElementsByTagName('img')
+
+            for (let i = 0; i < imgs.length; i++) {
+                const img = imgs[i]
+
+                let src = img.getAttribute('src')
+
+                if (src.startsWith('art::')) {
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    img.setAttribute('src', src)
+                }
+            }
+        </script>
+
+    <script src="https://thearyanahmed.com/js/functions.js"></script>
+</body>
+
+</html>
