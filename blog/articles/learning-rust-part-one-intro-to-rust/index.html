@@ -37,12 +37,12 @@
 <meta property="og:title" content="Learning Rust : Part One - Intro to Rust" />
 <meta name="twitter:title" content="Learning Rust : Part One - Intro to Rust" />
 <meta name="embedx:title" content="Learning Rust : Part One - Intro to Rust" />
-<meta name="description" content="Rust, a powerful &amp; safe programming language! Learn memory management, conquer challenges &amp; build robust systems. Beginner-friendly course, start with &quot;Hello, World!&quot;.  #rustlang #programming" />
-<meta property="og:description" content="Rust, a powerful &amp; safe programming language! Learn memory management, conquer challenges &amp; build robust systems. Beginner-friendly course, start with &quot;Hello, World!&quot;.  #rustlang #programming" />
-<meta name="twitter:description" content="Rust, a powerful &amp; safe programming language! Learn memory management, conquer challenges &amp; build robust systems. Beginner-friendly course, start with &quot;Hello, World!&quot;.  #rustlang #programming" />
-<meta name="embedx:description" content="Rust, a powerful &amp; safe programming language! Learn memory management, conquer challenges &amp; build robust systems. Beginner-friendly course, start with &quot;Hello, World!&quot;.  #rustlang #programming" />
+<meta name="description" content="Rust, a powerful &amp; safe programming language! Learn memory management, conquer challenges &amp; build robust systems. Beginner-friendly series of articles, starting with &quot;Hello, World!&quot;, why rust is so popular and what it offers." />
+<meta property="og:description" content="Rust, a powerful &amp; safe programming language! Learn memory management, conquer challenges &amp; build robust systems. Beginner-friendly series of articles, starting with &quot;Hello, World!&quot;, why rust is so popular and what it offers." />
+<meta name="twitter:description" content="Rust, a powerful &amp; safe programming language! Learn memory management, conquer challenges &amp; build robust systems. Beginner-friendly series of articles, starting with &quot;Hello, World!&quot;, why rust is so popular and what it offers." />
+<meta name="embedx:description" content="Rust, a powerful &amp; safe programming language! Learn memory management, conquer challenges &amp; build robust systems. Beginner-friendly series of articles, starting with &quot;Hello, World!&quot;, why rust is so popular and what it offers." />
 <meta name="author" content="Aryan Ahmed Anik" />
-<meta name="twitter:card" content="Rust, a powerful &amp; safe programming language! Learn memory management, conquer challenges &amp; build robust systems. Beginner-friendly course, start with &quot;Hello, World!&quot;.  #rustlang #programming" />
+<meta name="twitter:card" content="Rust, a powerful &amp; safe programming language! Learn memory management, conquer challenges &amp; build robust systems. Beginner-friendly series of articles, starting with &quot;Hello, World!&quot;, why rust is so popular and what it offers." />
 <meta property="og:site_name" content="thearyanahmed.com" />
 <link rel="canonical" href="https://thearyanahmed.com/blog/articles/learning-rust-part-one-intro-to-rust" />
 <meta property="article:Learning Rust : Part One - Intro to Rust" content="Learning Rust : Part One - Intro to Rust" />
@@ -230,7 +230,7 @@
                 
                 <div class="text-lg max-w-prose">
                     <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
-                        Rust, a powerful &amp; safe programming language! Learn memory management, conquer challenges &amp; build robust systems. Beginner-friendly course, start with &quot;Hello, World!&quot;.  #rustlang #programming
+                        Rust, a powerful &amp; safe programming language! Learn memory management, conquer challenges &amp; build robust systems. Beginner-friendly series of articles, starting with &quot;Hello, World!&quot;, why rust is so popular and what it offers.
                     </p>
                 </div>
                 <div class="article-content-markdown mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
@@ -269,9 +269,14 @@ This would be my take on learning rust.</p>
 <li>
 <strong>Growing Demand:</strong>  Rust is a relatively new language, but it's already being used by major tech companies like Mozilla, Facebook, and Dropbox. As Rust continues to grow in popularity, the demand for Rust developers is likely to increase as well.</li>
 </ul>
+<p><img src="https://lh3.googleusercontent.com/Dba_67Yaej9lN31As9c_wYTynA5DccWOH8FNhi4LI7MUGdzBJ2GwfYgVy6EvZC7GEihlPzQbCtpniLe1fqpaQxR4Xx2Y1N1NbmaCp49Xf8NNmw0uKJnHzq6_JH17Ea4cmZgm8FqnKIWRXyZdoF5m0A" alt="Compnaines that use Rust (source: workfall)" /></p>
+<p>And amazon too</p>
+<p><img src="https://lh6.googleusercontent.com/WEM69oIXzvjjBaY_VQbM2WdvqRAQBeo2OUD16Fq2csWLVztJ6zI598mB3lElPPNEvi-yreVY7hqpedi9RVxDeFoTbYMkOjI-HQbQS2DpCHWRHiQnqqf0ZNw0Ne61H-E5LOM-JCtVvtpY_d1K5pYc7Q" alt="Amazon services that uses Rust (source: workfall) " /></p>
 <h3 id="essence-of-small-changes">Essence of small changes</h3>
+<p>A small imperfection here and there leads up to a big buggy code everywhere. I'm not claiming writing rust code would be 'perfect'. </p>
+<p>However, the way rust enforces the programmer to handle all edge cases and other features like the borrow checker removing the need for a garbage collector, it is likely that the same programmer would be less mistakes with rust. As it is baked into the rust ecosystem.</p>
 <blockquote>
-<p>But when we repeat 1 percent errors, day after day, by replicating poor decisions, duplicating tiny mistakes, and rastionalising little excuses,  our small choices compound into toxic results. It’s the accumulation of many missteps - a 1 percent decline here and there - that eventually leads to a problem.</p>
+<p>But when we repeat 1 percent errors, day after day, by replicating poor decisions, duplicating tiny mistakes, and rationalising little excuses,  our small choices compound into toxic results. It’s the accumulation of many missteps - a 1 percent decline here and there - that eventually leads to a problem.</p>
 <p><em>Atomic Habits</em></p>
 </blockquote>
 <ul>
@@ -307,8 +312,8 @@ This would be my take on learning rust.</p>
 <p>This time, we want to use <code>cargo</code> . Cargo is rust’s build system and package manager. You can see your cargo version with <code>cargo --version</code>. To create a new project, we need to run <code>cargo new hello_world</code>. It will create a project called <em>hello_world</em>. Running <code>cargo --list</code> will show all available commands.
 If you want to create a library, you can add the <code>—lib</code> flag at the end of the <code>cargo new</code> command.</p>
 <p><img src="art::learning-rust/part-01-hello-world-again.png" alt="hello world again project structure" /></p>
-<p>If you take a look at the project structure, it stars with an empty .git repo. Has the <code>main.rs</code> file inside <code>src</code>, where most of our code will live. The <code>target</code> is a folder created by cargo. When we run <code>cargo run</code> (see the bottom part of the screen shot). For now, we can ignore this directory. It holds some files related to build.</p>
-<p>We also have <code>Cargo.toml</code> file. It is the project manifest. Here's a breakdown of what Cargo.toml typically includes:</p>
+<p>If you take a look at the project structure, it starts with an empty .git repo. Has the <code>main.rs</code> file inside <code>src</code>, where most of our code will live. The <code>target</code> is a folder created by cargo. When we run <code>cargo run</code> (see the bottom part of the screen shot). For now, we can ignore this directory. It holds some files related to build.</p>
+<p>We also have a <code>Cargo.toml</code> file. It is the project manifest. Here's a breakdown of what Cargo.toml typically includes:</p>
 <ul>
 <li>
 <strong>Package Metadata:</strong> Information about your project, such as its name, version, authors, and license.</li>
@@ -324,7 +329,7 @@ If you want to create a library, you can add the <code>—lib</code> flag at the
 <pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #e0def4">Finished dev [unoptimized + debuginfo] target(s) in 0.05s</span></span>
 <span class="line"><span style="color: #e0def4">Running `target/debug/hello_world`</span></span>
 <span class="line"><span style="color: #e0def4"></span></span></code></pre>
-<p>This build is <strong>unoptimized</strong> and contains <strong>debuginfo</strong>. Which will make the file size a lot bigger. This is useful for, unsurprisingly debugging. We’ll discuss about release builds and how to improve builds based on our need on a future episode.
+<p>This build is <strong>unoptimized</strong> and contains <strong>debuginfo</strong>. Which will make the file size a lot bigger. This is useful for, unsurprisingly, debugging. We’ll discuss release builds and how to improve builds based on our needs in a future episode.
 You can also see, it is running <code>target/debug/hello_world</code> . Running an <code>ls</code> on the target would give you something like</p>
 <pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #e0def4">$ ls target/debug/</span></span>
 <span class="line"><span style="color: #e0def4">build/         </span></span>
@@ -334,7 +339,7 @@ You can also see, it is running <code>target/debug/hello_world</code> . Running 
 <span class="line"><span style="color: #e0def4">hello_world.d  </span></span>
 <span class="line"><span style="color: #e0def4">incremental/</span></span>
 <span class="line"><span style="color: #e0def4"></span></span></code></pre>
-<p>And as expected, in the terminal, we see “Hello, world, Again!” in the final output. With this setup ready, we can start diving into what rust offers as a language and ecosystem. In the next chapter, I have write about basic concepts like <a href="https://thearyanahmed.com/blog/articles/learning-rust-part-two-variables-and-data-types">variables and data types</a>.</p>
+<p>And as expected, in the terminal, we see “Hello, world, Again!” in the final output. With this setup ready, we can start diving into what rust offers as a language and ecosystem. In the next chapter, I have written about basic concepts like <a href="https://thearyanahmed.com/blog/articles/learning-rust-part-two-variables-and-data-types">variables and data types</a>.</p>
 </div>
                 </div>
             </div>
