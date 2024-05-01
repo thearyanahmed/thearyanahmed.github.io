@@ -352,7 +352,7 @@ If we update the string to Hello, our capacity still remain 12, but our length w
 <p>Another way to solve it is to return a value from the function. Take the following code and it will run just fine.</p>
 <pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #6E6A86; font-style: italic"> // added `mut` here</span></span>
+<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> added `mut` here</span></span>
 <span class="line"><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello&quot;</span><span style="color: #908CAA">);</span></span>
 <span class="line"><span style="color: #E0DEF4">  </span></span>
 <span class="line"><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_something</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
@@ -360,11 +360,11 @@ If we update the string to Hello, our capacity still remain 12, but our length w
 <span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;a in main =&gt; </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
 <span class="line"></span>
 <span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #6E6A86; font-style: italic">// Notice the &quot; -&gt; String&quot;, it means it is gonna return a string</span></span>
+<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> Notice the &quot; -&gt; String&quot;, it means it is gonna return a string</span></span>
 <span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_something</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
 <span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;inside the function =&gt; </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
 <span class="line"><span style="color: #E0DEF4"> </span></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #6E6A86; font-style: italic"> // here we are returning a string value</span></span>
+<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> here we are returning a string value</span></span>
 <span class="line"><span style="color: #908CAA">}</span></span>
 <span class="line"></span></code></pre>
 <p>We needed to add mut because rust’s variables are by default immutable. But the key point here is in a = print_something(a), we are getting back a string from the print_something() function.</p>
@@ -373,13 +373,13 @@ If we update the string to Hello, our capacity still remain 12, but our length w
 <pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
 <span class="line"><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello&quot;</span><span style="color: #908CAA">);</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #6E6A86; font-style: italic">  // we are passing a reference, denoted by &#39;&amp;&#39;</span></span>
+<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> we are passing a reference, denoted by &#39;&amp;&#39;</span></span>
 <span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_something</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
 <span class="line"><span style="color: #E0DEF4"> </span></span>
 <span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;a in main =&gt; </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
 <span class="line"><span style="color: #908CAA">}</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #6E6A86; font-style: italic">// see I&#39;ve added &#39;&amp;&#39; before String</span></span>
+<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> see I&#39;ve added &#39;&amp;&#39; before String</span></span>
 <span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_something</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
 <span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;inside the function =&gt; </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
 <span class="line"><span style="color: #908CAA">}</span></span>
@@ -644,6 +644,11 @@ You can tell what a function do.</p>
         </script>
 
     <script src="https://thearyanahmed.com/js/functions.js"></script>
+    <footer class="max-w-lg mx-auto flex text-center mb-20">
+        <div class="mx-auto text-gray-300">
+            v<span class="text-gray-400">2.0</span>
+        </div>
+    </footer>
 </body>
 
 </html>
