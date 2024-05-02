@@ -61,7 +61,7 @@ This simple code, as expected to add 10 to the already declared `sum` variable w
 
 If you are using any LSP / IDE with rust enabled, you’ll have something like the following,
 
-![art::learning-rust/part-02-mut.png](art::learning-rust/part-02-mut.png)
+![https://raw.githubusercontent.com/thearyanahmed/thearyanahmed.github.io/master/markdown/assets/learning-rust/part-02-mut.png](https://raw.githubusercontent.com/thearyanahmed/thearyanahmed.github.io/master/markdown/assets/learning-rust/part-02-mut.png)
 
 You’ll get something similar if you try to run it with `cargo run` . As it says, on line 9, the actual error, 
 ```txt
@@ -192,7 +192,7 @@ let second = a[1]; // arrays are zero based. The first element would be a[0];
 * **Contiguous Memory:** When you declare an array in most programming languages, the system allocates a contiguous block of memory to store all the elements. This means the elements are placed sequentially in memory, making access efficient.
 * **Predetermined Size:** At compile time (when your code is translated into machine code), the compiler typically determines the size of the array based on the declaration (e.g., int numbers[10];). This size remains fixed throughout the program's execution.
 
-![How arrays take up space in your memory block](art::learning-rust/part-02-memory-allocation.png)
+![How arrays take up space in your memory block](https://raw.githubusercontent.com/thearyanahmed/thearyanahmed.github.io/master/markdown/assets/learning-rust/part-02-memory-allocation.png)
 
 Imagine this is your system's memory. Part of your program or other programs running on the systems are using chunks of memories here and there. When you declare an array, your system needs to have enough **contiguous memory** blocks. In the art here, if you declare an array with the length of 5, it'll **not** start from the top left (row 0, col 0). The program will look for an area where it can fit 5 elements (one in each block). So it looks for empty / usable contiguous cell of 5 or more. 
 

@@ -76,7 +76,7 @@ The output should be “Hello World”. Rust will try to run the entrypoint file
 This time, we want to use `cargo` . Cargo is rust’s build system and package manager. You can see your cargo version with `cargo --version`. To create a new project, we need to run `cargo new hello_world`. It will create a project called *hello_world*. Running `cargo --list` will show all available commands. 
 If you want to create a library, you can add the `—lib` flag at the end of the `cargo new` command. 
 
-![hello world again project structure](art::learning-rust/part-01-hello-world-again.png)
+![hello world again project structure](https://raw.githubusercontent.com/thearyanahmed/thearyanahmed.github.io/master/markdown/assets/learning-rust/part-01-hello-world-again.png)
 
 If you take a look at the project structure, it starts with an empty .git repo. Has the `main.rs` file inside `src`, where most of our code will live. The `target` is a folder created by cargo. When we run `cargo run` (see the bottom part of the screen shot). For now, we can ignore this directory. It holds some files related to build. 
 

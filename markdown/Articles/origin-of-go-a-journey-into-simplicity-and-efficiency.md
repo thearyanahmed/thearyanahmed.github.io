@@ -68,4 +68,4 @@ And here we go :)
 
 [Go playground](https://go.dev/play/p/oXGayDtoLPh)
 
-![Gopher](art::gophers/gopher-with-pilot-hat.jpeg)
+![Gopher](https://raw.githubusercontent.com/thearyanahmed/thearyanahmed.github.io/master/markdown/assets/gophers/gopher-with-pilot-hat.jpeg)
