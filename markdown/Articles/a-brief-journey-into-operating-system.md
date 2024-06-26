@@ -48,11 +48,11 @@ To summarise,
 
 ## Do we always need an Operating System?
 ### No
-আমাদের আসলে সব সময় Operating System এর দরকার হয় না। আমরা, end user হিসাবে আমাদের Operating System লাগে। আমাদের life টা কিছুটা সহয করার জন্য । যারা software engineering করেছেন, software তৈরি করছেন, আমাদের software develop and run করতেও ( eg: servers ) OS লাগে। তাই ব্যবহার করা হয়, কিন্ত আপনি চাইলে OS ছাড়া directly kernel এর জন্য code লিখতে পারবেন । Infact, একদম low level কিছু কাজের ক্ষেত্রে like IOT, embeded systems, RTOS etc এর অনেকাংশেই OS ছাড়া directly kernel এর সাথে interface করে software তৈরি করা হয়। 
+আমাদের আসলে সব সময় Operating System এর দরকার হয় না। আমরা, end user হিসাবে আমাদের Operating System লাগে। আমাদের life টা কিছুটা সহয করার জন্য । যারা software engineering করেছেন, software তৈরি করছেন, আমাদের software develop and run করতেও ( eg: servers ) OS লাগে। তাই ব্যবহার করা হয়, কিন্ত আপনি চাইলে OS ছাড়া directly kernel এর জন্য code লিখতে পারবেন । Infact, একদম low level কিছু কাজের ক্ষেত্রে like IOT, embedded systems, RTOS etc এর অনেকাংশেই OS ছাড়া directly kernel এর সাথে interface করে software তৈরি করা হয়। 
 
 > You can build your own Operating System & Kernel
 
 এইতো ছিলো intro এর মত একটা article. আমরা এই series of article এ Operating System এর কিছু core বিষয় যেমন resource management, process management, stacks.. stackoverflow কেন হয়? And heap, virtual memory, task scheduling, networking এর packets, IP, DNS subnet etc, file descriptor, context switching, concurrency & parallelism, asynchronous io এসব নিয়ে আলোচনা করবো। 
 
 
-If you found a mistake, kindly let me know. Thank you.
+ভুল কিছু বাঁ unclear থাকলে জানাবেন । যদি সময় নিয়ে পড়ে থাকেন তার জন্য ধন্যবাদ ।
