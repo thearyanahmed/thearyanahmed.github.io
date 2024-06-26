@@ -1,4 +1,4 @@
-To use my fancy cover generator, visit[thearyanahmed.com/cover](/cover), and press "escape" to toggle editor mode.
+To use my fancy cover generator, visit [thearyanahmed.com/cover](/cover), and press "escape" to toggle editor mode.
 
 The rest is self explanatory. You can use it, but feel free to make your own, in your own way. Wouldn't that be interesting? 
 
