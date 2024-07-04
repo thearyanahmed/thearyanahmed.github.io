@@ -136,7 +136,7 @@ English language টা কথা। যদি used না হয়ে থাক�
 ## Referral
 Referral কাজের জিনিস। তবে আপনার CV , profile, experience etc match না করলে referral কাজে দিবে না। আর interview আপনাকেই দিতে হবে। 
 
-If you are reading this, most probably আপনি হয়ত switch করার চিন্তা করছেন। Well, as of date of writing, we are hiring [https://www.digitalocean.com/careers#open-roles](https://www.digitalocean.com/careers#open-roles) . 
+If you are reading this, most probably আপনি হয়ত switch করার চিন্তা করছেন। Well, as of the date of writing, we are hiring [https://www.digitalocean.com/careers#open-roles](https://www.digitalocean.com/careers#open-roles) . 
 
 > Learn from your mistakes along the way. 
 
