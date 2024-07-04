@@ -1,4 +1,4 @@
-অনেকে job interview এর preparation নিয়ে কিছু question করেছেন। So this is my two cents. 
+অনেকে job interview এর preparation নিয়ে কিছু question করেছেন। So these are my two cents. 
 
 ## Patience
 সবার আগে বলবো, ধৈর্য্য রাখতে। Germany তে ২-৩ মাস এমনিতেই লেগে যায়। যদি application এর timeline চিন্তা করেন, তাহলে আপনি apply করার পরে recruiter CV / resume বাছাই করে অন্য candidate সাথে compare করে তারপরে আপনাকে ডাকবে। First call এর পরে আপনার সম্ভবত hiring manager এর সাথে কথা হবে। 
@@ -140,7 +140,7 @@ If you are reading this, most probably আপনি হয়ত switch করা�
 
 > Learn from your mistakes along the way. 
 
-আমার CV, profile, git আর উপরে mention করা অনেক কিছুই আমি ভুল করে গিয়েছি। তবে শিখেছিও। And I would like to thank [Lenin](https://www.linkedin.com/in/leninhasda/), [Fahmi](https://www.linkedin.com/in/fahmi-da-islam-3a771a2a2/), [Opu](https://www.linkedin.com/in/opumm/), [Tawsif](https://www.linkedin.com/in/tawsifaqib/), [Arman](https://www.linkedin.com/in/ark1790/) for their support along the way.  
+আমার CV, profile, git আর উপরে mention করা অনেক কিছুই আমি ভুল করে গিয়েছি। তবে শিখেছিও। And I would like to thank [Lenin](https://www.linkedin.com/in/leninhasda/), [Elizabeth](https://www.linkedin.com/in/fahmi-da-islam-3a771a2a2/), [Opu](https://www.linkedin.com/in/opumm/), [Tawsif](https://www.linkedin.com/in/tawsifaqib/), [Arman](https://www.linkedin.com/in/ark1790/) for their support along the way.  
 
 Be patient and have faith in Allah, keep making dua and keep moving forward.  
 
