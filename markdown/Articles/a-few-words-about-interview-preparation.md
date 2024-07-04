@@ -69,7 +69,7 @@ I had the opportunity to interview at DigitalOcean, Delivery Hero, HelloFresh, Z
 
 তবে, একটাতেও FAANG এর মত ds algo এর problem ছিলো না। যদি basics ঠিক রাখতে পারেন, it should pass. 
 
-যারা একটু হলেও problem solving করেছেন, তারা হয়ত এটা জানেন কি problem । খুবি সহজ, কিন্ত বলতেব পারেন, যদি garbage collector kick করে, তাহলে কোন line এর জন্য / কিসের জন্য memory fragmentation তৈরি হবে আর কেন হবে?
+যারা একটু হলেও problem solving করেছেন, তারা হয়ত এটা জানেন কি problem । খুবি সহজ, কিন্ত বলতে পারবেন, যদি garbage collector kick করে, তাহলে কোন line এর জন্য / কিসের জন্য memory fragmentation তৈরি হবে আর কেন হবে?
 
 ![An easy solution, followed by a fundamental question](https://thearyanahmed.com/markdown/assets/two-sum.png)
 
@@ -105,8 +105,8 @@ Backend engineering role গুলোর জন্য apply করলে databas
 
 কখন SQL আর কখন NoSQL ব্যবহার করবেন সেটাও জানা উচিত। Specially JavaScript developer দের জন্য । আমি দেখেছি অনেক MERN stack developer NoSQL ব্যবহার করে ২ টা কারণে, 
 
-1. Error দেয় না 
-2. Data structure নিয়ে ভাবা লাগে না 
+1. কোনো data (mutation এ) ই Error দেয় না 
+2. Data structure নিয়ে ভাবা লাগে না (না ভাবলেও চলে)
 
 ২ টাই invalid reason. 
 
