@@ -7,7 +7,7 @@
 
 সব company তে definitely এত হয় না। তবে ৪-৫ টা round সাধারণত থাকে। খেয়াল রাখবেন, তারা শুধু interview নেয়ার জন্য বসে থাকে না। এই সব round এ tech recruiter বাদে বাকি সবার মূল দায়িত্ব ভিন্ন (and not hiring people)। আরেকটা জিনিস খেয়াল রাখার বিষয় হল আরো অনেকেই same role এর জন্য apply করবে। 
 
-আমার Hello Fresh আর Zalando’র একটা sister concern এ both এ সাড়ে তিন তার চার মাসের interview এর experience আছে। আপনি শুরুতে জিজ্ঞেস করে নিতে পারেন full procedure নিয়ে। 
+আমার Hello Fresh আর Zalando’র একটা sister concern এ both এ সাড়ে তিন আর চার মাসের interview এর experience আছে। আপনি শুরুতে জিজ্ঞেস করে নিতে পারেন full procedure নিয়ে। 
 
 আর early december to mid january, এই সময় টা ছুটির সময়, এরকম সময় apply করে অনেক দেরিতে respond পাবে সাধারণত। 
 
