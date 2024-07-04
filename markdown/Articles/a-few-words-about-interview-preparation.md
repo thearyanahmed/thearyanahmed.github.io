@@ -9,7 +9,7 @@
 
 আমার Hello Fresh আর Zalando’র একটা sister concern এ both এ সাড়ে তিন আর চার মাসের interview এর experience আছে। আপনি শুরুতে জিজ্ঞেস করে নিতে পারেন full procedure নিয়ে। 
 
-আর early december to mid january, এই সময় টা ছুটির সময়, এরকম সময় apply করে অনেক দেরিতে respond পাবে সাধারণত। 
+আর early december to mid january, এই সময় টা ছুটির সময়, এরকম সময় apply করে অনেক দেরিতে respond পাবেন সাধারণত। 
 
 ## Present yourself
 <p class="text-gray-400 text-xs">This section is a bit long, feel free to skip ahead.</p>
@@ -55,7 +55,11 @@ Github (or public VCS) profile আপনার updated আর ঠিক ভা�
 ভালো commit message এর habit করা উচিত । “wip” “done” “X” এসব না দেয়াই ভালো । Github profile এ একগাদা skill add না করাই ভালো । Give the recruiter proper, concise information ।  
 
 ## Basics
-Job interview preparation এর one of the best way হলো basic গুলো ঠিক করা। Know your tools । Probably Anam Ahmed একটা কথা বলেছিলেন ২০১৪ সালের দিকে (I think), যদি আপনি আপনার tool গুলোর usage না জানেন, তাহলে you’ll never have enough tools।
+Job interview preparation এর one of the best way হলো basic গুলো ঠিক করা। Know your tools । Probably 
+[Anam Ahmed](https://www.linkedin.com/in/theanam/) একটা কথা বলেছিলেন ২০১৪ সালের দিকে (I think), 
+
+> যদি আপনি আপনার tool গুলোর usage না জানেন, তাহলে you’ll never have enough tools।
+
 আপনি একি জিনিস ১০ টা tool দিয়ে না করে ১০ টা টুল দিয়ে ১০ টা কাজ করতে পারাটা obviously would be preferred and considered more skillful (IMO) । এটা specially JavaScript developer জন্য যায়। কারণ আমি দেখেছি অনেকে বলেন react, vue, next, nuxt, angular, svelte, remix, alpine etc পারি। এগুলো দিয়ে কি করেন? UI component বানাই। সব গুলো দিয়েই।
 
 But it goes for everyone. 
