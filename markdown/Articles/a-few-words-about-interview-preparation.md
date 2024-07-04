@@ -71,7 +71,7 @@ I had the opportunity to interview at DigitalOcean, Delivery Hero, HelloFresh, Z
 
 যারা একটু হলেও problem solving করেছেন, তারা হয়ত এটা জানেন কি problem । খুবি সহজ, কিন্ত বলতেব পারেন, যদি garbage collector kick করে, তাহলে কোন line এর জন্য / কিসের জন্য memory fragmentation তৈরি হবে আর কেন হবে?
 
-![An easy solution, followed by a fundamental question](art::two-sum.png)
+![An easy solution, followed by a fundamental question](https://thearyanahmed.com/markdown/assets/two-sum.png)
 
 This is a real interview question I was asked । 
 
