@@ -140,7 +140,7 @@ If you are reading this, most probably আপনি হয়ত switch করা�
 
 > Learn from your mistakes along the way. 
 
-আমার CV, profile, git আর উপরে mention করা অনেক কিছুই আমি ভুল করে গিয়েছি। তবে শিখেছিও। And I would like to thank Lenin, Fahmi, Opu, Tawsif, Arman  for their support along the way.  
+আমার CV, profile, git আর উপরে mention করা অনেক কিছুই আমি ভুল করে গিয়েছি। তবে শিখেছিও। And I would like to thank [Lenin](https://www.linkedin.com/in/leninhasda/), [Fahmi](https://www.linkedin.com/in/fahmi-da-islam-3a771a2a2/), [Opu](https://www.linkedin.com/in/opumm/), [Tawsif](https://www.linkedin.com/in/tawsifaqib/), [Arman](https://www.linkedin.com/in/ark1790/) for their support along the way.  
 
 Be patient and have faith in Allah, keep making dua and keep moving forward.  
 
