@@ -148,4 +148,4 @@ If you are reading this, most probably আপনি হয়ত switch করা�
 
 Be patient and have faith in Allah, keep making dua and keep moving forward.  
 
-এত কিছু যা লিখেছি সেগুলো আমার experience থেকে। I wish you all the best. And it’s subjective. আপনার জন্য হয়ত অনেক কিছুই আলাদা হবে। একটা একটা journey. And this was mine :) 
+এত কিছু যা লিখেছি সেগুলো আমার experience থেকে। I wish you all the best. And it’s subjective. আপনার জন্য হয়ত অনেক কিছুই আলাদা হবে। এটা একটা journey. And this was mine :) 
