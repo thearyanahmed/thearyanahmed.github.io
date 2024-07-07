@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<title>Implementing HyperText Transfer Protocol with rust… maybe?</title>
+<meta property="og:title" content="Implementing HyperText Transfer Protocol with rust… maybe?" />
+<meta name="twitter:title" content="Implementing HyperText Transfer Protocol with rust… maybe?" />
+<meta name="embedx:title" content="Implementing HyperText Transfer Protocol with rust… maybe?" />
+<meta name="description" content="কখনো REST Api বানিয়েছেন? হয়ত কোনো library (router) বা framework ব্যবহার করেছেন। খেয়াল করেছেন যে HTTP, যেটা `GET /path?query=value HTTP/1.1` এরকম কিছু দিয়ে শুরু হয়, সেটা আমরা কিভাবে `$request` (type) variable (object) দিয়ে আমরা আমাদের application layer এ interact করতে পারি? 
+
+আমরা যে form submit করি, তখন তো FormData submit হয়ে, বা json request করলে সে data ও আমরা capture করতে পারি। কিন্ত how does that work? আবার যখন `response()-&gt;json()` বা `return view(‘some-html’)` দেই, সেটা কিভাবে আবার ঐ একি ভাবে HTTP response পাঠায়?" />
+<meta property="og:description" content="কখনো REST Api বানিয়েছেন? হয়ত কোনো library (router) বা framework ব্যবহার করেছেন। খেয়াল করেছেন যে HTTP, যেটা `GET /path?query=value HTTP/1.1` এরকম কিছু দিয়ে শুরু হয়, সেটা আমরা কিভাবে `$request` (type) variable (object) দিয়ে আমরা আমাদের application layer এ interact করতে পারি? 
+
+আমরা যে form submit করি, তখন তো FormData submit হয়ে, বা json request করলে সে data ও আমরা capture করতে পারি। কিন্ত how does that work? আবার যখন `response()-&gt;json()` বা `return view(‘some-html’)` দেই, সেটা কিভাবে আবার ঐ একি ভাবে HTTP response পাঠায়?" />
+<meta name="twitter:description" content="কখনো REST Api বানিয়েছেন? হয়ত কোনো library (router) বা framework ব্যবহার করেছেন। খেয়াল করেছেন যে HTTP, যেটা `GET /path?query=value HTTP/1.1` এরকম কিছু দিয়ে শুরু হয়, সেটা আমরা কিভাবে `$request` (type) variable (object) দিয়ে আমরা আমাদের application layer এ interact করতে পারি? 
+
+আমরা যে form submit করি, তখন তো FormData submit হয়ে, বা json request করলে সে data ও আমরা capture করতে পারি। কিন্ত how does that work? আবার যখন `response()-&gt;json()` বা `return view(‘some-html’)` দেই, সেটা কিভাবে আবার ঐ একি ভাবে HTTP response পাঠায়?" />
+<meta name="embedx:description" content="কখনো REST Api বানিয়েছেন? হয়ত কোনো library (router) বা framework ব্যবহার করেছেন। খেয়াল করেছেন যে HTTP, যেটা `GET /path?query=value HTTP/1.1` এরকম কিছু দিয়ে শুরু হয়, সেটা আমরা কিভাবে `$request` (type) variable (object) দিয়ে আমরা আমাদের application layer এ interact করতে পারি? 
+
+আমরা যে form submit করি, তখন তো FormData submit হয়ে, বা json request করলে সে data ও আমরা capture করতে পারি। কিন্ত how does that work? আবার যখন `response()-&gt;json()` বা `return view(‘some-html’)` দেই, সেটা কিভাবে আবার ঐ একি ভাবে HTTP response পাঠায়?" />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="twitter:card" content="কখনো REST Api বানিয়েছেন? হয়ত কোনো library (router) বা framework ব্যবহার করেছেন। খেয়াল করেছেন যে HTTP, যেটা `GET /path?query=value HTTP/1.1` এরকম কিছু দিয়ে শুরু হয়, সেটা আমরা কিভাবে `$request` (type) variable (object) দিয়ে আমরা আমাদের application layer এ interact করতে পারি? 
+
+আমরা যে form submit করি, তখন তো FormData submit হয়ে, বা json request করলে সে data ও আমরা capture করতে পারি। কিন্ত how does that work? আবার যখন `response()-&gt;json()` বা `return view(‘some-html’)` দেই, সেটা কিভাবে আবার ঐ একি ভাবে HTTP response পাঠায়?" />
+<meta property="og:site_name" content="thearyanahmed.com" />
+<link rel="canonical" href="https://thearyanahmed.com/blog/articles/implementing-hyerptext-transfer-protocol-maybe" />
+<meta property="article:Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" content="Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+    <link href="https://thearyanahmed.com/css/app.css" rel="stylesheet">
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-90CDQWTTNW"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-90CDQWTTNW');
+</script>
+</head>
+
+<body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
+
+    <div
+    class="notsticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-transparent">
+    <nav class="w-full mx-auto bg-white">
+        <div class="px-2 sm:px-6 lg:px-8 dotted-bg">
+            <div class="relative flex justify-between h-16">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <!-- Mobile menu button -->
+                    <button onclick="toggleMobileMenu()" type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="justify-center w-full mx-auto hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="https://thearyanahmed.com" title="thearyanahmed's blog" target="_self"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            home
+                        </a>
+                        
+
+                        <a href="https://thearyanahmed.com/whoami" title="thearyanahmed's deviantart profile" target="_self"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            whoami
+                        </a>
+
+
+                        <a href="https://github.com/thearyanahmed" title="thearyanahmed's github"
+                            class="text-gray-900 inline-flex items-center px-1 pt-1 text-base" target="_blank">
+                            <svg width="24" height="24" fill="currentColor"
+                                class="text-gray-800 hover:underline font-aquawaxalt mr-3 text-opacity-50 transform">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.463 2 11.97c0 4.404 2.865 8.14 6.839 9.458.5.092.682-.216.682-.48 0-.236-.008-.864-.013-1.695-2.782.602-3.369-1.337-3.369-1.337-.454-1.151-1.11-1.458-1.11-1.458-.908-.618.069-.606.069-.606 1.003.07 1.531 1.027 1.531 1.027.892 1.524 2.341 1.084 2.91.828.092-.643.35-1.083.636-1.332-2.22-.251-4.555-1.107-4.555-4.927 0-1.088.39-1.979 1.029-2.675-.103-.252-.446-1.266.098-2.638 0 0 .84-.268 2.75 1.022A9.606 9.606 0 0112 6.82c.85.004 1.705.114 2.504.336 1.909-1.29 2.747-1.022 2.747-1.022.546 1.372.202 2.386.1 2.638.64.696 1.028 1.587 1.028 2.675 0 3.83-2.339 4.673-4.566 4.92.359.307.678.915.678 1.846 0 1.332-.012 2.407-.012 2.734 0 .267.18.577.688.48C19.137 20.107 22 16.373 22 11.969 22 6.463 17.522 2 12 2z">
+                                </path>
+                            </svg>
+                        </a>
+
+                        <a href="https://linkedin.com/in/thearyanahmed" title="thearyanahmed's linkedin"
+                            class="text-gray-900 inline-flex items-center px-1 pt-1 text-base" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-linkedin h-5 w-5 text-gray-800 hover:underline font-aquawaxalt mr-3 text-opacity-50 transform"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="hidden dotted-bg" id="mobile-menu">
+            <div class="pt-6 pb-4 space-y-1">
+                <a href="https://thearyanahmed.com"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
+
+                
+
+
+                <a href="https://thearyanahmed.com/whoami"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">whoami</a>
+
+
+                <a href="https://github.com/thearyanahmed" target="_blank"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Github</a>
+
+                <a href="https://linkedin.com/in/thearyanahmed" target="_blank"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Linkedin</a>
+
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+    <main class="lg:relative">
+        <div class="max-w-3xl mx-auto px-4">
+        <div class="relative py-16 bg-white overflow-hidden">
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full dotted-bg">
+                <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
+                    <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none"
+                         viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20"
+                                     patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)"/>
+                    </svg>
+                    <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404"
+                         height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20"
+                                     patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)"/>
+                    </svg>
+                    <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384"
+                         fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20"
+                                     patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="relative px-4 sm:px-6 lg:px-8">
+                <div class="text-lg max-w-prose">
+                    <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
+                        Implementing HyperText Transfer Protocol with <span class="text-red-400">RUST</span>… maybe?
+                    </h1>
+                </div>
+
+                
+                <div class="text-lg max-w-prose">
+                    <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
+                        কখনো REST Api বানিয়েছেন? হয়ত কোনো library (router) বা framework ব্যবহার করেছেন। খেয়াল করেছেন যে HTTP, যেটা `GET /path?query=value HTTP/1.1` এরকম কিছু দিয়ে শুরু হয়, সেটা আমরা কিভাবে `$request` (type) variable (object) দিয়ে আমরা আমাদের application layer এ interact করতে পারি? 
+
+
+আমরা যে form submit করি, তখন তো FormData submit হয়ে, বা json request করলে সে data ও আমরা capture করতে পারি। কিন্ত how does that work? আবার যখন `response()-&gt;json()` বা `return view(‘some-html’)` দেই, সেটা কিভাবে আবার ঐ একি ভাবে HTTP response পাঠায়?
+
+                    </p>
+                </div>
+                <div
+                    class="article-content-markdown mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
+                    <div ><p>এই article টায় একটা router এর মত কিছু বানাবো। যেটা ঐ raw TCP data নিয়ে, সেটাকে HTTP তে convert করে । Well, HTTP ই থাকে শুরু থেকে, তবে form অন্য থাকে। তারপরে HTTP এর rules অনুযায়ি request parse করে আবার response ও করবো। আর along the way, একটা router এর মত কিছু বানিয়ে ফেলবো যেটা দিয়ে basic http তে communicate করতে পারবো (hopefully) ।</p>
+<p>হতে পারে JSON, বা html । Code টা rust এ করা। আর এটা কোনো tutorial না, more like a discussion? I guess (?).
+But that’s not all. এটা বানানোর সময় কিছুটা threading আর async rust নিয়েও কাজ করা লাগছে, নাহলে একটা প্রতিটা request sequentially execute করা লাগতো! So, this article covers my findings.</p>
+<p>So, শুরুতে কি বানাবো? ইনশাল্লাহ একটা program লিখবো, যা Transmission Control Protocol এ data receive করবে, সেটা parse করবে আর HTTP তে response দেবে।</p>
+<p>Code টা rust এ লিখছি। যদিও শুরুতে ভেবেছিলাম C তে করবো (but I forgot C) । আপনি rust না পারলেও চলবে, চেষ্টা করবো পুরোটা explain করতে । আর এটা একটা tutorial না, যেখানে আমি আগেই code লিখে পরে article টা লিখছি। Infact, আমি একি সাথে দুইটা করছি, so it’s like building along the way.</p>
+<blockquote>
+<p>The codebase is available at <a href="https://github.com/thearyanahmed/rusttp">https://github.com/thearyanahmed/rusttp</a>.</p>
+</blockquote>
+<p>So,</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Journey of a thousand miles begins with a single commit.&quot;</span><span style="color: #908CAA">);</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<p>তো, শুরুতে planning part. আমরা চাচ্ছি একটা program লিখতে যা HTTP তে communicate করবে। আমরা অনেক language বা framework এ handler ( or controllers) এ $request একটা variable পাই যেখানে incoming request নিয়ে value গুলো থাকে, কি data পাঠানো হয়েছে, header গুলো কি কি etc ।</p>
+<h2 id="http-er-age">HTTP এর আগে,</h2>
+<p>প্রথমের target, এটুকু যে Tcp data আসবে আর আমরা সেটাকে accept করে <code>Hello, World!</code> response করবো। HTTP operates on top of Tcp । সংক্ষেপে Tcp  হলো IP (internet protocol) এ আসা data’র উপর আরো কিছু rules &amp; guidelines. HTTP আবার Tcp এর ওপরে operate করে।</p>
+<p>এখন, শুরুতে আমরা Tcp accept করার জন্য port 8000 একটা socket connection তৈরি করে incoming data’র জন্য listen করবো। আচ্ছা, socket কি? Socket কে আপনার computer এ একটা endpoint চিন্তা করতে পারেন, যেখানে network এ থাকা ২ টা program এর মাঝে two way communication establish হয় ।</p>
+<p>Okay, back to the code; rust এর standard library তে TcpListener একটা …ummm.. let's say কিছু functionality আছে, যেগুলো দিয়ে Tcp’র সাথে interact করা যায়।</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">net</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">TcpListener</span><span style="color: #908CAA">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Journey of a thousand miles begins with a single commit.&quot;</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">listener</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">TcpListener</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">bind</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4">“</span><span style="color: #E0DEF4; font-style: italic">localhost</span><span style="color: #3E8FB0">:</span><span style="color: #EA9A97">8000</span><span style="color: #E0DEF4">”</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">expect</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;failed to bind to address localhost:8000&quot;</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">for</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">incoming_stream</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">in</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">listener</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">incoming</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;stream coming in&quot;</span><span style="color: #908CAA">);</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<p>এখানে আমরা localhost:8000 এর সাথে bind করার চেষ্টা করছি। Bind হয়ে গেলে, যতক্ষন stream (of data) আসতে থাকবে ততক্ষন আমরা শুনতে থাকবো আর ঐ stream data নিয়ে কিছু করবো।</p>
+<p>আচ্ছা, bind করার চেষ্টা কেন? কারণ bind fail হতে পারে, কারণ হয়ত ঐ port blocked আছে। অন্য কোনো ~program~ process ব্যবহার করছে ।</p>
+<p>এখন যদি আমরা একটাকে run করি, আর তারপরে <code>curl http://localhost:8000</code> এ request করি, তাহলে আমরা দেখবো <code>streaming coming in</code> terminal এ আসছে।</p>
+<p>আচ্ছা, first step শেষ। Stream handling part টাকে <code>handle_incoming_stream</code> এ নিয়ে যাচ্ছি।</p>
+<p>Back to the code,</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #9CCFD8">io</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">{</span><span style="color: #9CCFD8">Read</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Write</span><span style="color: #908CAA">},</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #9CCFD8">net</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">{</span><span style="color: #9CCFD8">TcpListener</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">TcpStream</span><span style="color: #908CAA">},</span></span>
+<span class="line"><span style="color: #908CAA">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">	</span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> .. old code</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">for</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">incoming_stream</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">in</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">listener</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">incoming</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">incoming_stream</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">valid_stream</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">handle_incoming_stream</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">valid_stream</span><span style="color: #908CAA">),</span></span>
+<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">err</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">eprint!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;connection failed </span><span style="color: #3E8FB0">\n</span><span style="color: #F6C177">err::</span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">err</span><span style="color: #908CAA">),</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">}</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<p>এখানে বেশ কিছু জিনিস add হয়েছে । First of all, <code>listener.incoming()</code> একটা <code>Result</code> type return করে।</p>
+<h2 id="resultlttegt">Result&lt;T,E&gt;</h2>
+<p><code>Result</code> কি? Rust এ Result হলো একটা enum. এটার ২ টা variant হতে পারে।
+Ok(T) আর Err(E)।</p>
+<p>ধরুন একটা function থেকে একটা error আসতে পারে যি কিছু ভুল হয়, বা একটা valid value আসতে পারে। Valid value টা Ok(T) variant এ পাওয়া যাবে, আর error হলে Err(E) তে।</p>
+<p>তো আমরা যদি একটা valid stream পাই, তাহলে আমরা একটা function call করবো, আর না পেলে connection failed print হবে।</p>
+<h2 id="handling-incoming-stream">Handling Incoming Stream</h2>
+<p>এবার actually connection টা handle করার code.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">handle_incoming_stream</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">stream</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">TcpStream</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">buffer</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">[</span><span style="color: #EA9A97">0</span><span style="color: #908CAA">;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1024</span><span style="color: #908CAA">];</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">stream</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">read</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">buffer</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">unwrap</span><span style="color: #908CAA">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">request</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from_utf8_lossy</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">buffer</span><span style="color: #908CAA">[</span><span style="color: #3E8FB0">..</span><span style="color: #908CAA">]);</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;received request </span><span style="color: #3E8FB0">\n</span><span style="color: #F6C177">-&gt;</span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">request</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;Hello from server!&quot;</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">as_bytes</span><span style="color: #908CAA">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">stream</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">write_all</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #908CAA">)</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">expect</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;failed to write to stream&quot;</span><span style="color: #908CAA">);</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">stream</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">flush</span><span style="color: #908CAA">()</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">expect</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;failed to flush response&quot;</span><span style="color: #908CAA">)</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<p>একটা জিনিস খেয়াল করে দেখবেন যে parameter এর আগে <code>mut</code> একটা keyword আছে। <code>mut</code> মানে হলো variable টা mutable। মানে, একবার value  assign করার পরে আবার change করা যাবে। By default, rust immutable. একবার (say <code>let x = 1;</code> ) value assign করলে আর change করা যায় না ।</p>
+<p>আচ্ছা, কিন্ত stream টা mutable কেন? আসলে আমরা 2 way communicate করছি same connection এ । আমরা data read করছি stream থেকে, আবার যখন response করবো তখন ঐ stream এই write করতে হবে। মানে stream এর কিছু state (value) change হবে । তাই rust এর developer রা এটাকে mutable করেছেন।</p>
+<p>Moving forward, আমাদের এখন কাজ হলো stream থেকে data read করা। Read করার data টা কোথাও রাখা লাগবে। সেটার জন্য আমরা একটা variable নিচ্ছি <code>buffer</code>. এটা একটা array of bytes (<code>u8</code>) । আমরা যে data টা read করবো সে hold করার জন্য এই buffer । It’s like preparing a bucket before you want to hold something in it.</p>
+<p>1024 কেন? এটা adjustable. আমাদের example program এ এটা একটা average value. যদি বেশি বড় buffer নেয়া হয় তাহলে অনেকখানি allocated memory unused থেকে যাবে। আবার ছোট নিলে পুরো data read হবে না ।</p>
+<p><code>String::from_utf8_lossy()</code> function টা bytes array (slice) কে string এ convert করে। আমরা এখানে শুরুতে just print করছি, কি আসে request এ। আর এরপরে একটা string <code>Hello from server!</code> ঐ একি stream এ write করবো, যেটা client receive করবে।</p>
+<p>এখন যদি আমরা run করি আর curl করি, তাহলে</p>
+<p>client side এ</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #EA9A97">curl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;http://localhost:8000/dashboard?hello=world&quot;</span></span>
+<span class="line"><span style="color: #EA9A97">curl:</span><span style="color: #E0DEF4"> (1) Received HTTP/0.9 when not allowed</span></span>
+<span class="line"></span></code></pre>
+<p>server side এ</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #e0def4">GET /dashboard?hello=world HTTP/1.1</span></span>
+<span class="line"><span style="color: #e0def4">Host: localhost:8000</span></span>
+<span class="line"><span style="color: #e0def4">User-Agent: curl/8.6.0</span></span>
+<span class="line"><span style="color: #e0def4">Accept: */*</span></span>
+<span class="line"><span style="color: #e0def4"></span></span></code></pre>
+<p>এরকম একটা value printed দেখতে পারবেন। Hummm… server side এ যেটা দেখতে পাচ্ছেন, সেটা হলো একটা pure HTTP request. খেয়াল আছে যে protcol হলো কিছু rules and guidelines? HTTP এর ruleset এ এরকম কিছু পাবেন যে request টা (data stream) শুরু হয়ার কথা এরকম format এ</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">method</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">routePath</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">HTTP_VERSION</span></span>
+<span class="line"><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">header</span><span style="color: #908CAA">[</span><span style="color: #EA9A97">0</span><span style="color: #908CAA">]</span><span style="color: #3E8FB0">.</span><span style="color: #3E8FB0">key</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">header</span><span style="color: #908CAA">[</span><span style="color: #EA9A97">0</span><span style="color: #908CAA">]</span><span style="color: #3E8FB0">.</span><span style="color: #3E8FB0">value</span></span>
+<span class="line"><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">header</span><span style="color: #908CAA">[</span><span style="color: #3E8FB0">N</span><span style="color: #908CAA">]</span><span style="color: #3E8FB0">.</span><span style="color: #3E8FB0">key</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">header</span><span style="color: #908CAA">[</span><span style="color: #3E8FB0">N</span><span style="color: #908CAA">]</span><span style="color: #3E8FB0">.</span><span style="color: #3E8FB0">value</span></span>
+<span class="line"><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">requestBody</span></span>
+<span class="line"></span></code></pre>
+<p>আমাদের এখানে GET হলো http method, আপনারা যদি GET, POST, PUT, PATCH, DELETE ব্যবহার করে থাকেন সেটা। <code>/dashboard?hello=world</code> হলো route path with query parameter, আর এরপরে HTTP version. আমরা request করেছি HTTP/1.1 । এখন (as of the date of writing), HTTP2 আর HTTP3 ও আছে।</p>
+<p>পরের header গুলো key value pair হিসাবে থাকে, আর <code>:</code> (colon) দিয়ে separated । আমরা এই request এ কোনো data (form body / body content ) send করিনি। তাই আর কিছু নেই।</p>
+<p>আপনারা যদি পর পর দুইটা request করেন তাহলে দেখবেন ১ম আর ২য় request এর মাঝে একটু ফাকা আছে । কারণ, HTTP’র আরেকটা rule হলো request গুলো ২ টা (<code>\n\n</code>) new line দিয়ে শেষ করবে।</p>
+<h2 id="http-rfc">HTTP RFC</h2>
+<p>HTTP এর rules and guideline নিয়ে পড়বে পারবেন :
+<a href="https://datatracker.ietf.org/doc/html/rfc2616">https://datatracker.ietf.org/doc/html/rfc2616</a> .</p>
+<p>আচ্ছা, <code>curl: (1) Received HTTP/0.9 when not allowed</code> কেন? আমরা তো HTTP/1.1 এ request করলাম। হ্যা। কিন্ত server response করেছে কোনো specific কিছু declare না করে। তাই default ভাবে 0.9 version এ response গিয়েছে। এটা fix করতে আমরা আমাদের response text এ বলেদিবো যে এটা আসলে HTTP/1.1 .</p>
+<p>Adjusted code,</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;Hello from server!&quot;</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">format!</span><span style="color: #908CAA">(</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #F6C177">&quot;HTTP/1.1 200 OK</span><span style="color: #3E8FB0">\r\n</span><span style="color: #F6C177">Content-Length: </span><span style="color: #908CAA">{}</span><span style="color: #3E8FB0">\r\n\r\n</span><span style="color: #908CAA">{}</span><span style="color: #3E8FB0">\n\n</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">len</span><span style="color: #908CAA">(),</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">response</span></span>
+<span class="line"><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4; font-style: italic">stream</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">write_all</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">as_bytes</span><span style="color: #908CAA">())</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">expect</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;failed to write to stream&quot;</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span></code></pre>
+<p>And that should fix the problem.</p>
+<p>এখন আমরা একটা জিনিস simulate করি, যে আমাদের application হয়ত কিছু জিনিস process করতে সময় নিচ্ছে, ধরুন ১০ second । কিন্ত তাও যেন আমাদের server অন্য request handle করতে পারে। যদি <code>handle_incoming_stream()</code> function এ একটা thread sleep code করেন, তার ২ টা request করেন পর পর তাহলে দেখবেন ২য় request টা অনেকক্ষন stuck হয়ে আছে।</p>
+<p>How about, আমরা request গুলো handle করার জন্য একটা করে thread spawn করি।</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">incoming_stream</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">valid_stream</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #9CCFD8">std</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">thread</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">spawn</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">||</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">handle_incoming_stream</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">valid_stream</span><span style="color: #908CAA">));</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">err</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">eprint!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;connection failed </span><span style="color: #3E8FB0">\n</span><span style="color: #F6C177">err::</span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">err</span><span style="color: #908CAA">),</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<p>আমরা <code>std</code> এর thread crate ব্যবহার করে thread spawn করছি। এখন request করলে দেখবেন response ঠিকই আসছে। Individual response আসতে সময় লাগবে কারণ sleep করছে (or heavy কিছু করছে)। কিন্ত আলাদা আলাদা request করলে সেটা ঠিকি কাজ করবে।</p>
+<h2 id="a-thread-for-each-request">A Thread For Each Request</h2>
+<p>আসলে এটা efficient না, কারণ thread spawn করা একটা heavy operation. আর OS আপনাকে এত বেশি thread spawn করলে অন্য process গুলো কিভাবে কাজ করবে?
+এটা change করার দরকার । শুরুতেই multi threading এ যেতে চাচ্ছি না। কেন? কারণ এটা complexity add করবে।</p>
+<p>Multi threading করা অনেক সহজ (আমরা already করেছি)। Right way তে multithreading অনেক কঠিন। অনেক গুলো caviat আছে। আর আমাদের এই মুহূর্তে লাগবে ও না। কারণ, আরেকটা option আছে। সেটা হলো concurrency! Asynchronous execution. অনেকটা nodejs এর মত। Difference হলো nodejs / javascript single threaded. Rust multi threaded.</p>
+<p>এখন আমাদের যেটা করা লাগবে সেটা হলো একটা async runtime নিয়ে কাজ করা লাগবে। আচ্ছা, runtime কি?</p>
+<h2 id="runtime-rte">Runtime (RTE)</h2>
+<p>Runtime কে চিন্তা করতে পারেন একটা program যেখানে আপনার লিখা code টা run করবে, sort of একটা platform যেটার উপরে আপনার code act করবে। এই platform কিছু extra and necessary functionality add করে। যেমন ধরেন memory allocation, exception handling, concurrency, multi threading, library support, reflection etc.</p>
+<p>Note: ২ ধরণের runtime concept আছে programming এ। একটা হলো program টা যখন run করছে, CPU যখন machine code টা নিয়ে program instruction গুলো execute করে। এটাকে আমার জানামে (RT) দিয়েই বোঝায় । তবে আমি যে runtime এর কথা বলছি সেটা হলো RTE, elaborate করলে runtime environment. RTE ২ ধরণের আবার। Language specific and general purpose.</p>
+<p>আচ্ছা back to the context, আমরা per request এ thread spawn না করে async way তে handle করবো। সেটার জন্য আমরা rust এর tokio crate টা ব্যবহার করবো।</p>
+<h2 id="tokio">Tokio</h2>
+<p>Tokio is an async runtime for Rust. Tokio add করতে <code>cargo add tokio --features=io-util,macros,rt-multi-thread,net</code> command টা দিলে tokio আমাদের dependency হিসাবে আসবে। এখন code change করার part.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #908CAA">#[</span><span style="color: #E0DEF4">allow</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4">dead_code</span><span style="color: #908CAA">)]</span></span>
+<span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">io</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">{</span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">};</span></span>
+<span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">tokio</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">io</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">{</span><span style="color: #9CCFD8">AsyncReadExt</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">AsyncWriteExt</span><span style="color: #908CAA">};</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> change</span></span>
+<span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">tokio</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">net</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">{</span><span style="color: #9CCFD8">TcpListener</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">TcpStream</span><span style="color: #908CAA">};</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> change</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #908CAA">#[</span><span style="color: #E0DEF4">tokio</span><span style="color: #3E8FB0">::</span><span style="color: #E0DEF4">main</span><span style="color: #908CAA">]</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> change</span></span>
+<span class="line"><span style="color: #3E8FB0">async</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">io</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;()&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> change</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Journey of a thousand miles begins with a single commit.&quot;</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">addr</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;localhost:8000&quot;</span><span style="color: #908CAA">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">listener</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">TcpListener</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">bind</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">addr</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.await?</span><span style="color: #908CAA">;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> change: now using tokio::net::TcpListener;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">loop</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">socket</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">_</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">listener</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">accept</span><span style="color: #908CAA">()</span><span style="color: #3E8FB0">.await?</span><span style="color: #908CAA">;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> change: but the same idea</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #9CCFD8">tokio</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">spawn</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">async</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">move</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span><span style="color: #E0DEF4">				 </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> change: instead of threads, we are spawning tasks 				</span></span>
+<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">if</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">e</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">handle_incoming_stream</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">socket</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.await</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> change: we’ve added .await</span></span>
+<span class="line"><span style="color: #E0DEF4">                </span><span style="color: #EA9A97">eprintln!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Failed to handle connection: </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">e</span><span style="color: #908CAA">);</span></span>
+<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #908CAA">}</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">});</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #3E8FB0">async</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">handle_incoming_stream</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">stream</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">TcpStream</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">io</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;()&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">buffer</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">[</span><span style="color: #EA9A97">0</span><span style="color: #908CAA">;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1024</span><span style="color: #908CAA">];</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">stream</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">read</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">buffer</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.await?</span><span style="color: #908CAA">;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> change</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">request</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from_utf8_lossy</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">buffer</span><span style="color: #908CAA">[</span><span style="color: #3E8FB0">..</span><span style="color: #908CAA">]);</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;received request </span><span style="color: #3E8FB0">\n</span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">request</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;Hello from server!&quot;</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">format!</span><span style="color: #908CAA">(</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #F6C177">&quot;HTTP/1.1 200 OK</span><span style="color: #3E8FB0">\r\n</span><span style="color: #F6C177">Content-Length: </span><span style="color: #908CAA">{}</span><span style="color: #3E8FB0">\r\n\r\n</span><span style="color: #908CAA">{}</span><span style="color: #3E8FB0">\n\n</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">len</span><span style="color: #908CAA">(),</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #E0DEF4; font-style: italic">response</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">stream</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">write_all</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">as_bytes</span><span style="color: #908CAA">())</span><span style="color: #3E8FB0">.await?</span><span style="color: #908CAA">;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> change</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">stream</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">flush</span><span style="color: #908CAA">()</span><span style="color: #3E8FB0">.await?</span><span style="color: #908CAA">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(())</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<p>আচ্ছা, বেশ কিছু change হয়েছে। যারা rust করেন নি, তাদের জন্য mainly চেষ্টা করছি একটু ভেংগে বলতে, at least important parts. প্রথমত, আমরা import change করেছি, <code>TcpStream</code> আর <code>TcpListener</code> এই দুইটা। কেন? কারণ, আমাদের আগের TcpListener আর TcpStream (std::net) হলো synchronous, aka blocking! যার জন্য আমাদের thread লেগেছিলো একটু আগে। Tokio’র TcpListener আর TcpStream হলো async. এটার আরেকটা reflection হলো listener bind করার পরে, connection accet করার পরে, আর stream read আর stream এ write করার পরে <code>.await</code> keyword টা add করা হয়েছে।</p>
+<h2 id="let-it-await">Let it .await</h2>
+<p>আচ্ছা, <code>.await</code> কি করছে? Well, ঐ কাজ (function) টা শেষ হয়ার জন্য await করছে। যদি <code>listener.accept().await</code> কে যদি javascript এর মত করে লিখি, তাহলে এরকম হবে অনেকটা</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> pseudo code</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> imagine listener is an object of Listener class,</span></span>
+<span class="line"><span style="color: #E0DEF4; font-style: italic">async</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">someFunc</span><span style="color: #E0DEF4">(</span><span style="color: #E0DEF4; font-style: italic">listener</span><span style="color: #E0DEF4">) </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">	</span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">socket</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">await</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">listener</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">acceptConnection</span><span style="color: #E0DEF4">()</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<p>Rust এর <code>.await</code> এই কাজটাই করছে। কেন? কারণ এটা i/o bound । যেহেতু program টা i/o bound, সেহেতু এটা eventloop ( হ্যা, এখানেও eventloop আছে ) এ offload হয়ে যাচ্ছে। যেহেতু program টা জানে না কখন কাজ শেষ হবে, আর পরের লাইনেই কিন্ত socket value ব্যবহার হচ্ছে, যে value টা <code>accept()</code> এর return value. এখানের <code>accept()</code> function টা একটা <code>Future</code> return করে। Um.. <code>Future</code> হলো অনেকটা <code>Promise</code> এর মত। কিন্ত ভিতরের mechanism আলাদা, কিছু fundamental difference আছে।</p>
+<h2 id="the-false-perception-of-async">The false perception of async</h2>
+<p>একটু offtopic এ যাচ্ছি। আমি বেশ কিছু developer এর কাছে দেখেছি তারা মনে করেন যে async code হলে blocking functionality হলে ওটাকে side এ রেখে পরের line এ চলে যায়। এখানের <code>handle_incoming_stream()</code> code এ ধরেন <code>stream.read().await</code> এর জন্য wait না করে পরের <code>let request = String::from_utf8_lossy(&amp;buffer[..]);</code> line এ চলে যাবে।</p>
+<p>কিন্ত আসলে সেটা না। async await এটা mainly CPU এর জন্য। যদি ২টা request আসে পর পর, তাহলে CPU একটা process করবে, করার সময় যখন <code>Future</code> (i/o bound) কাজ পাবে তখন সেটাকে (i/o bound কাজ টা) offload করে সেটা execute করতে থাকে, আর ঐ যেখান থেকে eventloop এ track রাখে। আর in the meantime, যতক্ষন না i/o bound কাজ শেষ হয় background এ, ততক্ষন ২য় reqeust টা শুরু হয়ে যায়। একি ভাবে যতক্ষন না similar কোনো বাধা পায় বা i/o bound কাজ শেষ হয় আর runtime যেভাবে schedule করে সে অনুযায়ি execute করবে। আপনি চাইলে debuggar এ কিছু breakpoint add করে কিছু print statement দিয়ে test করে দেখতে পারেন। Code synchronous way তেই execute হবে। কারণ async CPU এর জন্য । Single function এ code wait না করে পরের line এ চলে যাওয়ার জন্য না। সেটার জন্য <code>goroutine</code> / <code>coroutine</code> / <code>threading</code> লাগবে, যেটা different topic.</p>
+<p>আচ্ছা, এটুকু তো আমরা achieve করলাম, non blocking i/o এর router. Next target হলো একটা router, যেমন laravel এ route add করা যায় আর controller এ <code>Illuminate\Http\Request $request</code> এ access পাওয়া যায়, বা <code>go</code> এর <code>net/http</code> এর <code>http.HandleFunc</code> এও <code>r *http.Request</code> পাওয়া যায়, দুইটাই কিন্ত Request ( http request ) এর information carry করে। তো, আমরা একটা router বানাবো, যেটা</p>
+<p>Back to code, আমরা code টা আবার change করবো। আমি এরকম একটা api চাচ্ছি যে router এ http method, endpoint আর একটা handler function add করা যাবে যাতে user ( programmer ) এই router টা ব্যবহার করে নিজের মত করে route add করতে পারে। অনেকটা এরকম।</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"></span>
+<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">router</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Router</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">new</span><span style="color: #908CAA">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4; font-style: italic">router</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">add_route</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4">“</span><span style="color: #3E8FB0">GET</span><span style="color: #E0DEF4">”</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> “</span><span style="color: #3E8FB0">/</span><span style="color: #E0DEF4; font-style: italic">hello</span><span style="color: #E0DEF4">”</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">hello_handler_func</span><span style="color: #908CAA">);</span></span>
+<span class="line"><span style="color: #E0DEF4; font-style: italic">router</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">add_route</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4">“</span><span style="color: #3E8FB0">GET</span><span style="color: #E0DEF4">”</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> “</span><span style="color: #3E8FB0">/</span><span style="color: #E0DEF4; font-style: italic">world</span><span style="color: #E0DEF4">”</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">world_handler_func</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4; font-style: italic">router</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">listen_and_serve</span><span style="color: #908CAA">();</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> </span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> hello_handler_func </span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4; font-style: italic">func</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">hello_handler_func</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">req</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Request</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Response</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{}</span><span style="color: #E0DEF4"> </span></span>
+<span class="line"></span></code></pre>
+<p>So, after adjusting the code,</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #908CAA">#[</span><span style="color: #E0DEF4">allow</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4">dead_code</span><span style="color: #908CAA">)]</span></span>
+<span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">io</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">{</span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">};</span></span>
+<span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">sync</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Arc</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">tokio</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">io</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">{</span><span style="color: #9CCFD8">AsyncReadExt</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">AsyncWriteExt</span><span style="color: #908CAA">};</span></span>
+<span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">tokio</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">net</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">{</span><span style="color: #9CCFD8">TcpListener</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">TcpStream</span><span style="color: #908CAA">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #3E8FB0">struct</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Router</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #3E8FB0">impl</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Router</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> it is not public because it&#39;s in the same module for this example.</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">new</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">Self</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #E0DEF4; font-style: italic">Self</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{}</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">async</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">listen_and_serve</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Arc</span><span style="color: #908CAA">&lt;</span><span style="color: #E0DEF4; font-style: italic">Self</span><span style="color: #908CAA">&gt;,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">addr</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">str</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">io</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;()&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> let addr = &quot;localhost:8000&quot;;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">listener</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">TcpListener</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">bind</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">addr</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.await?</span><span style="color: #908CAA">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">loop</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">socket</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">_</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">listener</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">accept</span><span style="color: #908CAA">()</span><span style="color: #3E8FB0">.await?</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">router_clone</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Arc</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">clone</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">);</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> Clone Arc&lt;Self&gt; for each task</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">tokio</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">spawn</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">async</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">move</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">                </span><span style="color: #3E8FB0">if</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">e</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">router_clone</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">handle_incoming_stream</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">socket</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.await</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">                    </span><span style="color: #EA9A97">eprintln!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Failed to handle connection: </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">e</span><span style="color: #908CAA">);</span></span>
+<span class="line"><span style="color: #E0DEF4">                </span><span style="color: #908CAA">}</span></span>
+<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #908CAA">});</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">}</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">async</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">handle_incoming_stream</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">stream</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">TcpStream</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">io</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;()&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">buffer</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">[</span><span style="color: #EA9A97">0</span><span style="color: #908CAA">;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1024</span><span style="color: #908CAA">];</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #E0DEF4; font-style: italic">stream</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">read</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">buffer</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.await?</span><span style="color: #908CAA">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">request</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from_utf8_lossy</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">buffer</span><span style="color: #908CAA">[</span><span style="color: #3E8FB0">..</span><span style="color: #908CAA">]);</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;received request </span><span style="color: #3E8FB0">\n</span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">request</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;Hello from server!&quot;</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">format!</span><span style="color: #908CAA">(</span></span>
+<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #F6C177">&quot;HTTP/1.1 200 OK</span><span style="color: #3E8FB0">\r\n</span><span style="color: #F6C177">Content-Length: </span><span style="color: #908CAA">{}</span><span style="color: #3E8FB0">\r\n\r\n</span><span style="color: #908CAA">{}</span><span style="color: #3E8FB0">\n\n</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span></span>
+<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">len</span><span style="color: #908CAA">(),</span></span>
+<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #E0DEF4; font-style: italic">response</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #E0DEF4; font-style: italic">stream</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">write_all</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">as_bytes</span><span style="color: #908CAA">())</span><span style="color: #3E8FB0">.await?</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #E0DEF4; font-style: italic">stream</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">flush</span><span style="color: #908CAA">()</span><span style="color: #3E8FB0">.await?</span><span style="color: #908CAA">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(())</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #908CAA">#[</span><span style="color: #E0DEF4">tokio</span><span style="color: #3E8FB0">::</span><span style="color: #E0DEF4">main</span><span style="color: #908CAA">]</span></span>
+<span class="line"><span style="color: #3E8FB0">async</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">io</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;()&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Journey of a thousand miles begins with a single commit.&quot;</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">router</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Arc</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">new</span><span style="color: #908CAA">(</span><span style="color: #9CCFD8">Router</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">new</span><span style="color: #908CAA">());</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">router</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">listen_and_serve</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;localhost:8000&quot;</span><span style="color: #908CAA">)</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.await</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">expect</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;failed to listen and serve&quot;</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(())</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<h2 id="arc">Arc</h2>
+<p>Code টুকু mostly একি আছে তবে একটা গুরুত্বপূর্ণ জিনিস change হয়েছে। সেটা হলো <code>Arc</code> নামের একটা জিনিস add হয়েছে। Arc এর full form হলো Atomic Reference Counter ।
+Arc একটা reference count রাখে। <code>let router_clone: Arc&lt;Router&gt; = Arc::clone(&amp;self);</code> এখানে router নিজের একটা clone করছে। এটা প্রয়োজন কারণ পরের লাইনে <code>task::spawn</code>
+করছে। Rust specific এই একটা জিনিস হলো যে একটা value’র এক সময় একটাই owner থাকতে পারে। আর out of scope এ চলে গেলে value drop করে। এখন আমাদের router যেহেতু <code>move</code> করছে <code>(async move { /** here* /})</code> সেহেতু Arc এর মাধ্যমে একটা count রাখে। যদি count &gt; 0 হয়, তাহলে value টা drop করে না । Tokio internal threadpool use করে। সো main thread এর বাইরে।</p>
+<blockquote>
+<p>যদি Arc confusing লাগে তাহলে you can ignore it. Let’s just say এটা আমাদের একটা way async task (from tokio) use করার জন্য। Essential way.</p>
+</blockquote>
+<p>Back to the code, আমাদের এখন objective হলো</p>
+<ul>
+<li>যে request আসবে, সেটা parse করে match করার চেষ্টা করবে আমাদের routes এ সেটা add করা আছে নাকি</li>
+<li>যদি থাকে, তাহলে সেই handler টা execute করে content render করা</li>
+<li>আর না থাকলে একটা 404 not found response দেয়া</li>
+</ul>
+<h2 id="parsing-the-request">Parsing the Request</h2>
+<p>আমরা প্রথমে buffer এ নেয় bytes গুলোকে string এ convert করবো। তারপরে RFC অনুযায়ি parse করে করে validate করবো । String এ convert করার পরে আমাদের request এ দেখা যাবে হয়ত অনেকগুলো <code>\0\0\0\0\0</code> এরকম আছে। এগুলো যদি দেখে থাকেন, সেটার কারণ হলো আমরা যে buffer size 1024 বলে দিয়েছিলাম, তো যেটুকু data (bytes) এসেছে সেটুকু value তো আছে, কিন্ত বাকিগুলো \0 বা null byte দিয়ে fill হয়ে আছে। আমাদের এই null byte character গুলোর দরকার নেই। আমরা তাই এগুলো কে filter করে ফেলবো।</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">if</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Some</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">null_index</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">request_string</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">find</span><span style="color: #908CAA">(</span><span style="color: #908CAA">&#39;</span><span style="color: #3E8FB0">\0</span><span style="color: #908CAA">&#39;</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">      </span><span style="color: #E0DEF4; font-style: italic">request_string</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">truncate</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">null_index</span><span style="color: #908CAA">);</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<p>Now we have the meat. বাকি অংশ টুকুকে আমি ৩ ভাগে ভাগ করবো। ১ম লাইনটা হলো request line. এখানে HTTP version, path with query আর HTTP method (verb) দেয়া থাকে। এটা দিয়ে শুরু হলো। প্রতিটি নতুন লাইন \r\n দিয়ে split করা। ১ম লাইনের পর থেকে header, আর শেষ header এর পরে \r\n\r\n থাকে, তার পরেই body part টা শুরু হয়। আপনি যদি form-data বা json data send করে থাকেন, সেটা এখানে থাকবে। আর body’র শেষ হয়ার পরে \r\n আর তারপরেই \0\0\0\0 repeat থাকে, যেগুলো আমরা filter করে ফেলেছি।</p>
+<p>Request parse হয়ে গেলে আমাদের খুজতে হবে এই route এর জন্য আমাদের route list এ কোনো handler register আছে কিনা। যদি না থাকে, তাহলে default একটা response send করবো। আর যদি থাকে তাহলে handler টা execute করবো। আমাদের handler এর signature হলো</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #9CCFD8">F</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">Fn</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">Request</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Response</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">+</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">&#39;</span><span style="color: #9CCFD8">static</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">+</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">marker</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Sync</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">+</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">marker</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Send</span><span style="color: #908CAA">,</span></span>
+<span class="line"></span></code></pre>
+<p>এখানে rust এর witchcraft টা side এ রেখে যদি বোঝার চেষ্টা করি, তাহলে আমাদের handler হলো একটা function <code>F</code> (<code>Fn</code>), যেটা একটা reference পাবে <code>Request</code> এর। যে request struct টা আমরা parse করে আগের step এ তৈরি করেছি, সেটা। আর আসলে এভাবেই আমরা laravel এর controller method এ <code>Request $request</code> , Go এর <code>net/http</code> এর handlerFunc এ <code>r *http.Request</code> বা express এর <code> (req, res) =&gt; {}</code> এই value গুলো পাওয়া যায়।</p>
+<p>আর আমরা এটাও বলে দিয়েছি যে ঐ handler গুলো একটা <code>Response</code> struct return করবে। যেটার value আমরা stream এ write করবো আর শেষে stream টা flush করে দিবো।  আচ্ছা, stream flush না করলে কি send হবে data? Most probably না। At least পুরোটা যাবে না। কারণ <code>stream.write_all()</code> internal buffer এ write করে, যখন আমরা flush করি তখন client এর কাছে যাওয়ার জন্য stream এ write হয়।</p>
+<h2 id="stream-flush">Stream flush</h2>
+<p>Stream flush ব্যবহার করার কিছু কারণ ও আছে। যেমন timely manner এ data transmission. Flush করাটা ensure করে যে data টা actually ঐ সময়ে send করা হয়েছে। Low latency, real time communication এধরণের application এর জন্য প্রয়োজন। আর শুধু এটাই না, কিছু কিছু ক্ষেত্রে stream flush করার মাধ্যমে একটা indicate করে যে তার transmission শেষ।
+কখনো graceful shutdown করেছেন? সেখানেও কিন্ত somehow signal দেয়া প্রয়োজন যে program টার data send done, এখন shutdown হতে পারে!</p>
+<p>আমরা যে বিভিন্ন library বা framework ব্যবহার করি, সেখানে program request পায় raw http stream আকারে, কিন্ত developer এর সুবিধার জন্য simple কিছু interface এর মাধ্যমে ঐ data গুলোকে expose করে।</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #E0DEF4; font-style: italic">http</span><span style="color: #908CAA">.</span><span style="color: #EA9A97">HandleFunc</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4">“</span><span style="color: #3E8FB0">/</span><span style="color: #E0DEF4; font-style: italic">endpoint</span><span style="color: #E0DEF4">”</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">func</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">w</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">http</span><span style="color: #908CAA">.</span><span style="color: #E0DEF4; font-style: italic">ResponseWriter</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">r</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">*</span><span style="color: #E0DEF4; font-style: italic">http</span><span style="color: #908CAA">.</span><span style="color: #E0DEF4; font-style: italic">Request</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> handler logic</span></span>
+<span class="line"><span style="color: #908CAA">})</span></span>
+<span class="line"></span></code></pre>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #E0DEF4; font-style: italic">app</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">get</span><span style="color: #E0DEF4">(‘</span><span style="color: #3E8FB0">/</span><span style="color: #E0DEF4; font-style: italic">endpoint</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #C4A7E7; font-style: italic">req</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #C4A7E7; font-style: italic">res</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #908CAA">    </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> controller logic </span></span>
+<span class="line"><span style="color: #908CAA">}</span><span style="color: #E0DEF4">)</span></span>
+<span class="line"></span></code></pre>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">public</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">function</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">store</span><span style="color: #908CAA">(\</span><span style="color: #9CCFD8">Illuminiate</span><span style="color: #908CAA">\</span><span style="color: #9CCFD8">Http</span><span style="color: #908CAA">\</span><span style="color: #9CCFD8">Request</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">request</span><span style="color: #908CAA">)</span></span>
+<span class="line"><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #908CAA">    </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> controller logic    </span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<p>এই response writer আর res হলো socket এ write করার একটা interface. যেটার মাধ্যমে আমরা client কে response দেই । এখন আমাদের নিজেদের handler এর response টা client কে send করার code,</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4">routes</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">get</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">request</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">get_method</span><span style="color: #908CAA">(),</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">request</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">get_path</span><span style="color: #908CAA">()</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">()))</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #9CCFD8">Some</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">handler</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">handler</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">request</span><span style="color: #908CAA">),</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> আমরা যদি দেখি যে ঐ method আর route এর জন্য handler আছে তাহলে সেটার response set করছি</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #9CCFD8">None</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Response</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">default_response</span><span style="color: #908CAA">(),</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> নাহলে default একটা</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">stream</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">write_all</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">build_http_response</span><span style="color: #908CAA">()</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">as_bytes</span><span style="color: #908CAA">())</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> finally response নিয়ে stream এ write করছি client এর জন্য</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.await?</span><span style="color: #908CAA">;</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">stream</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">flush</span><span style="color: #908CAA">()</span><span style="color: #3E8FB0">.await?</span><span style="color: #908CAA">;</span></span>
+<span class="line"></span></code></pre>
+<p>আচ্ছা, এটা তো হলো, এখন as a user (of the http router) আমরা use করে দেখি।</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">async</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">io</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;()&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">router</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Router</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">new</span><span style="color: #908CAA">();</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">router</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">add_route</span><span style="color: #908CAA">(</span><span style="color: #9CCFD8">Method</span><span style="color: #3E8FB0">::GET</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;/whoami&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">who_handler</span><span style="color: #908CAA">);</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">router</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">add_route</span><span style="color: #908CAA">(</span><span style="color: #9CCFD8">Method</span><span style="color: #3E8FB0">::POST</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;/say-hi&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">say_hi_handler</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">router</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Arc</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">new</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">router</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">router</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">listen_and_serve</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;127.0.0.1:8000&quot;</span><span style="color: #908CAA">)</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.await</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">expect</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;failed to listen and serve&quot;</span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(())</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">who_handler</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">_req</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">Request</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Response</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Response</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">success</span><span style="color: #908CAA">();</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">set_content</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hi, I&#39;m Aryan!&quot;</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">());</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">response</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">say_hi_handler</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">_req</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">Request</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Response</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Response</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">success</span><span style="color: #908CAA">();</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">set_header</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Content-Type&quot;</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">(),</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;application/json&quot;</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">());</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">response</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">set_content</span><span style="color: #908CAA">(</span></span>
+<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #F6C177">r#&quot;{ &quot;message&quot;: &quot;Hi, So, this is supposed to be a post method!&quot;}&quot;#</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">(),</span></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">response</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<p>আমরা শুরুতে router initialize করে /whoami GET method এ আর /say-hi post method এ register করেছি। Handler গুলোর body দেখলে দেখা যাচ্ছে যে একটা req struct accept করে, আর <code>Response</code> struct return করে। Time to try it out.</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #EA9A97">curl</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-sX</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">POST</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-d</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">“some=value”</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">http://localhost:8000/say-hi</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">|</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">jq</span></span>
+<span class="line"></span></code></pre>
+<p>And I see the response</p>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #908CAA">{</span></span>
+<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #908CAA">&quot;</span><span style="color: #9CCFD8">message</span><span style="color: #908CAA">&quot;</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;Hi, So, this is supposed to be a post method!&quot;</span></span>
+<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"></span></code></pre>
+<p>এইতো, আমাদের HTTP router. It kinda works. এই article এ full code দেয়া নেই। চেষ্টা করেছি topic related code গুলো দিতে। আমি আরো কিছু change করে <a href="https://github.com/thearyanahmed/rusttp">https://github.com/thearyanahmed/rusttp</a> রাখছি। এখানে একটা endpoint add করেছি যেখানে <code>public/</code> folder এর html file গুলো query param দিয়ে দেখা যাবে। যেমন <code>http://localhost:8000/page?view=hello-world</code> এটায় visit করলে <code>public/hello-world</code> টা render হবে।</p>
+<p>Code টা mainly demo purpose এ করা। সময় নিয়ে article টা পড়ে থাকলে ধন্যবাদ।</p>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>Variable and function naming, Arc এগুলো convention এ focus না রেখে মূলত descriptive রাখার চেষ্টা করেছি বুঝার সুবধার্তে।</li>
+<li>Pure HTTP request কোনো technical term না।</li>
+<li>ইচ্ছা আছে Future নিয়ে ভবিষ্যতে একটা article লিখার । But if you find the time, check it out yourself, it is really simple yet amazing.</li>
+<li>Codebase টা optimise করা না, লিখা হয়েছে এই article টার জন্যই।</li>
+</ul>
+</div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="h-20"></div>
+    </div>
+    </main>
+
+    <!-- Calendly link widget begin -->
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+        <script type="module">
+            const imgs = document.getElementsByTagName('img')
+
+            for (let i = 0; i < imgs.length; i++) {
+                const img = imgs[i]
+
+                let src = img.getAttribute('src')
+
+                if (src.startsWith('art::')) {
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    img.setAttribute('src', src)
+                }
+            }
+        </script>
+
+    <script src="https://thearyanahmed.com/js/functions.js"></script>
+    <footer class="max-w-lg mx-auto flex text-center mb-20">
+        <div class="flex flex-col mx-auto text-gray-300">
+            <span>
+                v<span class="text-gray-400">2.59.0</span>
+            </span>
+            <span class="text-sm"><span class="text-gray-500/60">305</span>ヅ<span class="text-gray-500/60">761d96422f35da3d0c07e44eb2bab5c35b290504</span></span>
+        </div>
+    </footer>
+</body>
+
+</html>
