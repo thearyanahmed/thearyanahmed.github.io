@@ -264,7 +264,6 @@ Rust এর `.await` এই কাজটাই করছে। কেন? কা
 Back to code, আমরা code টা আবার change করবো। আমি এরকম একটা api চাচ্ছি যে router এ http method, endpoint আর একটা handler function add করা যাবে যাতে user ( programmer ) এই router টা ব্যবহার করে নিজের মত করে route add করতে পারে। অনেকটা এরকম। 
 
 ```rust
-
 let router = Router::new();
 
 router.add_route(“GET”, “/hello”, hello_handler_func);
@@ -276,6 +275,7 @@ router.listen_and_serve(); //
 
 func hello_handler_func(req: Request) -> Response {} 
 ```
+
 So, after adjusting the code, 
 
 ```rust
