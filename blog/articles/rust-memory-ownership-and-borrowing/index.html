@@ -8,9 +8,7 @@
     <meta name="author" content="Aryan Ahmed" />
 <meta name="author" content="Aryan Ahmed" />
 <meta name="author" content="Aryan Ahmed" />
-<meta property="article:Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" content="Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" />
 <meta name="author" content="Aryan Ahmed" />
-<meta property="article:Interview Preparation নিয়ে কিছু কথা" content="Interview Preparation নিয়ে কিছু কথা" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:What happens when ..." content="What happens when ..." />
 <meta name="author" content="Aryan Ahmed" />
@@ -27,6 +25,7 @@
 <meta property="article:A Brief Journey Into Operating System" content="A Brief Journey Into Operating System" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:Relocating to Germany" content="Relocating to Germany" />
+<meta property="article:Interview Preparation নিয়ে কিছু কথা" content="Interview Preparation নিয়ে কিছু কথা" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:Kubernetes Cheatsheet For Me" content="Kubernetes Cheatsheet For Me" />
 <meta name="author" content="Aryan Ahmed" />
@@ -40,7 +39,6 @@
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:Building a Passwordless Login System with Laravel in minutes" content="Building a Passwordless Login System with Laravel in minutes" />
 <meta name="author" content="Aryan Ahmed" />
-<meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:The cover generator for my articles" content="The cover generator for my articles" />
 <title>Rust: Memory, Ownership and Borrowing</title>
@@ -56,6 +54,8 @@
 <meta property="og:site_name" content="thearyanahmed.com" />
 <link rel="canonical" href="https://thearyanahmed.com/blog/articles/rust-memory-ownership-and-borrowing" />
 <meta property="article:Rust: Memory, Ownership and Borrowing" content="Rust: Memory, Ownership and Borrowing" />
+<meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
+<meta property="article:Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" content="Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -186,35 +186,29 @@
         <div class="relative py-16 bg-white overflow-hidden">
             <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full dotted-bg">
                 <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
-                    <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none"
-                         viewBox="0 0 404 384">
+                    <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
                         <defs>
-                            <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
                             </pattern>
                         </defs>
-                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)"/>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)" />
                     </svg>
-                    <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404"
-                         height="384" fill="none" viewBox="0 0 404 384">
+                    <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
                         <defs>
-                            <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
                             </pattern>
                         </defs>
-                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)"/>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)" />
                     </svg>
-                    <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384"
-                         fill="none" viewBox="0 0 404 384">
+                    <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
                         <defs>
-                            <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
                             </pattern>
                         </defs>
-                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)"/>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)" />
                     </svg>
                 </div>
             </div>
@@ -226,13 +220,14 @@
                 </div>
 
                 
+
+            
                 <div class="text-lg max-w-prose">
-                    <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
+                    <p class="mt-8 text-xl tracking-tight text-gray-900 leading-9">
                         Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code.
                     </p>
                 </div>
-                <div
-                    class="article-content-markdown mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
+                <div class="article-content-markdown leading-9 tracking-tight mt-6 text-xl font-aquawasdaxalt prose prose-indigo prose-lg text-gray-800 mx-auto">
                     <div ><p>Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code.</p>
 <p>It’s the ownership model. That keeps us safe and lets us sleep at night after we deploy we rust code to production. This is also how rust avoids a garbage collector.</p>
 <p>This is my take on the matter, as I’m learning, I might have made a mistake while writing, feel free to point it out.</p>
@@ -433,6 +428,59 @@ You can tell what a function do.</p>
         </div>
 
         
+
+                <div class="max-w-2xl mx-auto px-4">
+            <p class="my-2 font-aquawaxalt font-medium text-gray-500">
+                Here are some of my other articles..
+            </p>
+            <div class="space-y-2">
+                                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-2 text-xl">
+        <a class="font-aquawaxalt text-gray-800 font-semibold group-hover:underline" 
+            href="https://thearyanahmed.com/blog/articles/building-a-url-shortener-with-rust-and-redis">
+            Building a URL shortener with Rust and Redis
+        </a>
+    </p>
+    <p class="mb-3 text-gray-800">
+        As rust is being adopted by lots of different companies for solving various purposes, I’m trying to adopt rust. In this article and the series of articles following this will contain my journey to build a simple program, an url shortener, with rust.
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd
+                class="text-sm text-gray-500 font-aquawaxalt leading-6 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2023-08-09 10:00:00">August 9th, 2023</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                                                <article class="group relative flex flex-col max-w-3xl lg:ml-auto xl:max-w-none xl:w-[50rem]">
+    <p class="mb-2 text-xl">
+        <a class="font-aquawaxalt text-gray-800 font-semibold group-hover:underline" 
+            href="https://thearyanahmed.com/blog/articles/implementing-hyerptext-transfer-protocol-with-rust-maybe">
+            Implementing HyperText Transfer Protocol with <span class="text-red-400">RUST</span>… maybe?
+        </a>
+    </p>
+    <p class="mb-3 text-gray-800">
+        কখনো REST Api বানিয়েছেন? হয়ত কোনো library (router) বা framework ব্যবহার করেছেন। খেয়াল করেছেন যে HTTP, যেটা `GET /path?query=value HTTP/1.1` এরকম কিছু দিয়ে শুরু হয়, সেটা আমরা কিভাবে `$request` (type) variable (object) দিয়ে আমরা আমাদের application layer এ interact করতে পারি? 
+
+
+আমরা যে form submit করি, তখন তো FormData submit হয়ে, বা json request করলে সে data ও আমরা capture করতে পারি। কিন্ত how does that work? আবার যখন `response()->json()` বা `return view(‘some-html’)` দেই, সেটা কিভাবে আবার ঐ একি ভাবে HTTP response পাঠায়?
+
+    </p>
+    <div class="mt-auto flex flex-row-reverse items-center justify-end">
+        <dl>
+            <dt class="sr-only">Date</dt>
+            <dd
+                class="text-sm text-gray-500 font-aquawaxalt leading-6 lg:absolute lg:top-0 lg:right-full lg:mr-8 lg:whitespace-nowrap">
+                <time datetime="2024-07-06 22:20:32">July 6th, 2024</time>
+            </dd>
+        </dl>
+    </div>
+</article>
+                                            </div>
+        </div>
+        
         <div class="h-20"></div>
     </div>
     </main>
@@ -460,9 +508,9 @@ You can tell what a function do.</p>
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.70.0</span>
+                v<span class="text-gray-400">2.71.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">306</span>ヅ<span class="text-gray-500/60">3f39dee74776e1aeeafee5ecc9382869d477546a</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">307</span>ヅ<span class="text-gray-500/60">5db67fd4087c587f1205a3f96419ff825e722149</span></span>
         </div>
     </footer>
 </body>
