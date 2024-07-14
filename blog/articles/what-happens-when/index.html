@@ -43,7 +43,7 @@
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:Rust: Memory, Ownership and Borrowing" content="Rust: Memory, Ownership and Borrowing" />
 <meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
-<meta property="article:Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" content="Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" />
+<meta property="article:Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST…&lt;/span&gt; maybe?" content="Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST…&lt;/span&gt; maybe?" />
 <title>What happens when ...</title>
 <meta property="og:title" content="What happens when ..." />
 <meta name="twitter:title" content="What happens when ..." />
@@ -223,12 +223,10 @@
                 
 
             
-                <div class="text-lg max-w-prose">
-                    <p class="mt-8 text-xl tracking-tight text-gray-900 leading-9">
+                <div class="text-lg max-w-prose mt-8 tracking-tight text-gray-500 leading-9">
                         যখন একটা site (eg: thearyanahmed.com) এ যাওয়ার জন্য browser এ "t" লেখেন, তখন কি হয়? ভেবে দেখেছেন?
-                    </p>
                 </div>
-                <div class="article-content-markdown leading-9 tracking-tight mt-6 text-xl font-aquawasdaxalt prose prose-indigo prose-lg text-gray-800 mx-auto">
+                <div class="article-content-markdown leading-9 tracking-tight mt-6 text-lg font-aquawasdaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
                     <div ><p>যখন একটা site (eg: thearyanahmed.com) এ যাওয়ার জন্য browser এ &quot;t&quot; লেখেন, তখন কি হয়? ভেবে দেখেছেন?</p>
 <p>Keyboard থেকে OS পর্যন্ত signal আসার কথা টা skip করলাম। Browser শুরুতে HSTS (HTTPs Strict Transport Security) লিস্ট এ চেক করে ঐ hostname টা আছে কিনা। ঐ list টা হলো ঐসব site এর list যেগুলো already browser কে request করে রেখেছে HTTPS দিয়ে communicate করতে।</p>
 <p>যদি সেটা না থাকে, তাহলে HTTP তে request যায় প্রথমবার । তারপরে browser check করে তার Cache এ ঐ domain আছে নাকি। না থাকলে<code>gethostbyname()</code> কল করে DNS lookup এর জন্য। এই function দেখে local (machine এ থাকা) hosts file দিয়ে resolve করা যায় নাকি। যদি সেখানে না পায় তাহলে DNS server এ request টা করে, যেটা network stack এ configure করা থাকে।Typically that’s the local router or ISP’s DNS Cache Server.
@@ -277,9 +275,9 @@
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.72.0</span>
+                v<span class="text-gray-400">2.73.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">307</span>ヅ<span class="text-gray-500/60">5db67fd4087c587f1205a3f96419ff825e722149</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">308</span>ヅ<span class="text-gray-500/60">49def18761e65ee7cec352d135fccffc3a497782</span></span>
         </div>
     </footer>
 </body>

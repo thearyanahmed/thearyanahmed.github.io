@@ -55,7 +55,7 @@
 <link rel="canonical" href="https://thearyanahmed.com/blog/articles/rust-memory-ownership-and-borrowing" />
 <meta property="article:Rust: Memory, Ownership and Borrowing" content="Rust: Memory, Ownership and Borrowing" />
 <meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
-<meta property="article:Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" content="Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" />
+<meta property="article:Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST…&lt;/span&gt; maybe?" content="Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST…&lt;/span&gt; maybe?" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -222,12 +222,10 @@
                 
 
             
-                <div class="text-lg max-w-prose">
-                    <p class="mt-8 text-xl tracking-tight text-gray-900 leading-9">
+                <div class="text-lg max-w-prose mt-8 tracking-tight text-gray-500 leading-9">
                         Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code.
-                    </p>
                 </div>
-                <div class="article-content-markdown leading-9 tracking-tight mt-6 text-xl font-aquawasdaxalt prose prose-indigo prose-lg text-gray-800 mx-auto">
+                <div class="article-content-markdown leading-9 tracking-tight mt-6 text-lg font-aquawasdaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
                     <div ><p>Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code.</p>
 <p>It’s the ownership model. That keeps us safe and lets us sleep at night after we deploy we rust code to production. This is also how rust avoids a garbage collector.</p>
 <p>This is my take on the matter, as I’m learning, I might have made a mistake while writing, feel free to point it out.</p>
@@ -441,7 +439,7 @@ You can tell what a function do.</p>
             Building a URL shortener with Rust and Redis
         </a>
     </p>
-    <p class="mb-3 text-gray-800">
+    <p class="mb-3 text-gray-500">
         As rust is being adopted by lots of different companies for solving various purposes, I’m trying to adopt rust. In this article and the series of articles following this will contain my journey to build a simple program, an url shortener, with rust.
     </p>
     <div class="mt-auto flex flex-row-reverse items-center justify-end">
@@ -458,14 +456,11 @@ You can tell what a function do.</p>
     <p class="mb-2 text-xl">
         <a class="font-aquawaxalt text-gray-800 font-semibold group-hover:underline" 
             href="https://thearyanahmed.com/blog/articles/implementing-hyerptext-transfer-protocol-with-rust-maybe">
-            Implementing HyperText Transfer Protocol with <span class="text-red-400">RUST</span>… maybe?
+            Implementing HyperText Transfer Protocol with <span class="text-red-400">RUST…</span> maybe?
         </a>
     </p>
-    <p class="mb-3 text-gray-800">
+    <p class="mb-3 text-gray-500">
         কখনো REST Api বানিয়েছেন? হয়ত কোনো library (router) বা framework ব্যবহার করেছেন। খেয়াল করেছেন যে HTTP, যেটা `GET /path?query=value HTTP/1.1` এরকম কিছু দিয়ে শুরু হয়, সেটা আমরা কিভাবে `$request` (type) variable (object) দিয়ে আমরা আমাদের application layer এ interact করতে পারি? 
-
-
-আমরা যে form submit করি, তখন তো FormData submit হয়ে, বা json request করলে সে data ও আমরা capture করতে পারি। কিন্ত how does that work? আবার যখন `response()->json()` বা `return view(‘some-html’)` দেই, সেটা কিভাবে আবার ঐ একি ভাবে HTTP response পাঠায়?
 
     </p>
     <div class="mt-auto flex flex-row-reverse items-center justify-end">
@@ -508,9 +503,9 @@ You can tell what a function do.</p>
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.72.0</span>
+                v<span class="text-gray-400">2.73.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">307</span>ヅ<span class="text-gray-500/60">5db67fd4087c587f1205a3f96419ff825e722149</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">308</span>ヅ<span class="text-gray-500/60">49def18761e65ee7cec352d135fccffc3a497782</span></span>
         </div>
     </footer>
 </body>

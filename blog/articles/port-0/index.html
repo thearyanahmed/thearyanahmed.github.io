@@ -8,7 +8,7 @@
     <meta name="author" content="Aryan Ahmed" />
 <meta name="author" content="Aryan Ahmed" />
 <meta name="author" content="Aryan Ahmed" />
-<meta property="article:Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" content="Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" />
+<meta property="article:Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST…&lt;/span&gt; maybe?" content="Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST…&lt;/span&gt; maybe?" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:Interview Preparation নিয়ে কিছু কথা" content="Interview Preparation নিয়ে কিছু কথা" />
 <meta property="article:Relocating to Germany" content="Relocating to Germany" />
@@ -195,12 +195,10 @@
                 
 
             
-                <div class="text-lg max-w-prose">
-                    <p class="mt-8 text-xl tracking-tight text-gray-900 leading-9">
+                <div class="text-lg max-w-prose mt-8 tracking-tight text-gray-500 leading-9">
                         যখন একই application একাধিক instance এর জন্য Port conflict হয় , তখন PORT 0 ( zero ) ব্যবহার করার solution চিন্তা করেছিলাম। এটি করে Operating System  একটি available port assign করে। এর ফলে, একাধিক process একই port এ allocate হবে না ।
-                    </p>
                 </div>
-                <div class="article-content-markdown leading-9 tracking-tight mt-6 text-xl font-aquawasdaxalt prose prose-indigo prose-lg text-gray-800 mx-auto">
+                <div class="article-content-markdown leading-9 tracking-tight mt-6 text-lg font-aquawasdaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
                     <div ><p>কখনো port conflicting এ পড়েছেন ?
 একই app এর দুইটা বাঁ কয়েকটা instance লাগবে । Port আলাদা করে dynamic করে run করা লাগে । It doesn't scale well . আমি এরকম একটা situation এ পড়েছিলাম যে E2E test এর জন্য প্রতি test case রান করার আগে নতুন করে server ( api ) রান করতে হবে ।</p>
 <p>সমস্যা হল ১০০০ টা test case থাকলে আর প্রতিটা test case যদি ২ সেকেন্ড চলে তাহলে প্রতিবার test run করলে 16 minutes and 40 second এর মত সময় লাগবে । এটাকে fast করতে parallel ভাবে রান করলে অনেক fast test result পাওয়া যায়।</p>
@@ -276,9 +274,9 @@
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.72.0</span>
+                v<span class="text-gray-400">2.73.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">307</span>ヅ<span class="text-gray-500/60">5db67fd4087c587f1205a3f96419ff825e722149</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">308</span>ヅ<span class="text-gray-500/60">49def18761e65ee7cec352d135fccffc3a497782</span></span>
         </div>
     </footer>
 </body>

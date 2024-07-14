@@ -29,7 +29,7 @@
 আমরা যে form submit করি, তখন তো FormData submit হয়ে, বা json request করলে সে data ও আমরা capture করতে পারি। কিন্ত how does that work? আবার যখন `response()-&gt;json()` বা `return view(‘some-html’)` দেই, সেটা কিভাবে আবার ঐ একি ভাবে HTTP response পাঠায়?" />
 <meta property="og:site_name" content="thearyanahmed.com" />
 <link rel="canonical" href="https://thearyanahmed.com/blog/articles/implementing-hyerptext-transfer-protocol-maybe" />
-<meta property="article:Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" content="Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST&lt;/span&gt;… maybe?" />
+<meta property="article:Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST…&lt;/span&gt; maybe?" content="Implementing HyperText Transfer Protocol with &lt;span class=&quot;text-red-400&quot;&gt;RUST…&lt;/span&gt; maybe?" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -189,23 +189,18 @@
             <div class="relative px-4 sm:px-6 lg:px-8">
                 <div class="text-lg max-w-prose">
                     <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
-                        Implementing HyperText Transfer Protocol with <span class="text-red-400">RUST</span>… maybe?
+                        Implementing HyperText Transfer Protocol with <span class="text-red-400">RUST…</span> maybe?
                     </h1>
                 </div>
 
                 
 
             
-                <div class="text-lg max-w-prose">
-                    <p class="mt-8 text-xl tracking-tight text-gray-900 leading-9">
+                <div class="text-lg max-w-prose mt-8 tracking-tight text-gray-500 leading-9">
                         কখনো REST Api বানিয়েছেন? হয়ত কোনো library (router) বা framework ব্যবহার করেছেন। খেয়াল করেছেন যে HTTP, যেটা `GET /path?query=value HTTP/1.1` এরকম কিছু দিয়ে শুরু হয়, সেটা আমরা কিভাবে `$request` (type) variable (object) দিয়ে আমরা আমাদের application layer এ interact করতে পারি? 
 
-
-আমরা যে form submit করি, তখন তো FormData submit হয়ে, বা json request করলে সে data ও আমরা capture করতে পারি। কিন্ত how does that work? আবার যখন `response()->json()` বা `return view(‘some-html’)` দেই, সেটা কিভাবে আবার ঐ একি ভাবে HTTP response পাঠায়?
-
-                    </p>
                 </div>
-                <div class="article-content-markdown leading-9 tracking-tight mt-6 text-xl font-aquawasdaxalt prose prose-indigo prose-lg text-gray-800 mx-auto">
+                <div class="article-content-markdown leading-9 tracking-tight mt-6 text-lg font-aquawasdaxalt prose prose-indigo prose-lg text-gray-500 mx-auto">
                     <div ><p>এই article টায় একটা router এর মত কিছু বানাবো। যেটা ঐ raw TCP data নিয়ে, সেটাকে HTTP তে convert করে । Well, HTTP ই থাকে শুরু থেকে, তবে form অন্য থাকে। তারপরে HTTP এর rules অনুযায়ি request parse করে আবার response ও করবো। আর along the way, একটা router এর মত কিছু বানিয়ে ফেলবো যেটা দিয়ে basic http তে communicate করতে পারবো (hopefully) ।</p>
 <p>হতে পারে JSON, বা html । Code টা rust এ করা। আর এটা কোনো tutorial না, more like a discussion? I guess (?).
 But that’s not all. এটা বানানোর সময় কিছুটা threading আর async rust নিয়েও কাজ করা লাগছে, নাহলে একটা প্রতিটা request sequentially execute করা লাগতো! So, this article covers my findings.</p>
@@ -621,9 +616,9 @@ Arc একটা reference count রাখে। <code>let router_clone: Arc&lt;
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.72.0</span>
+                v<span class="text-gray-400">2.73.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">307</span>ヅ<span class="text-gray-500/60">5db67fd4087c587f1205a3f96419ff825e722149</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">308</span>ヅ<span class="text-gray-500/60">49def18761e65ee7cec352d135fccffc3a497782</span></span>
         </div>
     </footer>
 </body>
