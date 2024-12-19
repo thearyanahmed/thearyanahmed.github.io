@@ -88,12 +88,12 @@
 </script>
 </head>
 
-<body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
+<body class="antialiased   text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
 
     <div
     class="notsticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-transparent">
     <nav class="w-full mx-auto bg-white">
-        <div class="px-2 sm:px-6 lg:px-8 dotted-bg">
+        <div class="px-2 sm:px-6 lg:px-8  ">
             <div class="relative flex justify-between h-16">
                 <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
                     <!-- Mobile menu button -->
@@ -153,7 +153,7 @@
         </div>
 
         <!-- Mobile menu, show/hide based on menu state. -->
-        <div class="hidden dotted-bg" id="mobile-menu">
+        <div class="hidden  " id="mobile-menu">
             <div class="pt-6 pb-4 space-y-1">
                 <a href="https://thearyanahmed.com"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
@@ -180,7 +180,7 @@
     <main class="lg:relative">
         <div class="max-w-3xl mx-auto px-4">
         <div class="relative py-16 bg-white overflow-hidden">
-            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full dotted-bg">
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full  ">
                 <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
                     <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
                         <defs>
@@ -239,19 +239,19 @@
 <h3 id="sql-injections">SQL Injections</h3>
 <p>During an SQL injection attack, the attacker tries to bind malicious sql code with the input parameter. In earlier days, we saw http queries like <code>user?id=1</code>, the id would be an input for the <code>id</code> of the users table. Behind the scene, the backend code is doing making some query using that input.</p>
 <p>Imagine we want to just read the user data from database where the id is $id (from query param). Our sql query would translate to something like this</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #EA9A97">SELECT</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">coulmns…</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">FROM</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">users</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">WHERE</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">id</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span></span>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color:#EA9A97">SELECT</span><span style="color:#E0DEF4"> </span><span style="color:#908CAA">(</span><span style="color:#3E8FB0">coulmns…</span><span style="color:#908CAA">)</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">FROM</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">users</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">WHERE</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">id</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">=</span><span style="color:#E0DEF4"> </span><span style="color:#EA9A97">1</span><span style="color:#908CAA">;</span></span>
 <span class="line"></span></code></pre>
 <p>But what if the the attacker used the following instead of the id</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">user?id=</span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span><span style="color: #3E8FB0">DROP</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">TABLE</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">users</span><span style="color: #908CAA">;</span></span>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color:#3E8FB0">user?id=</span><span style="color:#EA9A97">1</span><span style="color:#908CAA">;</span><span style="color:#3E8FB0">DROP</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">TABLE</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">users</span><span style="color:#908CAA">;</span></span>
 <span class="line"></span></code></pre>
 <p>As HTTP requests are parsed as strings (primarily), though we want id to be numeric, without proper sanitization the query would be</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #EA9A97">SELECT</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">coulmns…</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">FROM</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">users</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">WHERE</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">id</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">1</span><span style="color: #908CAA">;</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">DROP</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">TABLE</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">users</span><span style="color: #908CAA">;</span></span>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color:#EA9A97">SELECT</span><span style="color:#E0DEF4"> </span><span style="color:#908CAA">(</span><span style="color:#3E8FB0">coulmns…</span><span style="color:#908CAA">)</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">FROM</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">users</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">WHERE</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">id</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">=</span><span style="color:#E0DEF4"> </span><span style="color:#EA9A97">1</span><span style="color:#908CAA">;</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">DROP</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">TABLE</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">users</span><span style="color:#908CAA">;</span></span>
 <span class="line"></span></code></pre>
 <p>And given that there is sufficient permissions, this query would execute and drop the users table; A permanent mutation.</p>
 <h3 id="prepared-statements">Prepared Statements</h3>
 <p>This can be prevented by using <code>prepared statement</code>s. The root cause of that problem was not separating the sql code and input data. And <strong>the query and the data are sent to the database server separately</strong>.</p>
 <p>Using prepared statements, we’ll have something like</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #EA9A97">SELECT</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">columns…</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">FROM</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">users</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">where</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">id=?</span><span style="color: #F6C177">&quot;</span></span>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color:#EA9A97">SELECT</span><span style="color:#E0DEF4"> </span><span style="color:#908CAA">(</span><span style="color:#3E8FB0">columns…</span><span style="color:#908CAA">)</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">FROM</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">users</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">where</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">id=?</span><span style="color:#F6C177">&quot;</span></span>
 <span class="line"></span></code></pre>
 <p>and data would be <code>**1**</code>;</p>
 <p>As our SQL query is <strong>a valid program as of itself</strong>, if we are directly making a query, we are dynamically building the query aka <em>program</em> in the runtime and sending it to the sql server, but using prepared statements, we first send the query <code>*SELECT (columns…) FROM users where id=?”*</code> first. And thats our program.</p>
@@ -260,10 +260,10 @@
 <h3 id="command-vs-data">Command vs Data</h3>
 <p>Or <em>to execute or not to</em>. So what happens if we still use the same input <code>?id=1;DROP TABLE users;</code> ? Well, the input is not parsed, neither executed. Imagine having an executable but not executing it.</p>
 <p>Lets take a look at the following code,</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">data</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;1; DROP TABLE users;&quot;</span></span>
-<span class="line"><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">db</span><span style="color: #3E8FB0">-&gt;</span><span style="color: #EA9A97">prepare</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;</span><span style="color: #3E8FB0">SELECT</span><span style="color: #F6C177"> (columns…) </span><span style="color: #3E8FB0">FROM</span><span style="color: #F6C177"> users </span><span style="color: #3E8FB0">WHERE</span><span style="color: #F6C177"> id</span><span style="color: #3E8FB0">=</span><span style="color: #F6C177">?&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span></span>
-<span class="line"><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">db</span><span style="color: #3E8FB0">-&gt;</span><span style="color: #EA9A97">execute</span><span style="color: #908CAA">(</span><span style="color: #908CAA; font-style: italic">$</span><span style="color: #E0DEF4; font-style: italic">data</span><span style="color: #908CAA">);</span></span>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color:#908CAA;font-style: italic">$</span><span style="color:#E0DEF4;font-style: italic">data</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">=</span><span style="color:#E0DEF4"> </span><span style="color:#F6C177">&quot;1; DROP TABLE users;&quot;</span></span>
+<span class="line"><span style="color:#908CAA;font-style: italic">$</span><span style="color:#E0DEF4;font-style: italic">db</span><span style="color:#3E8FB0">-&gt;</span><span style="color:#EA9A97">prepare</span><span style="color:#908CAA">(</span><span style="color:#F6C177">&quot;</span><span style="color:#3E8FB0">SELECT</span><span style="color:#F6C177"> (columns…) </span><span style="color:#3E8FB0">FROM</span><span style="color:#F6C177"> users </span><span style="color:#3E8FB0">WHERE</span><span style="color:#F6C177"> id</span><span style="color:#3E8FB0">=</span><span style="color:#F6C177">?&quot;</span><span style="color:#908CAA">);</span></span>
+<span class="line"><span style="color:#E0DEF4"> </span></span>
+<span class="line"><span style="color:#908CAA;font-style: italic">$</span><span style="color:#E0DEF4;font-style: italic">db</span><span style="color:#3E8FB0">-&gt;</span><span style="color:#EA9A97">execute</span><span style="color:#908CAA">(</span><span style="color:#908CAA;font-style: italic">$</span><span style="color:#E0DEF4;font-style: italic">data</span><span style="color:#908CAA">);</span></span>
 <span class="line"></span></code></pre>
 <p>Shouldn’t this also translate to the same query? Well, the answer is <strong>no</strong>. AS mentioned, the query is a command that is executed, the data is not. For our instance, the data <code>*1; DROP Table users*</code> would fail to find a valid result.</p>
 <p>Here are some scenarios,</p>
@@ -316,9 +316,9 @@
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.84.0</span>
+                v<span class="text-gray-400">2.85.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">319</span>ヅ<span class="text-gray-500/60">25b04e466fd0ad8693868be94d101356cc6056aa</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">322</span>ヅ<span class="text-gray-500/60">d1dadf91e0e44f90da2123fc752bcb40eb55836a</span></span>
         </div>
     </footer>
 </body>

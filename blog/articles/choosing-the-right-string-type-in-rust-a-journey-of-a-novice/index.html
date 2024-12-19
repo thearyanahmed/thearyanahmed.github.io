@@ -86,12 +86,12 @@
 </script>
 </head>
 
-<body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
+<body class="antialiased   text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
 
     <div
     class="notsticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-transparent">
     <nav class="w-full mx-auto bg-white">
-        <div class="px-2 sm:px-6 lg:px-8 dotted-bg">
+        <div class="px-2 sm:px-6 lg:px-8  ">
             <div class="relative flex justify-between h-16">
                 <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
                     <!-- Mobile menu button -->
@@ -151,7 +151,7 @@
         </div>
 
         <!-- Mobile menu, show/hide based on menu state. -->
-        <div class="hidden dotted-bg" id="mobile-menu">
+        <div class="hidden  " id="mobile-menu">
             <div class="pt-6 pb-4 space-y-1">
                 <a href="https://thearyanahmed.com"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
@@ -178,7 +178,7 @@
     <main class="lg:relative">
         <div class="max-w-3xl mx-auto px-4">
         <div class="relative py-16 bg-white overflow-hidden">
-            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full dotted-bg">
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full  ">
                 <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
                     <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
                         <defs>
@@ -229,7 +229,7 @@
 <li>UTF-8 encoding is essential for your application (most common use case).</li>
 </ul>
 <p>Example:</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">my_string</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello, Rust!&quot;</span><span style="color: #908CAA">);</span></span>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color:#3E8FB0">let</span><span style="color:#E0DEF4"> </span><span style="color:#E0DEF4;font-style: italic">my_string</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">=</span><span style="color:#E0DEF4"> </span><span style="color:#9CCFD8">String</span><span style="color:#3E8FB0">::</span><span style="color:#EA9A97">from</span><span style="color:#908CAA">(</span><span style="color:#F6C177">&quot;Hello, Rust!&quot;</span><span style="color:#908CAA">);</span></span>
 <span class="line"></span></code></pre>
 <h2 id="ampstr">&amp;str</h2>
 <p>The <code>&amp;str</code> type, often called a &quot;string slice,&quot; represents a borrowed reference to a string. Use <code>&amp;str</code> when:</p>
@@ -239,9 +239,9 @@
 <li>Your function should accept string arguments without taking ownership.</li>
 </ul>
 <p>Example:</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_greeting</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">greeting</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">str</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">greeting</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color:#3E8FB0">fn</span><span style="color:#E0DEF4"> </span><span style="color:#EA9A97">print_greeting</span><span style="color:#908CAA">(</span><span style="color:#E0DEF4;font-style: italic">greeting</span><span style="color:#3E8FB0">:</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">&amp;</span><span style="color:#9CCFD8">str</span><span style="color:#908CAA">)</span><span style="color:#E0DEF4"> </span><span style="color:#908CAA">{</span></span>
+<span class="line"><span style="color:#E0DEF4">    </span><span style="color:#EA9A97">println!</span><span style="color:#908CAA">(</span><span style="color:#F6C177">&quot;</span><span style="color:#908CAA">{}</span><span style="color:#F6C177">&quot;</span><span style="color:#908CAA">,</span><span style="color:#E0DEF4"> </span><span style="color:#E0DEF4;font-style: italic">greeting</span><span style="color:#908CAA">);</span></span>
+<span class="line"><span style="color:#908CAA">}</span></span>
 <span class="line"></span></code></pre>
 <h2 id="cowstr">Cow<str></h2>
 <p>The <code>Cow</code> (short for &quot;clone on write&quot;) type is versatile. It can be either a borrowed reference (<code>&amp;str</code>) or an owned <code>String</code>, depending on the situation. Use <code>Cow&lt;str&gt;</code> when:</p>
@@ -251,11 +251,11 @@
 <li>You need to balance performance and flexibility.</li>
 </ul>
 <p>Example:</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">borrow</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Cow</span><span style="color: #908CAA">;</span></span>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color:#3E8FB0">use</span><span style="color:#E0DEF4"> </span><span style="color:#9CCFD8">std</span><span style="color:#3E8FB0">::</span><span style="color:#9CCFD8">borrow</span><span style="color:#3E8FB0">::</span><span style="color:#9CCFD8">Cow</span><span style="color:#908CAA">;</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">process_text</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">text</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Cow</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">str</span><span style="color: #908CAA">&gt;)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> ...</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"><span style="color:#3E8FB0">fn</span><span style="color:#E0DEF4"> </span><span style="color:#EA9A97">process_text</span><span style="color:#908CAA">(</span><span style="color:#E0DEF4;font-style: italic">text</span><span style="color:#3E8FB0">:</span><span style="color:#E0DEF4"> </span><span style="color:#9CCFD8">Cow</span><span style="color:#908CAA">&lt;</span><span style="color:#9CCFD8">str</span><span style="color:#908CAA">&gt;)</span><span style="color:#E0DEF4"> </span><span style="color:#908CAA">{</span></span>
+<span class="line"><span style="color:#E0DEF4">    </span><span style="color:#908CAA;font-style: italic">//</span><span style="color:#6E6A86;font-style: italic"> ...</span></span>
+<span class="line"><span style="color:#908CAA">}</span></span>
 <span class="line"></span></code></pre>
 <h2 id="osstring-and-osstr">OsString and OsStr</h2>
 <p>These types deal with platform-specific strings. Use <code>OsString</code> and <code>OsStr</code> when:</p>
@@ -264,11 +264,11 @@
 <li>You need to handle non-UTF-8 encoded data (e.g., on Windows).</li>
 </ul>
 <p>Example:</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">ffi</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">{</span><span style="color: #9CCFD8">OsString</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">OsStr</span><span style="color: #908CAA">};</span></span>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color:#3E8FB0">use</span><span style="color:#E0DEF4"> </span><span style="color:#9CCFD8">std</span><span style="color:#3E8FB0">::</span><span style="color:#9CCFD8">ffi</span><span style="color:#3E8FB0">::</span><span style="color:#908CAA">{</span><span style="color:#9CCFD8">OsString</span><span style="color:#908CAA">,</span><span style="color:#E0DEF4"> </span><span style="color:#9CCFD8">OsStr</span><span style="color:#908CAA">};</span></span>
 <span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">read_file</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">file_path</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">OsStr</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">OsString</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">std</span><span style="color: #3E8FB0">::</span><span style="color: #E0DEF4; font-style: italic">io</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Error</span><span style="color: #908CAA">&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> ...</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
+<span class="line"><span style="color:#3E8FB0">fn</span><span style="color:#E0DEF4"> </span><span style="color:#EA9A97">read_file</span><span style="color:#908CAA">(</span><span style="color:#E0DEF4;font-style: italic">file_path</span><span style="color:#3E8FB0">:</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">&amp;</span><span style="color:#9CCFD8">OsStr</span><span style="color:#908CAA">)</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">-&gt;</span><span style="color:#E0DEF4"> </span><span style="color:#9CCFD8">Result</span><span style="color:#908CAA">&lt;</span><span style="color:#9CCFD8">OsString</span><span style="color:#908CAA">,</span><span style="color:#E0DEF4"> </span><span style="color:#E0DEF4;font-style: italic">std</span><span style="color:#3E8FB0">::</span><span style="color:#E0DEF4;font-style: italic">io</span><span style="color:#3E8FB0">::</span><span style="color:#9CCFD8">Error</span><span style="color:#908CAA">&gt;</span><span style="color:#E0DEF4"> </span><span style="color:#908CAA">{</span></span>
+<span class="line"><span style="color:#E0DEF4">    </span><span style="color:#908CAA;font-style: italic">//</span><span style="color:#6E6A86;font-style: italic"> ...</span></span>
+<span class="line"><span style="color:#908CAA">}</span></span>
 <span class="line"></span></code></pre>
 <p>In conclusion, choosing the right string type in Rust is crucial for writing efficient and maintainable code. The decision largely depends on your specific use case, whether you need dynamic growth, want to avoid allocations, or deal with platform-specific data.</p>
 <p>From this journey, I've found that understanding the nuances of these string types is invaluable for crafting robust and performant Rust applications. Happy coding, Rustaceans!</p>
@@ -307,9 +307,9 @@
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.84.0</span>
+                v<span class="text-gray-400">2.85.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">319</span>ヅ<span class="text-gray-500/60">25b04e466fd0ad8693868be94d101356cc6056aa</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">322</span>ヅ<span class="text-gray-500/60">d1dadf91e0e44f90da2123fc752bcb40eb55836a</span></span>
         </div>
     </footer>
 </body>

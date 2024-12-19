@@ -77,12 +77,12 @@
 </script>
 </head>
 
-<body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
+<body class="antialiased   text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
 
     <div
     class="notsticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-transparent">
     <nav class="w-full mx-auto bg-white">
-        <div class="px-2 sm:px-6 lg:px-8 dotted-bg">
+        <div class="px-2 sm:px-6 lg:px-8  ">
             <div class="relative flex justify-between h-16">
                 <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
                     <!-- Mobile menu button -->
@@ -142,7 +142,7 @@
         </div>
 
         <!-- Mobile menu, show/hide based on menu state. -->
-        <div class="hidden dotted-bg" id="mobile-menu">
+        <div class="hidden  " id="mobile-menu">
             <div class="pt-6 pb-4 space-y-1">
                 <a href="https://thearyanahmed.com"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
@@ -169,7 +169,7 @@
     <main class="lg:relative">
         <div class="max-w-3xl mx-auto px-4">
         <div class="relative py-16 bg-white overflow-hidden">
-            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full dotted-bg">
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full  ">
                 <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
                     <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none" viewBox="0 0 404 384">
                         <defs>
@@ -224,10 +224,10 @@
 <p>উদাহরণ দিতে হলে imagine করতে পারেন একটা Spacecraft, in a galaxy far far away. Operating System হবে spacecraft এর <strong>captain</strong>. Captain তার crew এর মাধ্যমে ( + সাহায্যে ) spacecraft টি পরিচালনা করছে। Captain তার craft এর সব বিষয়েই অবগত। Craft টির প্রতিটি core component এর দায়িত্বে আছে এক একজন Chief Officer. আর captain bridge বা control centre থেকে প্রতিটি component control করছে।</p>
 <p>Bridge, বার এই control centre হল <strong>Kernel</strong>. Kernel কে বাংলা করলে হয় <strong>শাঁস, শস্য, কেন্দ্রস্থল</strong> । Operating System এর core component টি হলো kernel. যা hardware এর সাথে OS এর interaction করায়। আমাদের spacecraft এর engine (CPU), communications (Networking), storage compartment (persistent storage : hard drive), communication device (I/O) etc control করে Captain (OS) তার bridge / control centre (Kernel) এর মাধ্যমে ।</p>
 <p>Kernel কেন? Kernel আলাদা আলাদা hardware এর সাথে communicate করতে পারে, যা OS নিজে থেকে পারে না। Hardware এর সাথে communicate করার জন্য Kernel component টাই OS use করে। আমরা যখন variable declare করি, variable গুলোকে</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">22</span></span>
-<span class="line"><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">9</span></span>
-<span class="line"><span style="color: #E0DEF4; font-style: italic">c</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">+</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">b</span></span>
-<span class="line"><span style="color: #E0DEF4; font-style: italic">fmt</span><span style="color: #908CAA">.</span><span style="color: #EA9A97">Printf</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;</span><span style="color: #3E8FB0">%d</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4; font-style: italic">c</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span></span>
+<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color:#E0DEF4;font-style: italic">a</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">:=</span><span style="color:#E0DEF4"> </span><span style="color:#EA9A97">22</span></span>
+<span class="line"><span style="color:#E0DEF4;font-style: italic">b</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">:=</span><span style="color:#E0DEF4"> </span><span style="color:#EA9A97">9</span></span>
+<span class="line"><span style="color:#E0DEF4;font-style: italic">c</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">:=</span><span style="color:#E0DEF4"> </span><span style="color:#E0DEF4;font-style: italic">a</span><span style="color:#E0DEF4"> </span><span style="color:#3E8FB0">+</span><span style="color:#E0DEF4"> </span><span style="color:#E0DEF4;font-style: italic">b</span></span>
+<span class="line"><span style="color:#E0DEF4;font-style: italic">fmt</span><span style="color:#908CAA">.</span><span style="color:#EA9A97">Printf</span><span style="color:#908CAA">(</span><span style="color:#F6C177">&quot;</span><span style="color:#3E8FB0">%d</span><span style="color:#F6C177">&quot;</span><span style="color:#908CAA">,</span><span style="color:#E0DEF4;font-style: italic">c</span><span style="color:#908CAA">)</span><span style="color:#E0DEF4"> </span></span>
 <span class="line"></span></code></pre>
 <p>value ধরে রাখতে memory তে যায়গা লাগে। Program OS এর কাছে memory allocate করার জন্য বলে। OS যখন memory allocate করে, তখন Kernel কে বলে এই value গুলোর জন্য memory space লাগবে। Kernel তখন RAM এর actual physical space এ write করে (এর মাঝে আরো অনেক step আছে)। আমরা কিন্তু চাইলেই অন্য model এর ram, cpu, disk etc ব্যবহার করতে পারি, যেগুলোর architecture একটা থেকে আরেকটা একদমই ভিন্ন। Even though আমাদের program এ কিন্ত কোনো change করা লাগছে না। কারণ কোন hardware এর সাথে কিভাবে communicate করতে হবে তা Kernel জানে আর kernel ই handle করে।</p>
 <p>এটা না হলে সব programmer এর যত ধরণের device এ তার program রান করতে চায় তত ধরণের device এর hardware integration নিয়ে জানতে হতো আর instructions লিখতে হত। এই ৪ লাইন যোগ program execute করতেও হয়ত হাজার হাজার line instructions লিখতে হত। শুধু hardware এর সাথে communicate করার জন্য।</p>
@@ -295,9 +295,9 @@
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.84.0</span>
+                v<span class="text-gray-400">2.85.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">319</span>ヅ<span class="text-gray-500/60">25b04e466fd0ad8693868be94d101356cc6056aa</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">322</span>ヅ<span class="text-gray-500/60">d1dadf91e0e44f90da2123fc752bcb40eb55836a</span></span>
         </div>
     </footer>
 </body>
