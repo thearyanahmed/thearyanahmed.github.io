@@ -28,7 +28,7 @@
 <meta name="author" content="Aryan Ahmed" />
 <meta name="twitter:card" content="Over the past years couple years, I go back to rust when I get the time to try something new. Rust has been a favorite." />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/blog/articles/choosing-the-right-string-type-in-rust-a-journey-of-a-novice" />
+<link rel="canonical" href="http://localhost/blog/articles/choosing-the-right-string-type-in-rust-a-journey-of-a-novice" />
 <meta property="article:Choosing the Right String Type in Rust: A Journey of a Novice" content="Choosing the Right String Type in Rust: A Journey of a Novice" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
@@ -48,22 +48,11 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
-    <link href="https://thearyanahmed.com/css/app.css" rel="stylesheet">
+    <link href="http://localhost/css/app.css" rel="stylesheet">
 
     
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-90CDQWTTNW"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-
-    gtag('config', 'G-90CDQWTTNW');
-</script>
 </head>
 
 <body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
@@ -94,13 +83,13 @@
                 </div>
                 <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="justify-center w-full mx-auto hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="https://thearyanahmed.com" title="thearyanahmed's blog" target="_self"
+                        <a href="http://localhost" title="thearyanahmed's blog" target="_self"
                             class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
                             home
                         </a>
                         
 
-                        <a href="https://thearyanahmed.com/whoami" title="thearyanahmed's deviantart profile" target="_self"
+                        <a href="http://localhost/whoami" title="thearyanahmed's deviantart profile" target="_self"
                             class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
                             whoami
                         </a>
@@ -133,13 +122,13 @@
         <!-- Mobile menu, show/hide based on menu state. -->
         <div class="hidden dotted-bg" id="mobile-menu">
             <div class="pt-6 pb-4 space-y-1">
-                <a href="https://thearyanahmed.com"
+                <a href="http://localhost"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
 
                 
 
 
-                <a href="https://thearyanahmed.com/whoami"
+                <a href="http://localhost/whoami"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">whoami</a>
 
 
@@ -216,8 +205,8 @@
 <li>UTF-8 encoding is essential for your application (most common use case).</li>
 </ul>
 <p>Example:</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">my_string</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello, Rust!&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">let my_string = String::from(&quot;Hello, Rust!&quot;);
+</code>
 <h2 id="ampstr">&amp;str</h2>
 <p>The <code>&amp;str</code> type, often called a &quot;string slice,&quot; represents a borrowed reference to a string. Use <code>&amp;str</code> when:</p>
 <ul>
@@ -226,10 +215,10 @@
 <li>Your function should accept string arguments without taking ownership.</li>
 </ul>
 <p>Example:</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_greeting</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">greeting</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">str</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">greeting</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">fn print_greeting(greeting: &amp;str) {
+    println!(&quot;{}&quot;, greeting);
+}
+</code>
 <h2 id="cowstr">Cow<str></h2>
 <p>The <code>Cow</code> (short for &quot;clone on write&quot;) type is versatile. It can be either a borrowed reference (<code>&amp;str</code>) or an owned <code>String</code>, depending on the situation. Use <code>Cow&lt;str&gt;</code> when:</p>
 <ul>
@@ -238,12 +227,11 @@
 <li>You need to balance performance and flexibility.</li>
 </ul>
 <p>Example:</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">borrow</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Cow</span><span style="color: #908CAA">;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">process_text</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">text</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Cow</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">str</span><span style="color: #908CAA">&gt;)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> ...</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">use std::borrow::Cow;
+<p>fn process_text(text: Cow&lt;str&gt;) {
+// ...
+}
+</code></p>
 <h2 id="osstring-and-osstr">OsString and OsStr</h2>
 <p>These types deal with platform-specific strings. Use <code>OsString</code> and <code>OsStr</code> when:</p>
 <ul>
@@ -251,12 +239,11 @@
 <li>You need to handle non-UTF-8 encoded data (e.g., on Windows).</li>
 </ul>
 <p>Example:</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">ffi</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">{</span><span style="color: #9CCFD8">OsString</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">OsStr</span><span style="color: #908CAA">};</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">read_file</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">file_path</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">OsStr</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">OsString</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">std</span><span style="color: #3E8FB0">::</span><span style="color: #E0DEF4; font-style: italic">io</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Error</span><span style="color: #908CAA">&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> ...</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">use std::ffi::{OsString, OsStr};
+<p>fn read_file(file_path: &amp;OsStr) -&gt; Result&lt;OsString, std::io::Error&gt; {
+// ...
+}
+</code></p>
 <p>In conclusion, choosing the right string type in Rust is crucial for writing efficient and maintainable code. The decision largely depends on your specific use case, whether you need dynamic growth, want to avoid allocations, or deal with platform-specific data.</p>
 <p>From this journey, I've found that understanding the nuances of these string types is invaluable for crafting robust and performant Rust applications. Happy coding, Rustaceans!</p>
 </div>
@@ -288,13 +275,13 @@
             }
         </script>
 
-    <script src="https://thearyanahmed.com/js/functions.js"></script>
+    <script src="http://localhost/js/functions.js"></script>
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
                 v<span class="text-gray-400">2.9.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">267</span>ヅ<span class="text-gray-500/60">7e49bf219ba8566ab680aa1e15021ffbc45450b7</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">268</span>ヅ<span class="text-gray-500/60">bbf7e384814d2d90c78dbd0e1aa7181fc78d5d12</span></span>
         </div>
     </footer>
 </body>

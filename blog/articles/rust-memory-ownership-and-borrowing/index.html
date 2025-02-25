@@ -36,7 +36,7 @@
 <meta name="author" content="Aryan Ahmed" />
 <meta name="twitter:card" content="Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code." />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/blog/articles/rust-memory-ownership-and-borrowing" />
+<link rel="canonical" href="http://localhost/blog/articles/rust-memory-ownership-and-borrowing" />
 <meta property="article:Rust: Memory, Ownership and Borrowing" content="Rust: Memory, Ownership and Borrowing" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
@@ -56,22 +56,11 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
-    <link href="https://thearyanahmed.com/css/app.css" rel="stylesheet">
+    <link href="http://localhost/css/app.css" rel="stylesheet">
 
     
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-90CDQWTTNW"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-
-    gtag('config', 'G-90CDQWTTNW');
-</script>
 </head>
 
 <body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
@@ -102,13 +91,13 @@
                 </div>
                 <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="justify-center w-full mx-auto hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="https://thearyanahmed.com" title="thearyanahmed's blog" target="_self"
+                        <a href="http://localhost" title="thearyanahmed's blog" target="_self"
                             class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
                             home
                         </a>
                         
 
-                        <a href="https://thearyanahmed.com/whoami" title="thearyanahmed's deviantart profile" target="_self"
+                        <a href="http://localhost/whoami" title="thearyanahmed's deviantart profile" target="_self"
                             class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
                             whoami
                         </a>
@@ -141,13 +130,13 @@
         <!-- Mobile menu, show/hide based on menu state. -->
         <div class="hidden dotted-bg" id="mobile-menu">
             <div class="pt-6 pb-4 space-y-1">
-                <a href="https://thearyanahmed.com"
+                <a href="http://localhost"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
 
                 
 
 
-                <a href="https://thearyanahmed.com/whoami"
+                <a href="http://localhost/whoami"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">whoami</a>
 
 
@@ -231,20 +220,17 @@
 <p>The current stackframe is also, in other words the scope.</p>
 <h2 id="when-a-function-is-called">When a function is called</h2>
 <p>When a function is called, that is when we actually put our sheet of paper on top of our stack. Lets take a look at the following code,</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello, World&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">10</span><span style="color: #908CAA">;</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #EA9A97">println</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #EA9A97">print_another_variable</span><span style="color: #908CAA">();</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_another_variable</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">k</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">11</span><span style="color: #908CAA">;</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4; font-style: italic">k</span><span style="color: #908CAA">)</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">fn main() {
+  println!(&quot;Hello, World&quot;);
+<p>let x = 10;
+println(&quot;{}&quot;, x);</p>
+<p>print_another_variable();
+}</p>
+<p>fn print_another_variable() {
+let k = 11;
+println!(&quot;{}&quot;,k)
+}
+</code></p>
 <p>Our first stackframe is the main() function body. It writes Hello, World, then assigns the value 10 to x, then prints it. Then calls another function print_another_variable().</p>
 <p>print_another_variable() is written in another sheet of paper. When we call it in our main function, we put print_another_variable() sheet on top of our main() sheet.</p>
 <p>Now our processor person is reading from what to do from the function write in front of him. Our processor person can only see (access) the page right in front of him. Not the pages beneath.</p>
@@ -267,10 +253,10 @@ Our heap is not as fast and efficient as our stack, but it gives us support for 
 </blockquote>
 <p>Putting our growable dynamic data somewhere else. This somewhere else is our heap.</p>
 <p>Lets take a look at the code below,</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello, World&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">fn main() {
+    let a = String::from(&quot;Hello, World&quot;);
+}
+</code>
 <p>For this piece of code, we tell the heap to store “Hello, World” string into memory. It checks how much space does it need based on what we have currently. We have 12 characters (comma and space included).</p>
 <p>The heap takes say memory address 0xAB0001 (lets assume), and starts putting our string. Imagine the sequence goes on like this 0xAB0001, 0xAB0002 … 0xABN.</p>
 <p>Our hello world string ends at 0xAB0012. But what do we store in our stack? Our stack holds the following values,</p>
@@ -288,14 +274,14 @@ If we update the string to Hello, our capacity still remain 12, but our length w
 </ol>
 <h2 id="copy-amp-pointer">Copy &amp; Pointer</h2>
 <p>Lets take this example for a moment</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">100</span><span style="color: #908CAA">;</span></span>
-<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">y</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">x</span><span style="color: #908CAA">;</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">let x = 100;
+let y = x;
+</code>
 <p>This will trigger a COPY. Copy of the value 100. Cause x in this case is an integer, or in other words, a known sized variable. Same for other known sized. It’s cheap and fast to copy them around.</p>
 <p>But, for the following code,</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">;</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">let a = String::from(&quot;Hello&quot;);
+let b = a ;
+</code>
 <p>So, like before, a should be a pointer to the heap memory, holding the data “Hello”. If so, now when we assign b, if it copies the pointer like we would do for an integer or known sized data type, then our “Hello” would have two owners.</p>
 <h2 id="2-owners-amp-double-free-error">2 Owners &amp; Double Free Error</h2>
 <p>For our analogy mentioned above, Hello has two owners. But if one changes, there isn’t any way for the other one to know that something has changed.</p>
@@ -310,30 +296,25 @@ If we update the string to Hello, our capacity still remain 12, but our length w
 <h2 id="rusts-solution">Rust’s solution</h2>
 <p>So for rust, when assigning let b = a where a is a string or of unknown sized data type, it triggers a move instead of copy. Meaning, the pointer information that was stored in a, is now stored in b, and a doesn’t have that information.</p>
 <p>If we run the following program, it’ll cause an error, saying `move occurs because a has type String, which does not implement the Copy.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;b = </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;a = </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">let a = String::from(&quot;Hello&quot;);
+println!(&quot;{}&quot;,a);
+<p>let b = a;</p>
+<p>println!(&quot;b = {}&quot;,b);
+println!(&quot;a = {}&quot;,a);
+</code></p>
 <h2 id="copying-the-unknown-sized-data">Copying the unknown sized data</h2>
 <p>If we wanted to copy the actual value “Hello” to be, we need to do a Clone instead like let b = a.clone(). And take a moment to realise that these solutions abide by the rules of ownership.</p>
 <h2 id="rule-3-out-of-scopes">Rule 3 — Out of scopes</h2>
 <p>Take a look at the following,</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_something</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;a in main =&gt; </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_something</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;inside the function =&gt; </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">fn main() {
+ let a = String::from(&quot;Hello&quot;);
+<p>print_something(a);</p>
+<p>println!(&quot;a in main =&gt; {}&quot;, a);
+}</p>
+<p>fn print_something(a : String) {
+println!(&quot;inside the function =&gt; {}&quot;, a);
+}
+</code></p>
 <p>Function params behave in a similar way. In this print_something() function, we pass in an argument a : String . See the function does not return anything.</p>
 <p>So, the variable’s pointer information is passed to that function’s a parameter. Just like let b = a example mentioned above. Also, remember that functions are like a sheet of paper? So when the call ends, it’s torn apart.</p>
 <p>In rust’s words, the value is dropped.</p>
@@ -342,53 +323,44 @@ If we update the string to Hello, our capacity still remain 12, but our length w
 <p>But if we called the print_something() function after println, then it would not be a problem cause during println, the a variable still holds the information.</p>
 <h2 id="returning-the-ownership">Returning the ownership</h2>
 <p>Another way to solve it is to return a value from the function. Take the following code and it will run just fine.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> added `mut` here</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_something</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;a in main =&gt; </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> Notice the &quot; -&gt; String&quot;, it means it is gonna return a string</span></span>
-<span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_something</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;inside the function =&gt; </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> here we are returning a string value</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">fn main() {
+<p>// added <code>mut</code> here
+let mut a = String::from(&quot;Hello&quot;);</p>
+<p>a = print_something(a);</p>
+<p>println!(&quot;a in main =&gt; {}&quot;, a);</p>
+<p>}
+// Notice the &quot; -&gt; String&quot;, it means it is gonna return a string
+fn print_something(a : String) -&gt; String {
+println!(&quot;inside the function =&gt; {}&quot;, a);</p>
+<p>a // here we are returning a string value
+}
+</code></p>
 <p>We needed to add mut because rust’s variables are by default immutable. But the key point here is in a = print_something(a), we are getting back a string from the print_something() function.</p>
 <h2 id="borrowing-passing-the-reference">Borrowing | Passing the reference</h2>
 <p>Another solution would be to pass the reference. Take the following example</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">main</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;Hello&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> we are passing a reference, denoted by &#39;&amp;&#39;</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_something</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;a in main =&gt; </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> see I&#39;ve added &#39;&amp;&#39; before String</span></span>
-<span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print_something</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;inside the function =&gt; </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">fn main() {
+ let a = String::from(&quot;Hello&quot;);
+<p>// we are passing a reference, denoted by '&amp;'
+print_something(&amp;a);</p>
+<p>println!(&quot;a in main =&gt; {}&quot;, a);
+}</p>
+<p>// see I've added '&amp;' before String
+fn print_something(a : &amp;String) {
+println!(&quot;inside the function =&gt; {}&quot;, a);
+}
+</code></p>
 <p>This also runs well.</p>
 <h2 id="single-mutable-borrow-at-a-time">Single mutable borrow at a time</h2>
 <p>Rust allows single mutable borrow at a time. You can have multiple immutable or read only borrows. But you can not have</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;a&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">b</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">;</span></span>
-<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">c</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #908CAA">;</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">let mut a = String::from(&quot;a&quot;);
+<p>let b = &amp;mut a;
+let c = &amp;mut a;
+</code></p>
 <p>It’ll throw an error. Going back to the same problem, imagine b changes some data but c doesn’t know about it.</p>
 <p>Ownership, Read only borrow , Mutable borrow and Returning ownership
 You can tell what a function do.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">a_func</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">takes_ownership</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">read_only_borrow</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">str</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">mutable_borrow</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">){}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">fn a_func(takes_ownership: String, read_only_borrow: &amp;str, mutable_borrow: &amp;mut String){}
+</code>
 <p>// add '-&gt; String' before the first curly brace if you want it to return some ownership.// add '-&gt; String' before the first curly brace if you want it to return some ownership.
 <strong>Update</strong>: I would like add the following two sections based on the feedback I’ve received.</p>
 <h2 id="borrow-vs-move-under-the-hood">Borrow vs Move under the hood</h2>
@@ -438,13 +410,13 @@ You can tell what a function do.</p>
             }
         </script>
 
-    <script src="https://thearyanahmed.com/js/functions.js"></script>
+    <script src="http://localhost/js/functions.js"></script>
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
                 v<span class="text-gray-400">2.9.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">267</span>ヅ<span class="text-gray-500/60">7e49bf219ba8566ab680aa1e15021ffbc45450b7</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">268</span>ヅ<span class="text-gray-500/60">bbf7e384814d2d90c78dbd0e1aa7181fc78d5d12</span></span>
         </div>
     </footer>
 </body>

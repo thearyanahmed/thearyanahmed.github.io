@@ -22,7 +22,7 @@
 <meta name="author" content="Aryan Ahmed" />
 <meta name="twitter:card" content />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/blog/articles/kubernetes-cluster-architecture" />
+<link rel="canonical" href="http://localhost/blog/articles/kubernetes-cluster-architecture" />
 <meta property="article:Kubernetes Cluster Architecture" content="Kubernetes Cluster Architecture" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
@@ -42,22 +42,11 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
-    <link href="https://thearyanahmed.com/css/app.css" rel="stylesheet">
+    <link href="http://localhost/css/app.css" rel="stylesheet">
 
     
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-90CDQWTTNW"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-
-    gtag('config', 'G-90CDQWTTNW');
-</script>
 </head>
 
 <body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
@@ -88,13 +77,13 @@
                 </div>
                 <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="justify-center w-full mx-auto hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="https://thearyanahmed.com" title="thearyanahmed's blog" target="_self"
+                        <a href="http://localhost" title="thearyanahmed's blog" target="_self"
                             class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
                             home
                         </a>
                         
 
-                        <a href="https://thearyanahmed.com/whoami" title="thearyanahmed's deviantart profile" target="_self"
+                        <a href="http://localhost/whoami" title="thearyanahmed's deviantart profile" target="_self"
                             class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
                             whoami
                         </a>
@@ -127,13 +116,13 @@
         <!-- Mobile menu, show/hide based on menu state. -->
         <div class="hidden dotted-bg" id="mobile-menu">
             <div class="pt-6 pb-4 space-y-1">
-                <a href="https://thearyanahmed.com"
+                <a href="http://localhost"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
 
                 
 
 
-                <a href="https://thearyanahmed.com/whoami"
+                <a href="http://localhost/whoami"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">whoami</a>
 
 
@@ -244,14 +233,12 @@
 </ul>
 <p>Kinds of controllers</p>
 <ul>
-<li>
-<strong>ReplicaSets</strong>
+<li><strong>ReplicaSets</strong>
 <ul>
 <li>Ensures a specificed number of replicas are running at all times. Needs to be used inside a deployment. Uses want vs have condition. New deployment will trigger new replica set while keeping the old ones, in case of rollbacks.</li>
 </ul>
 </li>
-<li>
-<strong>Deployments</strong>
+<li><strong>Deployments</strong>
 <ul>
 <li>Declartive updates config objects Allows us to do pod managment. Running replicate set allows us to deploy a number of pods and check their status as a single unit.</li>
 <li>Sclaing a replicateSet sacles out the pods, allows for the deployment to handle more traffic.</li>
@@ -259,20 +246,17 @@
 <li>Status</li>
 </ul>
 </li>
-<li>
-<strong>DaemonSets</strong>
+<li><strong>DaemonSets</strong>
 <ul>
 <li>Ensures all nodes run a copy of a specific pod. DaemonSets will add or remove the required pods.</li>
 </ul>
 </li>
-<li>
-<strong>Jobs</strong>
+<li><strong>Jobs</strong>
 <ul>
 <li>Supervisor process for pods carrying out batch jobs. Usually runs as a cron.</li>
 </ul>
 </li>
-<li>
-<strong>Services</strong>
+<li><strong>Services</strong>
 <ul>
 <li>Allows communication between one set of deployments with another. Solves the problem of new (dynamic) IP (I guess). Service as DNS.</li>
 <li>Kinds:
@@ -287,16 +271,16 @@
 </ul>
 <p><strong>Labels, Selectors and Namespaces</strong></p>
 <p>Labes:</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">-</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Key-Value</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">pairs</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">For</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">developers</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">image</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">tags</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">with</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">value</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Label</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">keys</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">are</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">unique</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">per</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">object</span><span style="color: #3E8FB0">.</span></span>
-<span class="line"></span></code></pre>
+<code>  - Key-Value pairs. For developers, image tags with value. Label keys are unique per object.
+</code>
 <p>Selectors:</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">-</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Equality</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">based</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">selectors</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">`=`</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">and</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">`!=`</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">.</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">-</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Set</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">based</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">selectors</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Has</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">`IN`</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">`NOTIN`</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">and</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">`EXISTS`</span></span>
-<span class="line"></span></code></pre>
+<code>  - Equality based selectors. `=` and `!=` .
+  - Set based selectors. Has: `IN` , `NOTIN` and `EXISTS`
+</code>
 <p>Namespaces:</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">-</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Multiple</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">virtual</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">clusters</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">backed</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">by</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">single</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">physical</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">server</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Mainly</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">for</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">separation</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">or</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">concern</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">and</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">divide</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">cluster</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">resoruces</span><span style="color: #3E8FB0">.</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">-</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">K8s</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">starts</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">with</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">default</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">namespace</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Newer</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">applications</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">install</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">with</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">their</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">resources</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">in</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">a</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">different</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">namespace</span><span style="color: #3E8FB0">.</span></span>
-<span class="line"></span></code></pre>
+<code>  - Multiple virtual clusters backed by a single physical server. Mainly for separation or concern and divide cluster resoruces.
+  - K8s starts with default namespace. Newer applications install with their resources in a different namespace.
+</code>
 <p><strong>Kubelet</strong></p>
 <ul>
 <li>Communicates with API servers for pods</li>
@@ -316,79 +300,74 @@
 <p>For a new service, kube-proxy opens a randomly chosen port on the local node.</p>
 <p><strong>What does ClusterIP, NodePort, and LoadBalancer mean?</strong></p>
 <ul>
-<li>
-<strong>ClusterIP</strong>
+<li><strong>ClusterIP</strong>
 <ul>
 <li>The default value. The service is only accessible from within the Kubernetes cluster. You can’t make requests to your Pods from outside the cluster!</li>
 </ul>
 </li>
-<li>
-<strong>NodePort</strong>
+<li><strong>NodePort</strong>
 <ul>
 <li>This makes the service accessible on a static port on each Node in the cluster. This means that the service can handle requests that originate from outside the cluster.</li>
 </ul>
 </li>
-<li>
-<strong>LoadBalancer</strong>
+<li><strong>LoadBalancer</strong>
 <ul>
 <li>The service becomes accessible externally through a cloud provider's load balancer functionality. GCP, AWS, Azure, and OpenStack offer this functionality. The cloud provider will create a load balancer, which then automatically routes requests to your Kubernetes Service</li>
 </ul>
 </li>
 </ul>
 <p><strong>Service config</strong></p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #E0DEF4; font-style: italic">kind</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">Service</span><span style="color: #E0DEF4"> </span></span>
-<span class="line"><span style="color: #E0DEF4; font-style: italic">apiVersion</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">v1</span><span style="color: #E0DEF4"> </span></span>
-<span class="line"><span style="color: #E0DEF4; font-style: italic">metadata</span><span style="color: #908CAA">:</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #E0DEF4; font-style: italic">name</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">hostname</span><span style="color: #3E8FB0">-</span><span style="color: #E0DEF4; font-style: italic">service</span><span style="color: #E0DEF4"> </span></span>
-<span class="line"><span style="color: #E0DEF4; font-style: italic">spec</span><span style="color: #908CAA">:</span></span>
-<span class="line"><span style="color: #E0DEF4">  # </span><span style="color: #E0DEF4; font-style: italic">Expose</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">the</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">service</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">on</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">static</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">port</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">on</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">each</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">node</span></span>
-<span class="line"><span style="color: #E0DEF4">  # </span><span style="color: #E0DEF4; font-style: italic">so</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">that</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">we</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">can</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">access</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">the</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">service</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">from</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">outside</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">the</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">cluster</span><span style="color: #E0DEF4"> </span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">type</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">NodePort</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">  # </span><span style="color: #E0DEF4; font-style: italic">When</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">the</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">node</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">receives</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">request</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">on</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">the</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">static</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">port</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #EA9A97">30163</span><span style="color: #908CAA">)</span></span>
-<span class="line"><span style="color: #E0DEF4">  # </span><span style="color: #F6C177">&quot;select pods with the label &#39;app&#39; set to &#39;echo-hostname&#39;&quot;</span></span>
-<span class="line"><span style="color: #E0DEF4">  # </span><span style="color: #3E8FB0">select</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">pod</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">where</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">label</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&#39;</span><span style="color: #EB6F92">app</span><span style="color: #F6C177">&#39;</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">and</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">label_value</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&#39;</span><span style="color: #EB6F92">echo-hostname</span><span style="color: #F6C177">&#39;</span></span>
-<span class="line"><span style="color: #E0DEF4">  # </span><span style="color: #E0DEF4; font-style: italic">and</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">forward</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">the</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">request</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">to</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">one</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">of</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">them</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #E0DEF4; font-style: italic">selector</span><span style="color: #908CAA">:</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">app</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">echo</span><span style="color: #3E8FB0">-</span><span style="color: #E0DEF4; font-style: italic">hostname</span><span style="color: #E0DEF4"> </span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #E0DEF4; font-style: italic">ports</span><span style="color: #908CAA">:</span></span>
-<span class="line"><span style="color: #E0DEF4">    # </span><span style="color: #E0DEF4; font-style: italic">Three</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">types</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">of</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">ports</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">for</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">service</span></span>
-<span class="line"><span style="color: #E0DEF4">    # </span><span style="color: #E0DEF4; font-style: italic">nodePort</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">a</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">static</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">port</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">assigned</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">on</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">each</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">the</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">node</span></span>
-<span class="line"><span style="color: #E0DEF4">    # </span><span style="color: #E0DEF4; font-style: italic">port</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">port</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">exposed</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">internally</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">in</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">the</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">cluster</span></span>
-<span class="line"><span style="color: #E0DEF4">    # </span><span style="color: #E0DEF4; font-style: italic">targetPort</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">the</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">container</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">port</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">to</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">send</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">requests</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">to</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">-</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">nodePort</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">30163</span></span>
-<span class="line"><span style="color: #E0DEF4">      </span><span style="color: #E0DEF4; font-style: italic">port</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">8080</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> the service is internally available on this port</span></span>
-<span class="line"><span style="color: #E0DEF4">      </span><span style="color: #E0DEF4; font-style: italic">targetPort</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">80</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> the container running inside the port exposes this port</span></span>
-<span class="line"></span></code></pre>
+<code class="language-go">kind: Service 
+apiVersion: v1 
+metadata:
+  name: hostname-service 
+spec:
+  # Expose the service on a static port on each node
+  # so that we can access the service from outside the cluster 
+  type: NodePort
+<h1 id="when-the-node-receives-a-request-on-the-static-port-30163">When the node receives a request on the static port (30163)</h1>
+<h1 id="quotselect-pods-with-the-label-app-set-to-echo-hostnamequot">&quot;select pods with the label 'app' set to 'echo-hostname'&quot;</h1>
+<h1 id="select-pod-where-label-app-and-label-value-echo-hostname">select pod where label = 'app' and label_value = 'echo-hostname'</h1>
+<h1 id="and-forward-the-request-to-one-of-them">and forward the request to one of them</h1>
+<p>selector:
+app: echo-hostname</p>
+<p>ports:
+# Three types of ports for a service
+# nodePort - a static port assigned on each the node
+# port - port exposed internally in the cluster
+# targetPort - the container port to send requests to
+- nodePort: 30163
+port: 8080 // the service is internally available on this port
+targetPort: 80 // the container running inside the port exposes this port
+</code></p>
 <p><strong>Kubectl Commands</strong></p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">get</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">pods</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">get</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">services</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">create</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-f</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">$filename</span><span style="color: #F6C177">.yml</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">get</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">replicas</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">get</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">pods</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">—show-labels</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">get</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">pods</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">—selector</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">dev-lead=</span><span style="color: #E0DEF4; font-style: italic">$name</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">get</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">pods</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">—selectors</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">dev-lead=</span><span style="color: #E0DEF4; font-style: italic">$name</span><span style="color: #F6C177">,env=staging</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">get</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">pods</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">—selectors</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">dev-lead!=</span><span style="color: #E0DEF4; font-style: italic">$name</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">#</span><span style="color: #6E6A86; font-style: italic"> not equals operator</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">get</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">pods</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-l</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">#</span><span style="color: #6E6A86; font-style: italic"> shortcuts for selectors</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">get</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">pods</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-l</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">‘release</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">version</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">in</span><span style="color: #E0DEF4"> (1.0, </span><span style="color: #EA9A97">2.0</span><span style="color: #E0DEF4">)’</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">get</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">pods</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-l</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">‘release</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">version</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">notin</span><span style="color: #E0DEF4"> (1.0, </span><span style="color: #EA9A97">2.0</span><span style="color: #E0DEF4">)’  </span><span style="color: #908CAA; font-style: italic">#</span><span style="color: #6E6A86; font-style: italic"> not in operator</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">delete</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">pods</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-l</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">deve-lead=</span><span style="color: #E0DEF4; font-style: italic">$name</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">create</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-f</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">$config</span><span style="color: #F6C177">.yml</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">—record</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">#</span><span style="color: #6E6A86; font-style: italic"> to record rollout history</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">set</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">image</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">deployment/</span><span style="color: #E0DEF4; font-style: italic">$deploymentName</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">helloworld=</span><span style="color: #E0DEF4; font-style: italic">$image</span><span style="color: #F6C177">:</span><span style="color: #E0DEF4; font-style: italic">$tag</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">#</span><span style="color: #6E6A86; font-style: italic"> updates image</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">rollout</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">history</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">deployment/</span><span style="color: #E0DEF4; font-style: italic">$name_of_deployment</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">rollout</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">undor</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">deployment/</span><span style="color: #E0DEF4; font-style: italic">$name_of_deployment</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">rollout</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">undor</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">deployment/</span><span style="color: #E0DEF4; font-style: italic">$name_of_deployment</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">—to-revision=</span><span style="color: #E0DEF4; font-style: italic">$version_number</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">describe</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">deployment</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">$deployment_name</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">describe</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">$type</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">$name</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">logs</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">$pod_name</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">exec</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-it</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">$pod_name</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">$command_to_run</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">#</span><span style="color: #6E6A86; font-style: italic"> ($command_to_run eg: /bin/bash)</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">autoscale</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">deployment</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">php-apache</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">--cpu-percent=50</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">--min=1</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">--max=10</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">get</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">hpa</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">create</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">namespace</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">production</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">describe</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">pod</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">nginx</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-n</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">development</span></span>
-<span class="line"><span style="color: #EA9A97">kubectl</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">delete</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">pod</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">nginx</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-n</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">development</span></span>
-<span class="line"></span></code></pre>
+<code class="language-bash">kubectl get pods
+kubectl get services
+kubectl create -f $filename.yml
+kubectl get replicas
+kubectl get pods —show-labels
+kubectl get pods —selector dev-lead=$name
+kubectl get pods —selectors dev-lead=$name,env=staging
+kubectl get pods —selectors dev-lead!=$name # not equals operator
+kubectl get pods -l # shortcuts for selectors
+kubectl get pods -l ‘release version in (1.0, 2.0)’
+kubectl get pods -l ‘release version notin (1.0, 2.0)’  # not in operator
+kubectl delete pods -l deve-lead=$name
+kubectl create -f $config.yml —record # to record rollout history
+kubectl set image deployment/$deploymentName helloworld=$image:$tag # updates image
+kubectl rollout history deployment/$name_of_deployment
+kubectl rollout undor deployment/$name_of_deployment
+kubectl rollout undor deployment/$name_of_deployment —to-revision=$version_number
+kubectl describe deployment $deployment_name
+kubectl describe $type $name
+kubectl logs $pod_name
+kubectl exec -it $pod_name $command_to_run # ($command_to_run eg: /bin/bash)
+kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
+kubectl get hpa
+kubectl create namespace production
+kubectl describe pod nginx -n development
+kubectl delete pod nginx -n development
+</code>
 <p><strong>Minikube commands</strong></p>
 <ul>
 <li>minikube service  $service-name</li>
@@ -424,13 +403,13 @@
             }
         </script>
 
-    <script src="https://thearyanahmed.com/js/functions.js"></script>
+    <script src="http://localhost/js/functions.js"></script>
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
                 v<span class="text-gray-400">2.9.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">267</span>ヅ<span class="text-gray-500/60">7e49bf219ba8566ab680aa1e15021ffbc45450b7</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">268</span>ヅ<span class="text-gray-500/60">bbf7e384814d2d90c78dbd0e1aa7181fc78d5d12</span></span>
         </div>
     </footer>
 </body>

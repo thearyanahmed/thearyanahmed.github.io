@@ -34,7 +34,7 @@
 <meta name="author" content="Aryan Ahmed" />
 <meta name="twitter:card" content="As rust is being adopted by lots of different companies for solving various purposes, I’m trying to adopt rust. In this article and the series of articles following this will contain my journey to build a simple program, an url shortener, with rust." />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/blog/articles/building-a-url-shortener-with-rust-and-redis" />
+<link rel="canonical" href="http://localhost/blog/articles/building-a-url-shortener-with-rust-and-redis" />
 <meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
@@ -54,22 +54,11 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
-    <link href="https://thearyanahmed.com/css/app.css" rel="stylesheet">
+    <link href="http://localhost/css/app.css" rel="stylesheet">
 
     
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-90CDQWTTNW"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-
-    gtag('config', 'G-90CDQWTTNW');
-</script>
 </head>
 
 <body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
@@ -100,13 +89,13 @@
                 </div>
                 <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="justify-center w-full mx-auto hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="https://thearyanahmed.com" title="thearyanahmed's blog" target="_self"
+                        <a href="http://localhost" title="thearyanahmed's blog" target="_self"
                             class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
                             home
                         </a>
                         
 
-                        <a href="https://thearyanahmed.com/whoami" title="thearyanahmed's deviantart profile" target="_self"
+                        <a href="http://localhost/whoami" title="thearyanahmed's deviantart profile" target="_self"
                             class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
                             whoami
                         </a>
@@ -139,13 +128,13 @@
         <!-- Mobile menu, show/hide based on menu state. -->
         <div class="hidden dotted-bg" id="mobile-menu">
             <div class="pt-6 pb-4 space-y-1">
-                <a href="https://thearyanahmed.com"
+                <a href="http://localhost"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
 
                 
 
 
-                <a href="https://thearyanahmed.com/whoami"
+                <a href="http://localhost/whoami"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">whoami</a>
 
 
@@ -240,187 +229,182 @@ Build a program that stores valid urls against an unique id</p>
 <p>The records are saved in a datastore, the datastore can be anything, hashmap, redis, mysql etc. It is accessed by a trait object ( dyn TraitName ). This trait, in our case is Datastore .</p>
 <h2 id="datastore">Datastore</h2>
 <p>We want our service class to have access to a datastore via a public trait object. So we can have support for multiple data stores.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">trait</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Datastore</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">find</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">uuid</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">str</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">Record</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">LucyError</span><span style="color: #908CAA">&gt;;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">record</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Record</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">bool</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">&gt;;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">all</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Vec</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">Record</span><span style="color: #908CAA">&gt;;</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">pub trait Datastore {
+    fn find(&amp;mut self, uuid: &amp;str) -&gt; Result&lt;Record, LucyError&gt;;
+<code>fn record(&amp;amp;mut self, record: Record) -&amp;gt; Result&amp;lt;bool, String&amp;gt;;
+
+fn all(&amp;amp;mut self) -&amp;gt; Vec&amp;lt;Record&amp;gt;;
+</code>
+<p>}
+</code></p>
 <p>We’ll call our library Lucy (just needed a name). And the structure is simple.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">struct</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Lucy</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">ds</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Box</span><span style="color: #908CAA">&lt;</span><span style="color: #3E8FB0">dyn</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Datastore</span><span style="color: #908CAA">&gt;,</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">impl</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Lucy</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">new</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">driver</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">DatastoreDriver</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Lucy</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">find</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">uuid</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">str</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">Record</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">LucyError</span><span style="color: #908CAA">&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">record</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Record</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">bool</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">all</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Vec</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">Record</span><span style="color: #908CAA">&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">pub struct Lucy {
+    ds: Box&lt;dyn Datastore&gt;,
+}
+<p>impl Lucy {
+pub fn new(driver: DatastoreDriver) -&gt; Lucy {</p>
+<code>}
+
+pub fn find(&amp;amp;mut self, uuid: &amp;amp;str) -&amp;gt; Result&amp;lt;Record, LucyError&amp;gt; {
+}
+
+pub fn record(&amp;amp;mut self, record: Record) -&amp;gt; Result&amp;lt;bool, String&amp;gt; {
+}
+
+pub fn all(&amp;amp;mut self) -&amp;gt; Vec&amp;lt;Record&amp;gt; {
+}
+</code>
+<p>}
+</code></p>
 <p>I’d like to address a few other things. The Record from the above code is simply a structure for holding an uuid and url.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">struct</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Record</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">url</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">uuid</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">pub struct Record {
+    pub url: String,
+    pub uuid: String,
+}
+</code>
 <p>And LucyError is an enum for the errors specific from this library.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">enum</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">LucyError</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #9CCFD8">UrlNotFoundError</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #9CCFD8">NotAValidUrlError</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">impl</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">LucyError</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">*</span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #E0DEF4; font-style: italic">Self</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">UrlNotFoundError</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;url not found&quot;</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">(),</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #E0DEF4; font-style: italic">Self</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">NotAValidUrlError</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">&quot;not a valid url&quot;</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">(),</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">pub enum LucyError {
+    UrlNotFoundError,
+    NotAValidUrlError
+}
+<p>impl LucyError {
+pub fn to_string(&amp;self) -&gt; String {
+match *self {
+Self::UrlNotFoundError =&gt; &quot;url not found&quot;.to_string(),
+Self::NotAValidUrlError =&gt; &quot;not a valid url&quot;.to_string(),
+}
+}
+}
+</code></p>
 <h2 id="implement-lucy">Implement Lucy</h2>
 <p>Our simple Lucy needs to be instantiated with a datastore , which can be selected from the outside.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">impl</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Lucy</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">new</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">driver</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">DatastoreDriver</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Lucy</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">ds</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Lucy</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">get_datastore</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">driver</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #9CCFD8">Lucy</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">ds</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">get_datastore</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">driver</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">DatastoreDriver</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Box</span><span style="color: #908CAA">&lt;</span><span style="color: #3E8FB0">dyn</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Datastore</span><span style="color: #908CAA">&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">driver</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">DatastoreDriver</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">InMemoryHashmap</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Box</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">new</span><span style="color: #908CAA">(</span><span style="color: #9CCFD8">HashmapStore</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">new</span><span style="color: #908CAA">()),</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">DatastoreDriver</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Redis</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Box</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">new</span><span style="color: #908CAA">(</span><span style="color: #9CCFD8">RedisStore</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">new</span><span style="color: #908CAA">()),</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">impl Lucy {
+    pub fn new(driver: DatastoreDriver) -&gt; Lucy {
+        let ds = Lucy::get_datastore(driver);
+        Lucy { ds }
+    }
+<code>fn get_datastore(driver: DatastoreDriver) -&amp;gt; Box&amp;lt;dyn Datastore&amp;gt; {
+    match driver {
+        DatastoreDriver::InMemoryHashmap =&amp;gt; Box::new(HashmapStore::new()),
+        DatastoreDriver::Redis =&amp;gt; Box::new(RedisStore::new()),
+    }
+}
+</code>
+<p>}
+</code></p>
 <p>We want our datastore to be something dynamic, something that implements Datastore trait, anything that implements Datastore trait. For starters, we had two options, either go with generics or dynamic dispatch.</p>
 <p>Box is a pointer to heap allocation. More details here.</p>
 <p>From our library’s user point of view, a user (dev) would run the following code to create an instance of our Lucyservice.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">lucy</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Lucy</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">new</span><span style="color: #908CAA">(</span><span style="color: #9CCFD8">DatastoreDriver</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">InMemoryHashmap</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #9CCFD8">To</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">save</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">an</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">url</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">we</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">call</span><span style="color: #908CAA">,</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">for</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">_</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">in</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">0</span><span style="color: #3E8FB0">..</span><span style="color: #EA9A97">100</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">lucy</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">record</span><span style="color: #908CAA">(</span><span style="color: #9CCFD8">Record</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">new</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">faker</span><span style="color: #3E8FB0">.gen</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">FakeOption</span><span style="color: #3E8FB0">::URL</span><span style="color: #908CAA">)))</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">err</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;error: </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4; font-style: italic">err</span><span style="color: #908CAA">),</span></span>
-<span class="line"><span style="color: #E0DEF4">      </span><span style="color: #E0DEF4; font-style: italic">_</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{},</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">let mut lucy = Lucy::new(DatastoreDriver::InMemoryHashmap);
+To record (save) an url, we call,
+<p>for _ in 0..100 {
+match lucy.record(Record::new(faker.gen(&amp;FakeOption::URL))) {
+Err(err) =&gt; println!(&quot;error: {}&quot;,err),
+_ =&gt; {},
+}
+}
+</code></p>
 <p>To find a specific one,</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">lucy</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">find</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">y</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">r</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;FOUND URL: </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4; font-style: italic">r</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4">url</span><span style="color: #908CAA">)</span></span>
-<span class="line"><span style="color: #E0DEF4">      </span><span style="color: #908CAA">},</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">e</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">print!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;NOT FOUND </span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4; font-style: italic">e</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">()),</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">match lucy.find(&amp;y) {
+    Ok(r) =&gt; {
+        println!(&quot;FOUND URL: {}&quot;,r.url)
+      },
+<code>Err(e) =&amp;gt; print!(&amp;quot;NOT FOUND {}&amp;quot;,e.to_string()),
+</code>
+<p>}
+</code></p>
 <p>And to find all of them,</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">for</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">in</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">lucy</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">all</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #EA9A97">println!</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;uuid: </span><span style="color: #908CAA">{}</span><span style="color: #F6C177"> url:</span><span style="color: #908CAA">{}</span><span style="color: #F6C177">&quot;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4">uuid</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4">url</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">for record in lucy.all() {
+    println!(&quot;uuid: {} url:{}&quot;,record.uuid, record.url);
+}
+</code>
 <p>It’s a very simple API. Let’s implement the RedisStore to satisfy Datastore trait.</p>
 <h2 id="implement-redisstore">Implement RedisStore</h2>
 <p>Our redis store for only holds a connect for now. We use the conventional new function to return an new instance that has the connection to communicate with redis.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">struct</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">RedisStore</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #E0DEF4; font-style: italic">con</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">redis</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Connection</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">impl</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">RedisStore</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">new</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">RedisStore</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> @TODO take connection string as parameter.</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">client</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">redis</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">Client</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">open</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;redis://127.0.0.1/&quot;</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">expect</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;could not connect to redis&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">con</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">client</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">get_connection</span><span style="color: #908CAA">()</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">expect</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;could not get connection to redis&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #9CCFD8">RedisStore</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">con</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">pub struct RedisStore {
+    con: redis::Connection,
+}
+<p>impl RedisStore {
+pub fn new() -&gt; RedisStore {
+// @TODO take connection string as parameter.
+let client = redis::Client::open(&quot;redis://127.0.0.1/&quot;).expect(&quot;could not connect to redis&quot;);</p>
+<code>    let con = client
+        .get_connection()
+        .expect(&amp;quot;could not get connection to redis&amp;quot;);
+
+    RedisStore { con }
+}
+</code>
+<p>}
+</code></p>
 <h2 id="implement-datastore-for-redisstore">Implement Datastore for RedisStore</h2>
 <p>For redis’s data structure, it’ll only be a simple string SET KEY VALUE where the KEY is an uuid and value is the URL itself. I’m using redis-rs crate.</p>
 <p><strong>record</strong> To set a record, we just run SET with given arguments.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">record</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Record</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">bool</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">redis</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">cmd</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;SET&quot;</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">arg</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4">uuid</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">arg</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4">url</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">query</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">&gt;(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4">con</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">_</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(</span><span style="color: #EA9A97">true</span><span style="color: #908CAA">),</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">err</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">err</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">()),</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">fn record(&amp;mut self, record: Record) -&gt; Result&lt;bool, String&gt; {
+        match redis::cmd(&quot;SET&quot;).arg(record.uuid).arg(record.url).query::&lt;String&gt;(&amp;mut self.con) {
+            Ok(_) =&gt; Ok(true),
+            Err(err) =&gt; Err(err.to_string()),
+        }
+    }
+</code>
 <p>Explanation, we run a command using cmd , with our arguments. The order of the arguments are necessary.</p>
 <p>find To find a record, we use the previous approach, simply with GET command.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">find</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">uuid</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">str</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Result</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">Record</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">LucyError</span><span style="color: #908CAA">&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">redis</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">cmd</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;GET&quot;</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">arg</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">uuid</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">query</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">&gt;(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4">con</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">url</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">                </span><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Record</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">url</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">uuid</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">())</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">                    </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #908CAA">),</span></span>
-<span class="line"><span style="color: #E0DEF4">                    </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">_</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #9CCFD8">LucyError</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">NotAValidUrlError</span><span style="color: #908CAA">)</span></span>
-<span class="line"><span style="color: #E0DEF4">                </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #908CAA">},</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">_</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #9CCFD8">LucyError</span><span style="color: #3E8FB0">::</span><span style="color: #9CCFD8">UrlNotFoundError</span><span style="color: #908CAA">),</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">  fn find(&amp;mut self, uuid: &amp;str) -&gt; Result&lt;Record, LucyError&gt; {
+        match redis::cmd(&quot;GET&quot;).arg(uuid).query::&lt;String&gt;(&amp;mut self.con) {
+            Ok(url) =&gt; {
+                match Record::from(url, uuid.to_string()) {
+                    Ok(record) =&gt; Ok(record),
+                    Err(_) =&gt; Err(LucyError::NotAValidUrlError)
+                }
+            },
+            Err(_) =&gt; Err(LucyError::UrlNotFoundError),
+        }
+    }
+</code>
 <p>all To implement all method, which will retrieve all saved records in our datastore, we first need to get all the keys and then find all the uuids and then making a bulk call using MGET key1 key2 … keyNwith all the given ids.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">all</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Vec</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">Record</span><span style="color: #908CAA">&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> Get all the keys</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">keys</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">redis</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">cmd</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;KEYS&quot;</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">arg</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;*&quot;</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">query</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">Vec</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">&gt;&gt;(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4">con</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">keyset</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">keyset</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">_</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">vec!</span><span style="color: #908CAA">[],</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">};</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">if</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">keys</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">len</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">==</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">0</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">return</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">vec!</span><span style="color: #908CAA">[];</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">cmd</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">redis</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">cmd</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;MGET&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> build the command</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">for</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">k</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">in</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">keys</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">clone</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #E0DEF4; font-style: italic">cmd</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">arg</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">k</span><span style="color: #908CAA">);</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> get redis results using MGET key1, key2, ..., keyN</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">urls</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">cmd</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">query</span><span style="color: #3E8FB0">::</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">Vec</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">String</span><span style="color: #908CAA">&gt;&gt;(</span><span style="color: #3E8FB0">&amp;mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">self</span><span style="color: #3E8FB0">.</span><span style="color: #E0DEF4">con</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">results</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">results</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">_</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">vec!</span><span style="color: #908CAA">[],</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">};</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">if</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">urls</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">len</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">==</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">0</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">return</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">vec!</span><span style="color: #908CAA">[];</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> Result mapping</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">mut</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">res</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Vec</span><span style="color: #908CAA">&lt;</span><span style="color: #9CCFD8">Record</span><span style="color: #908CAA">&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">vec!</span><span style="color: #908CAA">[];</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">for</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">i</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">uuid</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">in</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">keys</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">iter</span><span style="color: #908CAA">()</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">enumerate</span><span style="color: #908CAA">()</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">url</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;</span><span style="color: #E0DEF4; font-style: italic">urls</span><span style="color: #908CAA">[</span><span style="color: #E0DEF4; font-style: italic">i</span><span style="color: #908CAA">];</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">match</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Record</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">url</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">(),</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">uuid</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">())</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">                </span><span style="color: #9CCFD8">Ok</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">res</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">push</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">record</span><span style="color: #908CAA">),</span></span>
-<span class="line"><span style="color: #E0DEF4">                </span><span style="color: #9CCFD8">Err</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">_</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{},</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #E0DEF4; font-style: italic">res</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">    fn all(&amp;mut self) -&gt; Vec&lt;Record&gt; {
+        // Get all the keys
+        let keys = match redis::cmd(&quot;KEYS&quot;).arg(&quot;*&quot;).query::&lt;Vec&lt;String&gt;&gt;(&amp;mut self.con) {
+            Ok(keyset) =&gt; keyset,
+            Err(_) =&gt; vec![],
+        };
+<code>    if keys.len() == 0 {
+        return vec![];
+    }
+
+    let mut cmd = redis::cmd(&amp;quot;MGET&amp;quot;);
+
+    // build the command
+    for k in keys.clone() {
+        cmd.arg(k);
+    }
+
+    // get redis results using MGET key1, key2, ..., keyN
+    let urls = match cmd.query::&amp;lt;Vec&amp;lt;String&amp;gt;&amp;gt;(&amp;amp;mut self.con) {
+        Ok(results) =&amp;gt; results,
+        Err(_) =&amp;gt; vec![],
+    };
+
+    if urls.len() == 0 {
+        return vec![];
+    }
+
+    // Result mapping
+    let mut res : Vec&amp;lt;Record&amp;gt; = vec![];
+
+    for (i, uuid) in keys.iter().enumerate() {
+        let url = &amp;amp;urls[i];
+
+        match Record::from(url.to_string(), uuid.to_string()) {
+            Ok(record) =&amp;gt; res.push(record),
+            Err(_) =&amp;gt; {},
+        }
+    }
+
+    res
+}
+</code>
+</code>
 <p>And that does it. This is the core. Using it with a REST api, gRPC or even building a CLI or anything else is up to the dev. If the given datastores don’t work, simply write a datastore that implements Datastore.</p>
 <h2 id="notes">Notes</h2>
 <ul>
@@ -433,22 +417,18 @@ Build a program that stores valid urls against an unique id</p>
 </ul>
 <p>The following logic was using to generate uuid of a given length.</p>
 <h2 id="generate-uuid">Generate UUID</h2>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">unique_string</span><span style="color: #3E8FB0">:</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">String</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">rand</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">thread_rng</span><span style="color: #908CAA">()</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">sample_iter</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;</span><span style="color: #9CCFD8">Alphanumeric</span><span style="color: #908CAA">)</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">take</span><span style="color: #908CAA">(</span><span style="color: #E0DEF4; font-style: italic">char_length</span><span style="color: #908CAA">)</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">map</span><span style="color: #908CAA">(</span><span style="color: #9CCFD8">char</span><span style="color: #3E8FB0">::</span><span style="color: #E0DEF4; font-style: italic">from</span><span style="color: #908CAA">)</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">collect</span><span style="color: #908CAA">();</span></span>
-<span class="line"></span></code></pre>
+<code class="language-rust">let unique_string: String = rand::thread_rng()
+        .sample_iter(&amp;Alphanumeric)
+        .take(char_length)
+        .map(char::from)
+        .collect();
+</code>
 <h2 id="quick-links">Quick Links</h2>
 <ul>
-<li>A video on using <a href="https://www.youtube.com/watch?v=gocwRvLhDf8&amp;t=1s&amp;ab_channel=TomScott">alpha numeric ids for n characters by Tom Scott</a>
-</li>
-<li>
-<a href="https://en.wikipedia.org/wiki/Consistent_hashing">Consistent hashing</a>
-</li>
+<li>A video on using <a href="https://www.youtube.com/watch?v=gocwRvLhDf8&amp;t=1s&amp;ab_channel=TomScott">alpha numeric ids for n characters by Tom Scott</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Consistent_hashing">Consistent hashing</a></li>
 <li>An article on <a href="https://tom-e-white.com/2007/11/consistent-hashing.html">Consistent hashing</a> by Tom E White</li>
-<li>More on <a href="https://doc.rust-lang.org/std/boxed/struct.Box.html">Rust’s std::boxed::Box</a>
-</li>
+<li>More on <a href="https://doc.rust-lang.org/std/boxed/struct.Box.html">Rust’s std::boxed::Box</a></li>
 </ul>
 </div>
                 </div>
@@ -479,13 +459,13 @@ Build a program that stores valid urls against an unique id</p>
             }
         </script>
 
-    <script src="https://thearyanahmed.com/js/functions.js"></script>
+    <script src="http://localhost/js/functions.js"></script>
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
                 v<span class="text-gray-400">2.9.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">267</span>ヅ<span class="text-gray-500/60">7e49bf219ba8566ab680aa1e15021ffbc45450b7</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">268</span>ヅ<span class="text-gray-500/60">bbf7e384814d2d90c78dbd0e1aa7181fc78d5d12</span></span>
         </div>
     </footer>
 </body>

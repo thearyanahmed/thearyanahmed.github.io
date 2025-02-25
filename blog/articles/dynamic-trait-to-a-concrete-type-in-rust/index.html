@@ -26,7 +26,7 @@
 <meta name="author" content="Aryan Ahmed" />
 <meta name="twitter:card" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/blog/articles/dynamic-trait-to-a-concrete-type-in-rust" />
+<link rel="canonical" href="http://localhost/blog/articles/dynamic-trait-to-a-concrete-type-in-rust" />
 <meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
@@ -46,22 +46,11 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
-    <link href="https://thearyanahmed.com/css/app.css" rel="stylesheet">
+    <link href="http://localhost/css/app.css" rel="stylesheet">
 
     
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-90CDQWTTNW"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-
-    gtag('config', 'G-90CDQWTTNW');
-</script>
 </head>
 
 <body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
@@ -92,13 +81,13 @@
                 </div>
                 <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="justify-center w-full mx-auto hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="https://thearyanahmed.com" title="thearyanahmed's blog" target="_self"
+                        <a href="http://localhost" title="thearyanahmed's blog" target="_self"
                             class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
                             home
                         </a>
                         
 
-                        <a href="https://thearyanahmed.com/whoami" title="thearyanahmed's deviantart profile" target="_self"
+                        <a href="http://localhost/whoami" title="thearyanahmed's deviantart profile" target="_self"
                             class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
                             whoami
                         </a>
@@ -131,13 +120,13 @@
         <!-- Mobile menu, show/hide based on menu state. -->
         <div class="hidden dotted-bg" id="mobile-menu">
             <div class="pt-6 pb-4 space-y-1">
-                <a href="https://thearyanahmed.com"
+                <a href="http://localhost"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
 
                 
 
 
-                <a href="https://thearyanahmed.com/whoami"
+                <a href="http://localhost/whoami"
                     class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">whoami</a>
 
 
@@ -210,12 +199,10 @@
 <p>What happens we need something dynamic of different types?</p>
 <h2 id="context">Context</h2>
 <p>I’m trying to build a storage library, that supports multiple drivers. Sort of like <a href="https://laravel.com/docs/9.x/filesystem">laravel’s storage</a> class. In my design, we’d have something like</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #9CCFD8">Storage</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">put</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&#39;file-01.txt&#39;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">content</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #9CCFD8">Storage</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">disk</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&#39;s3&#39;</span><span style="color: #908CAA">)</span><span style="color: #3E8FB0">-&gt;</span><span style="color: #EA9A97">put</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&#39;file-02.png&#39;</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">content</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #9CCFD8">Storage</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">download</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&#39;file-03.docs&#39;</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span></code></pre>
+<code>Storage::put('file-01.txt', content);
+<p>Storage::disk('s3')-&gt;put('file-02.png', content);</p>
+<p>Storage::download('file-03.docs');
+</code></p>
 <p>As it’ll have different types of disks, which will work as adapters to our storage.</p>
 <h2 id="the-problem">The problem</h2>
 <p>The problem I was facing was having different config files for each type of disks. Our LocalFileAdapter , S3BucketFileAdapater , FTPFileAdapter each will have different type of config files. Simply put, S3BucketFileAdapater will have public key ,secret key and bucket name. LocalFileAdapater will not need these.</p>
@@ -223,46 +210,42 @@
 <p>Now, I want to have a method something similar to Storage::new(config) or something like this. The config should have which adapter/s to use, with their appropriate configuration (and unique) values.</p>
 <h3 id="two-cfgs">Two cfgs</h3>
 <p>For better understanding, I’m paining two config structs.</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">struct</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">LocalFileSystemAdapterConfig</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">root_dir</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">String</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">struct</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">S3AdapterConfig</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">public_key</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">String</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">secret_key</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">String</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">bucket</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">String</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">use_path_style_endpoint</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">false</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code>pub struct LocalFileSystemAdapterConfig {
+  pub root_dir: String,
+}
+<p>pub struct S3AdapterConfig {
+pub public_key: String,
+pub secret_key: String,
+pub bucket: String,
+pub use_path_style_endpoint: false,
+}
+</code></p>
 <p>And I need something like</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">trait</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">StorageAdapter</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #908CAA">  </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> ... methods</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #3E8FB0">struct</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Storage</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #EA9A97">disk</span><span style="color: #E0DEF4">: </span><span style="color: #3E8FB0">StorageAdapter</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #908CAA">  </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> other props</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">storage</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">Storage</span><span style="color: #3E8FB0">::</span><span style="color: #EA9A97">from</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">LocalFileSystemAdapterConfig</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">|</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">S3AdapterConfig</span><span style="color: #908CAA">);</span><span style="color: #E0DEF4"> </span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> and based on the given config</span></span>
-<span class="line"><span style="color: #3E8FB0">storage</span><span style="color: #3E8FB0">.</span><span style="color: #3E8FB0">disk</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">LocalFileSystem</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">|</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">S3</span></span>
-<span class="line"></span></code></pre>
+<code>trait StorageAdapter {
+  // ... methods
+}
+struct Storage {
+  disk: StorageAdapter,
+  // other props
+}
+<p>let storage = Storage::from(LocalFileSystemAdapterConfig | S3AdapterConfig);</p>
+<p>// and based on the given config
+storage.disk = LocalFileSystem | S3
+</code></p>
 <p>Defining a function that takes a dynamic parameter and casts it down to a specific / concrete type. The initial thought was maybe we should have something like</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">struct</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">LocalAdapterConfig</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #EA9A97">base_dir</span><span style="color: #E0DEF4">: </span><span style="color: #3E8FB0">String</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">impl</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">LocalAdapter</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">new&lt;T</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">dyn</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">StorageAdapterConfigTrait&gt;</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">config</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">T</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">LocalAdapter</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">local_config</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">config</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">as</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">LocalAdapterConfig</span><span style="color: #908CAA">;</span></span>
-<span class="line"><span style="color: #908CAA">    </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> THIS IS NOT ALLOWED</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code>struct LocalAdapterConfig {
+  base_dir: String,
+}
+<p>impl LocalAdapter {
+pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) -&gt; LocalAdapter {
+let local_config = config as LocalAdapterConfig;
+// THIS IS NOT ALLOWED
+}
+}
+</code></p>
 <p>The attempt resulted in a failure and gave me:</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">...</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">an</span><span style="color: #E0DEF4"> </span><span style="color: #F6C177">`as`</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">expression</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">can</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">only</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">be</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">used</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">to</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">convert</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">between</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">primitive</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">types</span></span>
-<span class="line"></span></code></pre>
+<code>... an `as` expression can only be used to convert between primitive types
+</code>
 <p>Rust is saying, you can use the as keyword to convert between primitive types. This was not working. But as we are using a dynamictrait (as an interface concept). We can cast that trait to a concrete type.</p>
 <h2 id="solution-downcast">Solution: Downcast</h2>
 <p>In this case, our config: T would be converted to LocalAdapterConfig. Though the method signature needs to change a bit.</p>
@@ -271,65 +254,58 @@
 <p>Downcasting is converting a trait into a concrete type.</p>
 </blockquote>
 <p>Our initial code is as follows</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #E0DEF4">::</span><span style="color: #9CCFD8">any</span><span style="color: #E0DEF4">::</span><span style="color: #9CCFD8">Any</span><span style="color: #908CAA">;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">struct</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">LocalFileSystemAdapterConfig</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">base_directory</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">String</span><span style="color: #908CAA">,</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">struct</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">LocalFileSystemAdapter</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">base_dir</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">String</span><span style="color: #908CAA">,</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> just for demo purpose</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> the trait config that every storage adapter&#39;s config will implement</span></span>
-<span class="line"><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">trait</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">StorageAdapterConfig</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">as_any</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;self</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;dyn</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Any</span><span style="color: #908CAA">;</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code>use std::any::Any;
+<p>pub struct LocalFileSystemAdapterConfig {
+pub base_directory: String,
+}</p>
+<p>pub struct LocalFileSystemAdapter {
+pub base_dir: String, // just for demo purpose
+}</p>
+<p>// the trait config that every storage adapter's config will implement
+pub trait StorageAdapterConfig {
+fn as_any(&amp;self) -&gt; &amp;dyn Any;
+}
+</code></p>
 <p>We need the as_any method to be implemented for concrete struct/s where we want to allow <em>downcasting</em>. Therefore,</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">use</span><span style="color: #E0DEF4"> </span><span style="color: #9CCFD8">std</span><span style="color: #E0DEF4">::</span><span style="color: #9CCFD8">any</span><span style="color: #E0DEF4">::</span><span style="color: #9CCFD8">Any</span><span style="color: #908CAA">;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #3E8FB0">impl</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">StorageAdapterConfig</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">for</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">LocalFileSystemAdapterConfig</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">as_any</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">&amp;self</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;dyn</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Any</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">self</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code>use std::any::Any;
+<p>impl StorageAdapterConfig for LocalFileSystemAdapterConfig {
+fn as_any(&amp;self) -&gt; &amp;dyn Any {
+self
+}
+}
+</code></p>
 <p>We also need to change our method’s signature from</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">new&lt;T</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">dyn</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">StorageAdapterConfigTrait&gt;</span><span style="color: #908CAA">(</span><span style="color: #3E8FB0">config</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">T</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span></span>
-<span class="line"></span></code></pre>
+<code>pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) 
+</code>
 <p>to</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">new</span><span style="color: #908CAA">(</span><span style="color: #EA9A97">config</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;dyn</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Any</span><span style="color: #908CAA">)</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> make sure to import std::any::Any;</span></span>
-<span class="line"></span></code></pre>
+<code>pub fn new(config: &amp;dyn Any)
+<p>// make sure to import std::any::Any;
+</code></p>
 <p>And finally, to downcast a variable of type dyn Any to our concrete LocalFileSystemAdapterConfig ,</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">cfg</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;LocalFileSystemAdapterConfig</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">config</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">.</span><span style="color: #9CCFD8">downcast_ref</span><span style="color: #3E8FB0">::&lt;LocalFileSystemAdapterConfig&gt;</span><span style="color: #908CAA">()</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">expect</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;failed to downcast&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> the syntax is </span></span>
-<span class="line"><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> .downcast_ref::&lt;$CONCRETE_TYPE&gt;().expect(&quot;msg&quot;);</span></span>
-<span class="line"></span></code></pre>
+<code>let cfg : &amp;LocalFileSystemAdapterConfig = config
+            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
+            .expect(&quot;failed to downcast&quot;);
+<p>// the syntax is
+// .downcast_ref::&lt;$CONCRETE_TYPE&gt;().expect(&quot;msg&quot;);
+</code></p>
 <p>The full code,</p>
-<pre class="shiki" style="background-color: #232136"><code><span class="line"><span style="color: #3E8FB0">impl</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">LocalFileSystemAdapter</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #3E8FB0">pub</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">fn</span><span style="color: #E0DEF4"> </span><span style="color: #EA9A97">new</span><span style="color: #908CAA">(</span><span style="color: #EA9A97">config</span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;dyn</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">Any</span><span style="color: #908CAA">)</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">-&gt;</span><span style="color: #E0DEF4"> </span><span style="color: #E0DEF4; font-style: italic">LocalFileSystemAdapter</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">cfg</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">:</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;LocalFileSystemAdapterConfig</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">config</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">.</span><span style="color: #9CCFD8">downcast_ref</span><span style="color: #3E8FB0">::&lt;LocalFileSystemAdapterConfig&gt;</span><span style="color: #908CAA">()</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">expect</span><span style="color: #908CAA">(</span><span style="color: #F6C177">&quot;failed to downcast&quot;</span><span style="color: #908CAA">);</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">let</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">base_dir</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">=</span><span style="color: #E0DEF4"> </span><span style="color: #3E8FB0">&amp;cfg</span><span style="color: #3E8FB0">.</span><span style="color: #3E8FB0">base_directory</span><span style="color: #908CAA">;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #3E8FB0">LocalFileSystemAdapter</span><span style="color: #E0DEF4"> </span><span style="color: #908CAA">{</span></span>
-<span class="line"><span style="color: #E0DEF4">            </span><span style="color: #EA9A97">base_dir</span><span style="color: #E0DEF4">: </span><span style="color: #3E8FB0">base_dir</span><span style="color: #3E8FB0">.</span><span style="color: #EA9A97">to_string</span><span style="color: #908CAA">(),</span></span>
-<span class="line"><span style="color: #E0DEF4">        </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #E0DEF4">    </span><span style="color: #908CAA">}</span></span>
-<span class="line"><span style="color: #E0DEF4">  </span></span>
-<span class="line"><span style="color: #908CAA">  </span><span style="color: #908CAA; font-style: italic">//</span><span style="color: #6E6A86; font-style: italic"> ...</span></span>
-<span class="line"><span style="color: #908CAA">}</span></span>
-<span class="line"></span></code></pre>
+<code>impl LocalFileSystemAdapter {
+<code>pub fn new(config: &amp;amp;dyn Any) -&amp;gt; LocalFileSystemAdapter {
+
+    let cfg : &amp;amp;LocalFileSystemAdapterConfig = config
+        .downcast_ref::&amp;lt;LocalFileSystemAdapterConfig&amp;gt;()
+        .expect(&amp;quot;failed to downcast&amp;quot;);
+
+    let base_dir = &amp;amp;cfg.base_directory;
+
+    LocalFileSystemAdapter {
+        base_dir: base_dir.to_string(),
+    }
+}
+</code>
+<p>// ...
+}
+</code></p>
 <p>Our IDE picks up the change and returns proper intellisense.</p>
 <p><img src="https://cdn-images-1.medium.com/max/3676/1*Wc_P7YRnKepKZIwN-e-zlA.png" alt="Downcasting a dyn trait to a concrete type" /></p>
 <p>***Note *<em>maybe there are better ways of achieving the same result, maybe the API Design could have been better to avoid it in the first place. Well, I’m still learning rust.</em></p>
@@ -363,13 +339,13 @@
             }
         </script>
 
-    <script src="https://thearyanahmed.com/js/functions.js"></script>
+    <script src="http://localhost/js/functions.js"></script>
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
                 v<span class="text-gray-400">2.9.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">267</span>ヅ<span class="text-gray-500/60">7e49bf219ba8566ab680aa1e15021ffbc45450b7</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">268</span>ヅ<span class="text-gray-500/60">bbf7e384814d2d90c78dbd0e1aa7181fc78d5d12</span></span>
         </div>
     </footer>
 </body>
