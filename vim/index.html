@@ -276,9 +276,9 @@
                             </div>
 
                             <!-- Command Line Input -->
-                            <div x-show="mode === 'command'"
+                            <div x-show="mode === 'command' || mode === 'search-forward' || mode === 'search-backward'"
                                 class="absolute bottom-10 left-0 right-0 bg-gray-800 py-2 pl-1 border-t border-gray-700">
-                                <span class="text-gray-100">:</span><span class="text-gray-100"
+                                <span class="text-gray-100" x-text="mode === 'search-forward' ? '/' : (mode === 'search-backward' ? '?' : ':')"></span><span class="text-gray-100"
                                     x-text="commandBuffer"></span><span
                                     class="bg-gray-100 text-gray-900 inline-block w-2">&nbsp;</span>
                             </div>
@@ -424,7 +424,11 @@
                         'normal': 'bg-blue-600 text-white',
                         'insert': 'bg-green-600 text-white',
                         'visual': 'bg-purple-600 text-white',
-                        'command': 'bg-yellow-600 text-black'
+                        'visual-line': 'bg-purple-600 text-white',
+                        'replace': 'bg-red-600 text-white',
+                        'command': 'bg-yellow-600 text-black',
+                        'search-forward': 'bg-yellow-600 text-black',
+                        'search-backward': 'bg-yellow-600 text-black'
                     },
                     chapters: [
                         {
@@ -1078,13 +1082,23 @@
                         event.preventDefault();
                         const key = event.key;
 
-                        if (this.mode === 'command') {
+                        if (this.mode === 'command' || this.mode === 'search-forward' || this.mode === 'search-backward') {
                             this.handleCommandMode(key);
                             return;
                         }
 
                         if (this.mode === 'insert') {
                             this.handleInsertMode(key, event);
+                            return;
+                        }
+
+                        if (this.mode === 'replace') {
+                            this.handleReplaceMode(key, event);
+                            return;
+                        }
+
+                        if (this.mode === 'visual' || this.mode === 'visual-line') {
+                            this.handleVisualMode(key);
                             return;
                         }
 
@@ -1097,6 +1111,7 @@
                         const maxCol = Math.max(0, line.length - 1);
 
                         switch (key) {
+                            // Navigation - hjkl and arrows
                             case 'h':
                             case 'ArrowLeft':
                                 this.cursorCol = Math.max(0, this.cursorCol - 1);
@@ -1119,18 +1134,39 @@
                                     this.cursorCol = Math.min(this.cursorCol, Math.max(0, this.lines[this.cursorLine].length - 1));
                                 }
                                 break;
+                            
+                            // Word motions
                             case 'w':
                                 this.moveWordForward();
                                 break;
                             case 'b':
                                 this.moveWordBackward();
                                 break;
+                            case 'e':
+                                this.moveToEndOfWord();
+                                break;
+                            case 'W':
+                                this.moveWORDForward();
+                                break;
+                            case 'B':
+                                this.moveWORDBackward();
+                                break;
+                            case 'E':
+                                this.moveToEndOfWORD();
+                                break;
+                            
+                            // Line motions
                             case '0':
                                 this.cursorCol = 0;
+                                break;
+                            case '^':
+                                this.moveToFirstNonWhitespace();
                                 break;
                             case '$':
                                 this.cursorCol = maxCol;
                                 break;
+                            
+                            // File motions
                             case 'g':
                                 // Simple gg implementation
                                 this.cursorLine = 0;
@@ -1140,6 +1176,8 @@
                                 this.cursorLine = this.lines.length - 1;
                                 this.cursorCol = 0;
                                 break;
+                            
+                            // Insert modes
                             case 'i':
                                 this.mode = 'insert';
                                 this.statusMessage = '-- INSERT --';
@@ -1172,10 +1210,18 @@
                                 this.mode = 'insert';
                                 this.statusMessage = '-- INSERT --';
                                 break;
+                            
+                            // Delete operations
                             case 'x':
                                 if (line.length > 0) {
                                     this.lines[this.cursorLine] = line.slice(0, this.cursorCol) + line.slice(this.cursorCol + 1);
                                     this.cursorCol = Math.min(this.cursorCol, Math.max(0, this.lines[this.cursorLine].length - 1));
+                                }
+                                break;
+                            case 'X':
+                                if (this.cursorCol > 0) {
+                                    this.lines[this.cursorLine] = line.slice(0, this.cursorCol - 1) + line.slice(this.cursorCol);
+                                    this.cursorCol--;
                                 }
                                 break;
                             case 'd':
@@ -1188,13 +1234,61 @@
                                     }
                                     this.cursorCol = 0;
                                     this.statusMessage = 'Line deleted';
+                                } else {
+                                    this.yankBuffer = this.lines[this.cursorLine];
+                                    this.lines[this.cursorLine] = '';
+                                    this.cursorCol = 0;
+                                    this.statusMessage = 'Line deleted';
                                 }
                                 break;
+                            case 'D':
+                                // Delete to end of line
+                                this.yankBuffer = line.slice(this.cursorCol);
+                                this.lines[this.cursorLine] = line.slice(0, this.cursorCol);
+                                this.cursorCol = Math.max(0, this.lines[this.cursorLine].length - 1);
+                                this.statusMessage = 'Deleted to end of line';
+                                break;
+                            
+                            // Change operations
+                            case 'c':
+                                // Simple cc - change line
+                                this.yankBuffer = this.lines[this.cursorLine];
+                                this.lines[this.cursorLine] = '';
+                                this.cursorCol = 0;
+                                this.mode = 'insert';
+                                this.statusMessage = '-- INSERT --';
+                                break;
+                            case 'C':
+                                // Change to end of line
+                                this.yankBuffer = line.slice(this.cursorCol);
+                                this.lines[this.cursorLine] = line.slice(0, this.cursorCol);
+                                this.mode = 'insert';
+                                this.statusMessage = '-- INSERT --';
+                                break;
+                            
+                            // Replace
+                            case 'r':
+                                this.statusMessage = 'Press key to replace with...';
+                                // This would need a state to wait for next key
+                                break;
+                            case 'R':
+                                this.mode = 'replace';
+                                this.statusMessage = '-- REPLACE --';
+                                break;
+                            
+                            // Yank (copy)
                             case 'y':
                                 // Simple yy - yank line
                                 this.yankBuffer = this.lines[this.cursorLine];
                                 this.statusMessage = '1 line yanked';
                                 break;
+                            case 'Y':
+                                // Yank to end of line (or whole line, vim treats Y as yy)
+                                this.yankBuffer = this.lines[this.cursorLine];
+                                this.statusMessage = '1 line yanked';
+                                break;
+                            
+                            // Paste
                             case 'p':
                                 if (this.yankBuffer) {
                                     this.lines.splice(this.cursorLine + 1, 0, this.yankBuffer);
@@ -1210,13 +1304,95 @@
                                     this.statusMessage = 'Pasted';
                                 }
                                 break;
-                            case 'u':
-                                this.statusMessage = 'Undo (not implemented in demo)';
+                            
+                            // Join lines
+                            case 'J':
+                                if (this.cursorLine < this.lines.length - 1) {
+                                    const nextLine = this.lines[this.cursorLine + 1];
+                                    this.lines[this.cursorLine] = line + ' ' + nextLine.trimStart();
+                                    this.lines.splice(this.cursorLine + 1, 1);
+                                    this.statusMessage = 'Lines joined';
+                                }
                                 break;
+                            
+                            // Case toggle
+                            case '~':
+                                if (line.length > 0 && this.cursorCol < line.length) {
+                                    const char = line[this.cursorCol];
+                                    const toggled = char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase();
+                                    this.lines[this.cursorLine] = line.slice(0, this.cursorCol) + toggled + line.slice(this.cursorCol + 1);
+                                    this.cursorCol = Math.min(this.cursorCol + 1, maxCol);
+                                }
+                                break;
+                            
+                            // Indent (simplified - just adds/removes spaces)
+                            case '>':
+                                this.lines[this.cursorLine] = '  ' + this.lines[this.cursorLine];
+                                this.statusMessage = 'Indented';
+                                break;
+                            case '<':
+                                if (this.lines[this.cursorLine].startsWith('  ')) {
+                                    this.lines[this.cursorLine] = this.lines[this.cursorLine].slice(2);
+                                    this.cursorCol = Math.max(0, this.cursorCol - 2);
+                                    this.statusMessage = 'Unindented';
+                                }
+                                break;
+                            
+                            // Visual mode
+                            case 'v':
+                                this.mode = 'visual';
+                                this.statusMessage = '-- VISUAL --';
+                                break;
+                            case 'V':
+                                this.mode = 'visual-line';
+                                this.statusMessage = '-- VISUAL LINE --';
+                                break;
+                            
+                            // Undo/Redo
+                            case 'u':
+                                this.statusMessage = 'Undo (not fully implemented in demo)';
+                                break;
+                            
+                            // Search
+                            case '/':
+                                this.mode = 'search-forward';
+                                this.commandBuffer = '';
+                                this.statusMessage = '/';
+                                break;
+                            case '?':
+                                this.mode = 'search-backward';
+                                this.commandBuffer = '';
+                                this.statusMessage = '?';
+                                break;
+                            case 'n':
+                                this.statusMessage = 'Next match (search not implemented in demo)';
+                                break;
+                            case 'N':
+                                this.statusMessage = 'Previous match (search not implemented in demo)';
+                                break;
+                            case '*':
+                                this.statusMessage = 'Search word under cursor (not implemented in demo)';
+                                break;
+                            case '#':
+                                this.statusMessage = 'Search word backward (not implemented in demo)';
+                                break;
+                            
+                            // Repeat
+                            case '.':
+                                this.statusMessage = 'Repeat last change (not implemented in demo)';
+                                break;
+                            
+                            // Percentage/bracket matching
+                            case '%':
+                                this.statusMessage = 'Jump to matching bracket (not implemented in demo)';
+                                break;
+                            
+                            // Command mode
                             case ':':
                                 this.mode = 'command';
                                 this.commandBuffer = '';
                                 break;
+                            
                             default:
                                 this.statusMessage = 'Unknown command: ' + key;
                                 this.statusError = true;
@@ -1355,6 +1531,224 @@
                         } else {
                             this.cursorCol = col;
                         }
+                    },
+
+                    moveToEndOfWord() {
+                        const line = this.lines[this.cursorLine];
+                        let col = this.cursorCol;
+
+                        // If we're on a word char, move to end of current word
+                        if (col < line.length && /\w/.test(line[col])) {
+                            while (col < line.length && /\w/.test(line[col])) col++;
+                            col--;
+                        } else {
+                            // Skip non-word chars
+                            while (col < line.length && !/\w/.test(line[col])) col++;
+                            // Move to end of next word
+                            while (col < line.length && /\w/.test(line[col])) col++;
+                            col = Math.max(0, col - 1);
+                        }
+
+                        if (col >= line.length && this.cursorLine < this.lines.length - 1) {
+                            this.cursorLine++;
+                            this.cursorCol = 0;
+                            // Continue to end of first word on next line
+                            this.moveToEndOfWord();
+                        } else {
+                            this.cursorCol = Math.min(col, Math.max(0, line.length - 1));
+                        }
+                    },
+
+                    moveWORDForward() {
+                        const line = this.lines[this.cursorLine];
+                        let col = this.cursorCol;
+
+                        // Skip current WORD (non-whitespace)
+                        while (col < line.length && !/\s/.test(line[col])) col++;
+                        // Skip whitespace
+                        while (col < line.length && /\s/.test(line[col])) col++;
+
+                        if (col >= line.length && this.cursorLine < this.lines.length - 1) {
+                            this.cursorLine++;
+                            this.cursorCol = 0;
+                        } else {
+                            this.cursorCol = Math.min(col, Math.max(0, line.length - 1));
+                        }
+                    },
+
+                    moveWORDBackward() {
+                        const line = this.lines[this.cursorLine];
+                        let col = this.cursorCol;
+
+                        // Skip whitespace backwards
+                        while (col > 0 && /\s/.test(line[col - 1])) col--;
+                        // Skip WORD backwards
+                        while (col > 0 && !/\s/.test(line[col - 1])) col--;
+
+                        if (col <= 0 && this.cursorLine > 0) {
+                            this.cursorLine--;
+                            this.cursorCol = Math.max(0, this.lines[this.cursorLine].length - 1);
+                        } else {
+                            this.cursorCol = col;
+                        }
+                    },
+
+                    moveToEndOfWORD() {
+                        const line = this.lines[this.cursorLine];
+                        let col = this.cursorCol;
+
+                        // If we're on a non-whitespace char, move to end of current WORD
+                        if (col < line.length && !/\s/.test(line[col])) {
+                            while (col < line.length && !/\s/.test(line[col])) col++;
+                            col--;
+                        } else {
+                            // Skip whitespace
+                            while (col < line.length && /\s/.test(line[col])) col++;
+                            // Move to end of next WORD
+                            while (col < line.length && !/\s/.test(line[col])) col++;
+                            col = Math.max(0, col - 1);
+                        }
+
+                        if (col >= line.length && this.cursorLine < this.lines.length - 1) {
+                            this.cursorLine++;
+                            this.cursorCol = 0;
+                            this.moveToEndOfWORD();
+                        } else {
+                            this.cursorCol = Math.min(col, Math.max(0, line.length - 1));
+                        }
+                    },
+
+                    moveToFirstNonWhitespace() {
+                        const line = this.lines[this.cursorLine];
+                        let col = 0;
+                        while (col < line.length && /\s/.test(line[col])) {
+                            col++;
+                        }
+                        this.cursorCol = Math.min(col, Math.max(0, line.length - 1));
+                    },
+
+                    handleReplaceMode(key, event) {
+                        if (key === 'Escape') {
+                            this.mode = 'normal';
+                            this.statusMessage = '';
+                            return;
+                        }
+
+                        const line = this.lines[this.cursorLine];
+                        
+                        if (key === 'Backspace') {
+                            if (this.cursorCol > 0) {
+                                this.cursorCol--;
+                            }
+                            return;
+                        }
+
+                        if (key === 'Enter') {
+                            if (this.cursorLine < this.lines.length - 1) {
+                                this.cursorLine++;
+                                this.cursorCol = 0;
+                            }
+                            return;
+                        }
+
+                        if (key.length === 1 && this.cursorCol < line.length) {
+                            this.lines[this.cursorLine] = line.slice(0, this.cursorCol) + key + line.slice(this.cursorCol + 1);
+                            this.cursorCol++;
+                        } else if (key.length === 1) {
+                            // At end of line, insert instead
+                            this.lines[this.cursorLine] = line + key;
+                            this.cursorCol++;
+                        }
+                    },
+
+                    handleVisualMode(key) {
+                        if (key === 'Escape') {
+                            this.mode = 'normal';
+                            this.statusMessage = '';
+                            return;
+                        }
+
+                        // Allow basic movement in visual mode
+                        const oldMode = this.mode;
+                        this.mode = 'normal'; // Temporarily switch to use normal mode movement
+                        
+                        switch (key) {
+                            case 'h':
+                            case 'j':
+                            case 'k':
+                            case 'l':
+                            case 'w':
+                            case 'b':
+                            case 'e':
+                            case '0':
+                            case '^':
+                            case '$':
+                            case 'g':
+                            case 'G':
+                                this.handleNormalMode(key);
+                                break;
+                            case 'd':
+                            case 'x':
+                                // Delete selection (simplified - just delete current line)
+                                if (this.lines.length > 1) {
+                                    this.yankBuffer = this.lines[this.cursorLine];
+                                    this.lines.splice(this.cursorLine, 1);
+                                    if (this.cursorLine >= this.lines.length) {
+                                        this.cursorLine = this.lines.length - 1;
+                                    }
+                                }
+                                this.mode = 'normal';
+                                this.statusMessage = 'Deleted';
+                                return;
+                            case 'y':
+                                // Yank selection
+                                this.yankBuffer = this.lines[this.cursorLine];
+                                this.mode = 'normal';
+                                this.statusMessage = 'Yanked';
+                                return;
+                            case 'c':
+                                // Change selection
+                                this.lines[this.cursorLine] = '';
+                                this.cursorCol = 0;
+                                this.mode = 'insert';
+                                this.statusMessage = '-- INSERT --';
+                                return;
+                            case '>':
+                                this.lines[this.cursorLine] = '  ' + this.lines[this.cursorLine];
+                                this.mode = 'normal';
+                                this.statusMessage = 'Indented';
+                                return;
+                            case '<':
+                                if (this.lines[this.cursorLine].startsWith('  ')) {
+                                    this.lines[this.cursorLine] = this.lines[this.cursorLine].slice(2);
+                                    this.cursorCol = Math.max(0, this.cursorCol - 2);
+                                }
+                                this.mode = 'normal';
+                                this.statusMessage = 'Unindented';
+                                return;
+                            case 'U':
+                                // Uppercase
+                                this.lines[this.cursorLine] = this.lines[this.cursorLine].toUpperCase();
+                                this.mode = 'normal';
+                                this.statusMessage = 'Uppercased';
+                                return;
+                            case 'u':
+                                // Lowercase
+                                this.lines[this.cursorLine] = this.lines[this.cursorLine].toLowerCase();
+                                this.mode = 'normal';
+                                this.statusMessage = 'Lowercased';
+                                return;
+                            case 'v':
+                                // Toggle back to character visual
+                                oldMode = 'visual';
+                                break;
+                            case 'V':
+                                // Toggle back to line visual
+                                oldMode = 'visual-line';
+                                break;
+                        }
+                        
+                        this.mode = oldMode;
                     }
                 }
             }
@@ -1364,9 +1758,9 @@
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.23.0</span>
+                v<span class="text-gray-400">2.24.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">280</span>ヅ<span class="text-gray-500/60">38947bee4f2a3af956bac5dd15b3d86405524d77</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">281</span>ヅ<span class="text-gray-500/60">41d94690257c2ec6cb9137985b54ee6841a49aa4</span></span>
         </div>
     </footer>
 </body>
