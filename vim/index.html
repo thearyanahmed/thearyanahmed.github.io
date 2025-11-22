@@ -1082,6 +1082,20 @@
                         event.preventDefault();
                         const key = event.key;
 
+                        // Ignore standalone modifier keys
+                        if (['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Tab'].includes(key)) {
+                            return;
+                        }
+
+                        // Handle Ctrl+D specially (should not trigger 'd' in normal mode)
+                        if (event.ctrlKey && !event.shiftKey && !event.altKey) {
+                            // Ctrl key combinations - ignore in normal mode for now
+                            if (this.mode === 'normal') {
+                                this.statusMessage = 'Ctrl+' + key + ' (not implemented in demo)';
+                                return;
+                            }
+                        }
+
                         if (this.mode === 'command' || this.mode === 'search-forward' || this.mode === 'search-backward') {
                             this.handleCommandMode(key);
                             return;
@@ -1103,12 +1117,17 @@
                         }
 
                         // Normal mode
-                        this.handleNormalMode(key);
+                        this.handleNormalMode(key, event);
                     },
 
-                    handleNormalMode(key) {
+                    handleNormalMode(key, event) {
                         const line = this.lines[this.cursorLine];
                         const maxCol = Math.max(0, line.length - 1);
+
+                        // Don't process if any modifier keys are pressed (except Shift for uppercase letters)
+                        if (event && (event.ctrlKey || event.altKey || event.metaKey)) {
+                            return;
+                        }
 
                         switch (key) {
                             // Navigation - hjkl and arrows
@@ -1685,7 +1704,7 @@
                             case '$':
                             case 'g':
                             case 'G':
-                                this.handleNormalMode(key);
+                                this.handleNormalMode(key, null);
                                 break;
                             case 'd':
                             case 'x':
@@ -1758,9 +1777,9 @@
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.24.0</span>
+                v<span class="text-gray-400">2.25.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">281</span>ヅ<span class="text-gray-500/60">41d94690257c2ec6cb9137985b54ee6841a49aa4</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">282</span>ヅ<span class="text-gray-500/60">f315d04a9f5b9b527f7705cff9bd2c7d0e62b6a5</span></span>
         </div>
     </footer>
 </body>
