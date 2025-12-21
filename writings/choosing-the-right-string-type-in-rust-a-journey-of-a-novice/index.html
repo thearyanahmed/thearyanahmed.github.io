@@ -6,17 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <meta name="author" content="Aryan Ahmed" />
-<title>Aryan&#039;s Journal</title>
-<meta property="og:title" content="Aryan&#039;s Journal" />
-<meta name="twitter:title" content="Aryan&#039;s Journal" />
-<meta name="embedx:title" content="Aryan&#039;s Journal" />
-<meta name="description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta property="og:description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta name="twitter:description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta name="embedx:description" content="My personal site, recording my journey, writing some articles, sometimes." />
 <meta name="author" content="Aryan Ahmed" />
-<meta name="twitter:card" content="My personal site, recording my journey, writing some articles, sometimes." />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="og:type" content="website" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
+<title>Choosing the Right String Type in Rust: A Journey of a Novice</title>
+<meta property="og:title" content="Choosing the Right String Type in Rust: A Journey of a Novice" />
+<meta name="twitter:title" content="Choosing the Right String Type in Rust: A Journey of a Novice" />
+<meta name="embedx:title" content="Choosing the Right String Type in Rust: A Journey of a Novice" />
+<meta name="description" content="Over the past years couple years, I go back to rust when I get the time to try something new. Rust has been a favorite." />
+<meta property="og:description" content="Over the past years couple years, I go back to rust when I get the time to try something new. Rust has been a favorite." />
+<meta name="twitter:description" content="Over the past years couple years, I go back to rust when I get the time to try something new. Rust has been a favorite." />
+<meta name="embedx:description" content="Over the past years couple years, I go back to rust when I get the time to try something new. Rust has been a favorite." />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="twitter:card" content="Over the past years couple years, I go back to rust when I get the time to try something new. Rust has been a favorite." />
 <meta property="og:site_name" content="thearyanahmed.com" />
+<link rel="canonical" href="https://thearyanahmed.com/writings/choosing-the-right-string-type-in-rust-a-journey-of-a-novice" />
+<meta property="article:Choosing the Right String Type in Rust: A Journey of a Novice" content="Choosing the Right String Type in Rust: A Journey of a Novice" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -159,161 +170,135 @@
 </div>
 
     <main class="lg:relative">
-        <div class="group max-w-2xl mx-auto mt-20 mb-16 bg-white rounded-md p-4 lg:p-10 xl:p-20">
-        <p class="font-aquawaxalt">/ thearyanahmed</p>
-        <p class="fredericka-the-great font-medium text-6xl text-black">Aryan Ahmed</p>
+        <div class="max-w-3xl bg-white mx-auto px-4">
+        <div class="relative py-16 bg-white overflow-hidden">
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full bg-white">
+                <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
+                    <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none"
+                         viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20"
+                                     patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)"/>
+                    </svg>
+                    <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404"
+                         height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20"
+                                     patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)"/>
+                    </svg>
+                    <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384"
+                         fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20"
+                                     patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="relative px-4 sm:px-6 lg:px-8">
+                <div class="text-lg max-w-prose">
+                    <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
+                        Choosing the Right String Type in Rust: A Journey of a Novice
+                    </h1>
+                </div>
 
-        <p class="mt-4 text-gray-600 text-xl font-medium font-aquawaxalt">
-            I'm a programmer. I build stuff
-            <svg id="offset" class="offset-icon rotate cursor-pointer" xmlns="http://www.w3.org/2000/svg"
-     style="width: 20px;height: 20px;display: inline-block;position: relative;opacity: 0.6;"
-     class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
-     onclick="this.classList.add('glitch'); setTimeout(() => this.classList.remove('glitch'), 500);">
-    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-</svg>
-        </p>
-
-        <p class="group-hover:cursor-pointer mt-12 text-gray-600 text-lg font-medium font-aquawaxalt">
-            Software engineer with a focus on the backend, automation, and infrastructure. And a keen
-            spirit
-            for
-            writing code for humans & machines.
-        </p>
-
-        <p class="mt-4 text-gray-600 text-lg font-medium font-aquawaxalt">
-            My primary tech stack includes <span class="font-bold text-gray-800 ">Go, PHP, Docker, Kubernetes,
-                Linux</span>.
-            Experienced with different cloud
-            providers as well. I get the basic cloud thing. Also built some tools and services with <span
-                class="font-bold text-red-400">Rust</span>
-            too.
-            And
-            it has became a new favorite.
-            Prefer working on the low level stuff that is close to the processor and hardware.
-        </p>
-
-        <p class="mt-4 text-gray-600 text-xl font-medium font-aquawaxalt">
-            Working as a <a href="https://www.digitalocean.com/products/app-platform" target="_blank"
-                class="text-black font-semibold hover:underline decoration-2">Software Engineer at DigitalOcean</a>,
-            part of
-            the
-            team
-            building
-            the cloud for
-            this world.
-        </p>
-
-        <p class="mt-4 text-gray-600 text-lg font-medium font-aquawaxalt">
-            Sometimes I like to tinker with different tools, trying to build different things. Here I'm trying
-            to
-            <a target="_blank" href="https://github.com/thearyanahmed/trust"
-                class="font-bold text-gray-800 hover:underline decoration-2 hover:text-gray-900">implement TCP
-                stack</a>.
-            And here, trying to <a href="https://github.com/thearyanahmed/curiOS"
-                class="font-bold text-gray-800 hover:underline decoration-2 hover:text-gray-900" target="_blank">build
-                my own
-                Kernel</a>.
-            Doesn't work though! But I got to learn some things.
-        </p>
-
-
-
-        <p class="mt-4 text-gray-600 text-xl font-medium font-aquawaxalt">
-            I often write about my experiences and share my thoughts on kinda <strong class="font-bold text-black">`low
-                level`</strong> and
-            <strong class="font-bold text-black">`systems programming`</strong>, and
-            life and tech in general.
-        </p>
-
-        <div class="mt-20">
-
-        </div>
-        <div class="w-full flex flex-col">
-    <h2 class="text-2xl text-center font-aquawaxalt"><span class="text-gray-300">some</span> stuff I work<span
-            class="text-gray-300">(ed)</span> with
-    </h2>
-
-    <div class="mt-12 md:mt-8 grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-2 md:gap-3">
-        <div class="max-md:order-2">
-            <h4 class="font-bold font-aquawaxalt text-gray-400 text-sm uppercase">Languages</h4>
-            <p class="font-aquawaxalt mt-4">Go</p>
-            <p class="font-aquawaxalt">PHP</p>
-            <p class="font-aquawaxalt">Rust</p>
-            <p class="font-aquawaxalt">Shell Script</p>
-            <p class="font-aquawaxalt line-through">JavaScript</p>
-            <p class="font-aquawaxalt line-through">TypeScript</p>
-        </div>
-
-        <div class="max-md:order-3 text-right md:text-left">
-            <h4 class="font-bold font-aquawaxalt text-gray-400 text-sm uppercase">Tools &
-                Containers
-            </h4>
-            <p class="font-aquawaxalt">Docker</p>
-            <p class="font-aquawaxalt">Kubernetes</p>
-            <p class="font-aquawaxalt">Terraform</p>
-            <p class="font-aquawaxalt">Kata Containers</p>
-            <p class="font-aquawaxalt">gVisor</p>
-            <p class="font-aquawaxalt">Prometheus</p>
-            <p class="font-aquawaxalt">Kibana</p>
-        </div>
-        <div class="max-md:order-3">
-            <h4 class="font-bold font-aquawaxalt text-gray-400 text-sm uppercase">Databases</h4>
-            <p class="font-aquawaxalt mt-4">MySQL</p>
-            <p class="font-aquawaxalt">Postgres</p>
-            <p class="font-aquawaxalt">Redis</p>
-            <p class="font-aquawaxalt">Kafka</p>
-            <p class="font-aquawaxalt">Elastic Search</p>
-            
-        </div>
-
-        <div class="max-md:order-3 text-right md:text-left">
-            <h4 class="font-bold font-aquawaxalt text-gray-400 text-sm uppercase">Servers</h4>
-            <p class="font-aquawaxalt">AWS</p>
-            <p class="font-aquawaxalt">GCP</p>
-            <p class="font-aquawaxalt font-semibold text-blue-400 cursor-pointer" onclick="alert('i work here')"
-                title="I work here">DigitalOcean</p>
-            <p class="font-aquawaxalt">Laravel Forge</p>
-            <p class="font-aquawaxalt">Give me *shell</p>
-        </div>
-
-        <div class="max-md:order-3">
-            <h4 class="font-bold font-aquawaxalt text-gray-400 text-sm uppercase">Some keywords I know
-            </h4>
-            <p class="font-aquawaxalt mt-4">nginx*</p>
-            <p class="font-aquawaxalt">Testing <small>(Unit, Integration, Smoke, E2E)</small></p>
-            <p class="font-aquawaxalt">REST / graphQL</p>
-            <p class="font-aquawaxalt">rpc / gRPC</p>
-            <p class="font-aquawaxalt">Serverless</p>
-            <p class="font-aquawaxalt">Microservice</p>
-            <p class="font-aquawaxalt">Github actions</p>
-            <p class="font-aquawaxalt">
-                Monolith
-                <span class="font-bold text-red-400">
-                    <3 </span>
-            </p>
-            <p class="font-aquawaxalt">Event Driven Stuff</p>
-        </div>
-
-        <div class="max-md:order-3 text-right md:text-left">
-            <h4 class="font-bold font-aquawaxalt text-gray-400 text-sm uppercase">Frameworks & Stuff
-            </h4>
-            <p class="font-aquawaxalt mt-4">Tokio</p>
-            <p class="font-aquawaxalt">Laravel + InertiaJS</p>
-            <p class="font-aquawaxalt line-through">Express</p>
-            <p class="font-aquawaxalt">Go / Echo / Chi / Http*</p>
-            <p class="font-aquawaxalt">Cobra <small class="text-gray-500">(go)</small> / Clap <small
-                    class="text-gray-500">(rust)</small></p>
-            <p class="font-aquawaxalt line-through">Vue / NuxtJs</p>
-        </div>
-    </div>
+                
+                <div class="text-lg max-w-prose">
+                    <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
+                        Over the past years couple years, I go back to rust when I get the time to try something new.
+                    </p>
+                </div>
+                <div
+                    class="article-content-markdown mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-800 mx-auto">
+                    <div ><p>Rust has been a favorite. While doing so, I’ve come across various scenarios where choosing the right string type can significantly impact both performance and code maintainability. In this blog post, I’ll share some insights into when to use different string types in Rust, based on real-world use cases.</p>
+<h2 id="string">String</h2>
+<p>The <code>String</code> type in Rust is a growable, heap-allocated, UTF-8 encoded string. It's your go-to choice for most cases. Use <code>String</code> when:</p>
+<ul>
+<li>You need a dynamically resizable string.</li>
+<li>You want to manipulate and modify the string frequently.</li>
+<li>UTF-8 encoding is essential for your application (most common use case).</li>
+</ul>
+<p>Example:</p>
+<code class="language-rust">let my_string = String::from(&quot;Hello, Rust!&quot;);
+</code>
+<h2 id="ampstr">&amp;str</h2>
+<p>The <code>&amp;str</code> type, often called a &quot;string slice,&quot; represents a borrowed reference to a string. Use <code>&amp;str</code> when:</p>
+<ul>
+<li>You need to work with string slices from existing data.</li>
+<li>You want to avoid heap allocation.</li>
+<li>Your function should accept string arguments without taking ownership.</li>
+</ul>
+<p>Example:</p>
+<code class="language-rust">fn print_greeting(greeting: &amp;str) {
+    println!(&quot;{}&quot;, greeting);
+}
+</code>
+<h2 id="cowstr">Cow<str></h2>
+<p>The <code>Cow</code> (short for &quot;clone on write&quot;) type is versatile. It can be either a borrowed reference (<code>&amp;str</code>) or an owned <code>String</code>, depending on the situation. Use <code>Cow&lt;str&gt;</code> when:</p>
+<ul>
+<li>Your function should accept both static and dynamic strings.</li>
+<li>You want to minimize unnecessary cloning.</li>
+<li>You need to balance performance and flexibility.</li>
+</ul>
+<p>Example:</p>
+<code class="language-rust">use std::borrow::Cow;
+<p>fn process_text(text: Cow&lt;str&gt;) {
+// ...
+}
+</code></p>
+<h2 id="osstring-and-osstr">OsString and OsStr</h2>
+<p>These types deal with platform-specific strings. Use <code>OsString</code> and <code>OsStr</code> when:</p>
+<ul>
+<li>You're working with file paths or environment variables that need to be compatible with the underlying OS.</li>
+<li>You need to handle non-UTF-8 encoded data (e.g., on Windows).</li>
+</ul>
+<p>Example:</p>
+<code class="language-rust">use std::ffi::{OsString, OsStr};
+<p>fn read_file(file_path: &amp;OsStr) -&gt; Result&lt;OsString, std::io::Error&gt; {
+// ...
+}
+</code></p>
+<p>In conclusion, choosing the right string type in Rust is crucial for writing efficient and maintainable code. The decision largely depends on your specific use case, whether you need dynamic growth, want to avoid allocations, or deal with platform-specific data.</p>
+<p>From this journey, I've found that understanding the nuances of these string types is invaluable for crafting robust and performant Rust applications. Happy coding, Rustaceans!</p>
 </div>
+                </div>
+            </div>
+        </div>
 
+        
+        <div class="h-20"></div>
     </div>
     </main>
 
     <!-- Calendly link widget begin -->
         <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
         <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+        <script type="module">
+            const imgs = document.getElementsByTagName('img')
+
+            for (let i = 0; i < imgs.length; i++) {
+                const img = imgs[i]
+
+                let src = img.getAttribute('src')
+
+                if (src.startsWith('art::')) {
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    img.setAttribute('src', src)
+                }
+            }
+        </script>
 
     <script src="https://thearyanahmed.com/js/functions.js"></script>
     <footer class="max-w-lg mx-auto flex text-center mb-20">

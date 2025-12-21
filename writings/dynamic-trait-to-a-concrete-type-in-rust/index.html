@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="og:type" content="website" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
+<title>Dynamic trait to a concrete type in Rust</title>
+<meta property="og:title" content="Dynamic trait to a concrete type in Rust" />
+<meta name="twitter:title" content="Dynamic trait to a concrete type in Rust" />
+<meta name="embedx:title" content="Dynamic trait to a concrete type in Rust" />
+<meta name="description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
+<meta property="og:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
+<meta name="twitter:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
+<meta name="embedx:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="twitter:card" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
+<meta property="og:site_name" content="thearyanahmed.com" />
+<link rel="canonical" href="https://thearyanahmed.com/writings/dynamic-trait-to-a-concrete-type-in-rust" />
+<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+    <link href="https://thearyanahmed.com/css/app.css" rel="stylesheet">
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-90CDQWTTNW"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-90CDQWTTNW');
+</script>
+</head>
+
+<body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
+
+    <div
+    class="notsticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-transparent">
+    <nav class="w-full mx-auto bg-white">
+        <div class="px-2 sm:px-6 lg:px-8 dotted-bg">
+            <div class="relative flex justify-between h-16">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <!-- Mobile menu button -->
+                    <button onclick="toggleMobileMenu()" type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="justify-center w-full mx-auto hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="https://thearyanahmed.com" title="thearyanahmed's blog" target="_self"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            home
+                        </a>
+                        <a href="https://thearyanahmed.com/writings" title="Technical Writings"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            technical writings
+                        </a>
+                        <a href="https://thearyanahmed.com/abcd" title="ABCD for Kids"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            abcd for kids
+                        </a>
+                        <a href="https://thearyanahmed.com/vim" title="Learn Vim"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            learn vim
+                        </a>
+                        
+                        
+
+
+                        <a href="https://github.com/thearyanahmed" title="thearyanahmed's github"
+                            class="text-gray-900 inline-flex items-center px-1 pt-1 text-base" target="_blank">
+                            <svg width="24" height="24" fill="currentColor"
+                                class="text-gray-800 hover:underline font-aquawaxalt mr-3 text-opacity-50 transform">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.463 2 11.97c0 4.404 2.865 8.14 6.839 9.458.5.092.682-.216.682-.48 0-.236-.008-.864-.013-1.695-2.782.602-3.369-1.337-3.369-1.337-.454-1.151-1.11-1.458-1.11-1.458-.908-.618.069-.606.069-.606 1.003.07 1.531 1.027 1.531 1.027.892 1.524 2.341 1.084 2.91.828.092-.643.35-1.083.636-1.332-2.22-.251-4.555-1.107-4.555-4.927 0-1.088.39-1.979 1.029-2.675-.103-.252-.446-1.266.098-2.638 0 0 .84-.268 2.75 1.022A9.606 9.606 0 0112 6.82c.85.004 1.705.114 2.504.336 1.909-1.29 2.747-1.022 2.747-1.022.546 1.372.202 2.386.1 2.638.64.696 1.028 1.587 1.028 2.675 0 3.83-2.339 4.673-4.566 4.92.359.307.678.915.678 1.846 0 1.332-.012 2.407-.012 2.734 0 .267.18.577.688.48C19.137 20.107 22 16.373 22 11.969 22 6.463 17.522 2 12 2z">
+                                </path>
+                            </svg>
+                        </a>
+
+                        <a href="https://linkedin.com/in/thearyanahmed" title="thearyanahmed's linkedin"
+                            class="text-gray-900 inline-flex items-center px-1 pt-1 text-base" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-linkedin h-5 w-5 text-gray-800 hover:underline font-aquawaxalt mr-3 text-opacity-50 transform"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="hidden dotted-bg" id="mobile-menu">
+            <div class="pt-6 pb-4 space-y-1">
+                <a href="https://thearyanahmed.com"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
+                <a href="https://thearyanahmed.com/writings" title="Technical Writings"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">
+                    technical writings</a>
+
+                <a href="https://thearyanahmed.com/abcd" title="ABCD for Kids"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">
+                    abcd</a>
+
+                <a href="https://thearyanahmed.com/vim" title="Learn Vim"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">
+                    learn vim</a>
+
+                
+
+                
+
+                <a href="https://github.com/thearyanahmed" target="_blank"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Github</a>
+
+                <a href="https://linkedin.com/in/thearyanahmed" target="_blank"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Linkedin</a>
+
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+    <main class="lg:relative">
+        <div class="max-w-3xl bg-white mx-auto px-4">
+        <div class="relative py-16 bg-white overflow-hidden">
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full bg-white">
+                <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
+                    <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none"
+                         viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20"
+                                     patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)"/>
+                    </svg>
+                    <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404"
+                         height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20"
+                                     patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)"/>
+                    </svg>
+                    <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384"
+                         fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20"
+                                     patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="relative px-4 sm:px-6 lg:px-8">
+                <div class="text-lg max-w-prose">
+                    <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
+                        Dynamic trait to a concrete type in Rust
+                    </h1>
+                </div>
+
+                
+                <div class="text-lg max-w-prose">
+                    <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
+                        As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.
+                    </p>
+                </div>
+                <div
+                    class="article-content-markdown mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-800 mx-auto">
+                    <div ><p>As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.</p>
+<p>Every value in Rust is of a certain <em>data type</em>. Even null and errors are handled differently. In fact rust doesn’t have null. Null values are handled via the Option type and errors are handled via Result type. Every struct we define has specific values as well.</p>
+<p>What happens we need something dynamic of different types?</p>
+<h2 id="context">Context</h2>
+<p>I’m trying to build a storage library, that supports multiple drivers. Sort of like <a href="https://laravel.com/docs/9.x/filesystem">laravel’s storage</a> class. In my design, we’d have something like</p>
+<code>Storage::put('file-01.txt', content);
+<p>Storage::disk('s3')-&gt;put('file-02.png', content);</p>
+<p>Storage::download('file-03.docs');
+</code></p>
+<p>As it’ll have different types of disks, which will work as adapters to our storage.</p>
+<h2 id="the-problem">The problem</h2>
+<p>The problem I was facing was having different config files for each type of disks. Our LocalFileAdapter , S3BucketFileAdapater , FTPFileAdapter each will have different type of config files. Simply put, S3BucketFileAdapater will have public key ,secret key and bucket name. LocalFileAdapater will not need these.</p>
+<h3 id="sketching">Sketching</h3>
+<p>Now, I want to have a method something similar to Storage::new(config) or something like this. The config should have which adapter/s to use, with their appropriate configuration (and unique) values.</p>
+<h3 id="two-cfgs">Two cfgs</h3>
+<p>For better understanding, I’m paining two config structs.</p>
+<code>pub struct LocalFileSystemAdapterConfig {
+  pub root_dir: String,
+}
+<p>pub struct S3AdapterConfig {
+pub public_key: String,
+pub secret_key: String,
+pub bucket: String,
+pub use_path_style_endpoint: false,
+}
+</code></p>
+<p>And I need something like</p>
+<code>trait StorageAdapter {
+  // ... methods
+}
+struct Storage {
+  disk: StorageAdapter,
+  // other props
+}
+<p>let storage = Storage::from(LocalFileSystemAdapterConfig | S3AdapterConfig);</p>
+<p>// and based on the given config
+storage.disk = LocalFileSystem | S3
+</code></p>
+<p>Defining a function that takes a dynamic parameter and casts it down to a specific / concrete type. The initial thought was maybe we should have something like</p>
+<code>struct LocalAdapterConfig {
+  base_dir: String,
+}
+<p>impl LocalAdapter {
+pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) -&gt; LocalAdapter {
+let local_config = config as LocalAdapterConfig;
+// THIS IS NOT ALLOWED
+}
+}
+</code></p>
+<p>The attempt resulted in a failure and gave me:</p>
+<code>... an `as` expression can only be used to convert between primitive types
+</code>
+<p>Rust is saying, you can use the as keyword to convert between primitive types. This was not working. But as we are using a dynamictrait (as an interface concept). We can cast that trait to a concrete type.</p>
+<h2 id="solution-downcast">Solution: Downcast</h2>
+<p>In this case, our config: T would be converted to LocalAdapterConfig. Though the method signature needs to change a bit.</p>
+<p>We want to use the Any trait, it uses reflection to allow dynamic typing of any 'static type.</p>
+<blockquote>
+<p>Downcasting is converting a trait into a concrete type.</p>
+</blockquote>
+<p>Our initial code is as follows</p>
+<code>use std::any::Any;
+<p>pub struct LocalFileSystemAdapterConfig {
+pub base_directory: String,
+}</p>
+<p>pub struct LocalFileSystemAdapter {
+pub base_dir: String, // just for demo purpose
+}</p>
+<p>// the trait config that every storage adapter's config will implement
+pub trait StorageAdapterConfig {
+fn as_any(&amp;self) -&gt; &amp;dyn Any;
+}
+</code></p>
+<p>We need the as_any method to be implemented for concrete struct/s where we want to allow <em>downcasting</em>. Therefore,</p>
+<code>use std::any::Any;
+<p>impl StorageAdapterConfig for LocalFileSystemAdapterConfig {
+fn as_any(&amp;self) -&gt; &amp;dyn Any {
+self
+}
+}
+</code></p>
+<p>We also need to change our method’s signature from</p>
+<code>pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) 
+</code>
+<p>to</p>
+<code>pub fn new(config: &amp;dyn Any)
+<p>// make sure to import std::any::Any;
+</code></p>
+<p>And finally, to downcast a variable of type dyn Any to our concrete LocalFileSystemAdapterConfig ,</p>
+<code>let cfg : &amp;LocalFileSystemAdapterConfig = config
+            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
+            .expect(&quot;failed to downcast&quot;);
+<p>// the syntax is
+// .downcast_ref::&lt;$CONCRETE_TYPE&gt;().expect(&quot;msg&quot;);
+</code></p>
+<p>The full code,</p>
+<code>impl LocalFileSystemAdapter {
+<code>pub fn new(config: &amp;amp;dyn Any) -&amp;gt; LocalFileSystemAdapter {
+
+    let cfg : &amp;amp;LocalFileSystemAdapterConfig = config
+        .downcast_ref::&amp;lt;LocalFileSystemAdapterConfig&amp;gt;()
+        .expect(&amp;quot;failed to downcast&amp;quot;);
+
+    let base_dir = &amp;amp;cfg.base_directory;
+
+    LocalFileSystemAdapter {
+        base_dir: base_dir.to_string(),
+    }
+}
+</code>
+<p>// ...
+}
+</code></p>
+<p>Our IDE picks up the change and returns proper intellisense.</p>
+<p><img src="https://cdn-images-1.medium.com/max/3676/1*Wc_P7YRnKepKZIwN-e-zlA.png" alt="Downcasting a dyn trait to a concrete type" /></p>
+<p>***Note *<em>maybe there are better ways of achieving the same result, maybe the API Design could have been better to avoid it in the first place. Well, I’m still learning rust.</em></p>
+<p>Found a mistake? Feel free to point it out.</p>
+</div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="h-20"></div>
+    </div>
+    </main>
+
+    <!-- Calendly link widget begin -->
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+        <script type="module">
+            const imgs = document.getElementsByTagName('img')
+
+            for (let i = 0; i < imgs.length; i++) {
+                const img = imgs[i]
+
+                let src = img.getAttribute('src')
+
+                if (src.startsWith('art::')) {
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    img.setAttribute('src', src)
+                }
+            }
+        </script>
+
+    <script src="https://thearyanahmed.com/js/functions.js"></script>
+    <footer class="max-w-lg mx-auto flex text-center mb-20">
+        <div class="flex flex-col mx-auto text-gray-300">
+            <span>
+                v<span class="text-gray-400">2.27.0</span>
+            </span>
+            <span class="text-sm"><span class="text-gray-500/60">288</span>ヅ<span class="text-gray-500/60">c38054ec83d9d8be9639b2cf738845db134f56eb</span></span>
+        </div>
+    </footer>
+</body>
+
+</html>

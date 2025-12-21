@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="og:type" content="website" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Choosing the Right String Type in Rust: A Journey of a Novice" content="Choosing the Right String Type in Rust: A Journey of a Novice" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Prepared statements in SQL" content="Prepared statements in SQL" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Building a Passwordless Login System with Laravel in minutes" content="Building a Passwordless Login System with Laravel in minutes" />
+<title>Building a URL shortener with Rust and Redis</title>
+<meta property="og:title" content="Building a URL shortener with Rust and Redis" />
+<meta name="twitter:title" content="Building a URL shortener with Rust and Redis" />
+<meta name="embedx:title" content="Building a URL shortener with Rust and Redis" />
+<meta name="description" content="As rust is being adopted by lots of different companies for solving various purposes, I’m trying to adopt rust. In this article and the series of articles following this will contain my journey to build a simple program, an url shortener, with rust." />
+<meta property="og:description" content="As rust is being adopted by lots of different companies for solving various purposes, I’m trying to adopt rust. In this article and the series of articles following this will contain my journey to build a simple program, an url shortener, with rust." />
+<meta name="twitter:description" content="As rust is being adopted by lots of different companies for solving various purposes, I’m trying to adopt rust. In this article and the series of articles following this will contain my journey to build a simple program, an url shortener, with rust." />
+<meta name="embedx:description" content="As rust is being adopted by lots of different companies for solving various purposes, I’m trying to adopt rust. In this article and the series of articles following this will contain my journey to build a simple program, an url shortener, with rust." />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="twitter:card" content="As rust is being adopted by lots of different companies for solving various purposes, I’m trying to adopt rust. In this article and the series of articles following this will contain my journey to build a simple program, an url shortener, with rust." />
+<meta property="og:site_name" content="thearyanahmed.com" />
+<link rel="canonical" href="https://thearyanahmed.com/writings/building-a-url-shortener-with-rust-and-redis" />
+<meta property="article:Building a URL shortener with Rust and Redis" content="Building a URL shortener with Rust and Redis" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+    <link href="https://thearyanahmed.com/css/app.css" rel="stylesheet">
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-90CDQWTTNW"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-90CDQWTTNW');
+</script>
+</head>
+
+<body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
+
+    <div
+    class="notsticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-transparent">
+    <nav class="w-full mx-auto bg-white">
+        <div class="px-2 sm:px-6 lg:px-8 dotted-bg">
+            <div class="relative flex justify-between h-16">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <!-- Mobile menu button -->
+                    <button onclick="toggleMobileMenu()" type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="justify-center w-full mx-auto hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="https://thearyanahmed.com" title="thearyanahmed's blog" target="_self"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            home
+                        </a>
+                        <a href="https://thearyanahmed.com/writings" title="Technical Writings"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            technical writings
+                        </a>
+                        <a href="https://thearyanahmed.com/abcd" title="ABCD for Kids"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            abcd for kids
+                        </a>
+                        <a href="https://thearyanahmed.com/vim" title="Learn Vim"
+                            class="text-gray-800 hover:underline font-semibold font-aquawaxalt text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            learn vim
+                        </a>
+                        
+                        
+
+
+                        <a href="https://github.com/thearyanahmed" title="thearyanahmed's github"
+                            class="text-gray-900 inline-flex items-center px-1 pt-1 text-base" target="_blank">
+                            <svg width="24" height="24" fill="currentColor"
+                                class="text-gray-800 hover:underline font-aquawaxalt mr-3 text-opacity-50 transform">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.463 2 11.97c0 4.404 2.865 8.14 6.839 9.458.5.092.682-.216.682-.48 0-.236-.008-.864-.013-1.695-2.782.602-3.369-1.337-3.369-1.337-.454-1.151-1.11-1.458-1.11-1.458-.908-.618.069-.606.069-.606 1.003.07 1.531 1.027 1.531 1.027.892 1.524 2.341 1.084 2.91.828.092-.643.35-1.083.636-1.332-2.22-.251-4.555-1.107-4.555-4.927 0-1.088.39-1.979 1.029-2.675-.103-.252-.446-1.266.098-2.638 0 0 .84-.268 2.75 1.022A9.606 9.606 0 0112 6.82c.85.004 1.705.114 2.504.336 1.909-1.29 2.747-1.022 2.747-1.022.546 1.372.202 2.386.1 2.638.64.696 1.028 1.587 1.028 2.675 0 3.83-2.339 4.673-4.566 4.92.359.307.678.915.678 1.846 0 1.332-.012 2.407-.012 2.734 0 .267.18.577.688.48C19.137 20.107 22 16.373 22 11.969 22 6.463 17.522 2 12 2z">
+                                </path>
+                            </svg>
+                        </a>
+
+                        <a href="https://linkedin.com/in/thearyanahmed" title="thearyanahmed's linkedin"
+                            class="text-gray-900 inline-flex items-center px-1 pt-1 text-base" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-linkedin h-5 w-5 text-gray-800 hover:underline font-aquawaxalt mr-3 text-opacity-50 transform"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="hidden dotted-bg" id="mobile-menu">
+            <div class="pt-6 pb-4 space-y-1">
+                <a href="https://thearyanahmed.com"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
+                <a href="https://thearyanahmed.com/writings" title="Technical Writings"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">
+                    technical writings</a>
+
+                <a href="https://thearyanahmed.com/abcd" title="ABCD for Kids"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">
+                    abcd</a>
+
+                <a href="https://thearyanahmed.com/vim" title="Learn Vim"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">
+                    learn vim</a>
+
+                
+
+                
+
+                <a href="https://github.com/thearyanahmed" target="_blank"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Github</a>
+
+                <a href="https://linkedin.com/in/thearyanahmed" target="_blank"
+                    class="font-semibold font-aquawaxalt border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Linkedin</a>
+
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+    <main class="lg:relative">
+        <div class="max-w-3xl bg-white mx-auto px-4">
+        <div class="relative py-16 bg-white overflow-hidden">
+            <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full bg-white">
+                <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
+                    <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none"
+                         viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20"
+                                     patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)"/>
+                    </svg>
+                    <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404"
+                         height="384" fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20"
+                                     patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)"/>
+                    </svg>
+                    <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384"
+                         fill="none" viewBox="0 0 404 384">
+                        <defs>
+                            <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20"
+                                     patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                            </pattern>
+                        </defs>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="relative px-4 sm:px-6 lg:px-8">
+                <div class="text-lg max-w-prose">
+                    <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
+                        Building a URL shortener with Rust and Redis
+                    </h1>
+                </div>
+
+                
+                <div class="text-lg max-w-prose">
+                    <p class="mt-8 text-xl font-aquawaxalt text-gray-500 leading-8">
+                        As rust is being adopted by lots of different companies for solving various purposes, I’m trying to adopt rust. In this article and the series of articles following this will contain my journey to build a simple program, an url shortener, with rust.
+                    </p>
+                </div>
+                <div
+                    class="article-content-markdown mt-6 font-aquawaxalt prose prose-indigo prose-lg text-gray-800 mx-auto">
+                    <div ><p>Our approach will be to make a plan for the features and work our way through.</p>
+<blockquote>
+<p>All the code could be found at https://github.com/thearyanahmed/lucy</p>
+</blockquote>
+<p>So, getting started, our url shortener is a program, that stores a longer form of url (text) against an unique and short text. You can think of a hashmap. Where the values are URLs and keys are unique ids.</p>
+<p>We’ll need to identify the url based on the unique id. If it exists, we return it, if not, return a different result.</p>
+<p>The unique ids should contain characters that can create a valid url. Because usually we’ll have an endpoint that contains the unique id. So we’ll use [0-9,a-z,A-Z] values.</p>
+<h2 id="unique-ids">Unique IDs</h2>
+<p>How many unique ids can be created from these values? 0–9 = 10, a-z and A-Z both containing 26 each. Total 10+26+26= 62 possible characters. If we use 6 characters, we should be able to create 62^6 = 56,800,235,584 values.</p>
+<p>For our simple project, this should be more than enough. The formula is number of characters we can choose ^ characters we’ll use.</p>
+<blockquote>
+<p>A ^ n = Number of possible values</p>
+</blockquote>
+<p>Summary till this point
+Build a program that stores valid urls against an unique id</p>
+<p>Have the functionality to find an url by its id</p>
+<p>We will be focusing on the core part of functionalities now. We want to build a library that gives us a the mentioned features.</p>
+<h2 id="coding-with-rust">Coding with Rust</h2>
+<p>We’ll have a simple library, that exposes find , record and all functions to our clients. And will support multiple datastores. I want to lay out the approach from a user’s perspective. We have a service (struct) called Lucy , that gives us the functionality for the following.</p>
+<ul>
+<li>Saving a new record</li>
+<li>Finding a record by uuid</li>
+<li>Finding all records</li>
+</ul>
+<p>The records are saved in a datastore, the datastore can be anything, hashmap, redis, mysql etc. It is accessed by a trait object ( dyn TraitName ). This trait, in our case is Datastore .</p>
+<h2 id="datastore">Datastore</h2>
+<p>We want our service class to have access to a datastore via a public trait object. So we can have support for multiple data stores.</p>
+<code class="language-rust">pub trait Datastore {
+    fn find(&amp;mut self, uuid: &amp;str) -&gt; Result&lt;Record, LucyError&gt;;
+<code>fn record(&amp;amp;mut self, record: Record) -&amp;gt; Result&amp;lt;bool, String&amp;gt;;
+
+fn all(&amp;amp;mut self) -&amp;gt; Vec&amp;lt;Record&amp;gt;;
+</code>
+<p>}
+</code></p>
+<p>We’ll call our library Lucy (just needed a name). And the structure is simple.</p>
+<code class="language-rust">pub struct Lucy {
+    ds: Box&lt;dyn Datastore&gt;,
+}
+<p>impl Lucy {
+pub fn new(driver: DatastoreDriver) -&gt; Lucy {</p>
+<code>}
+
+pub fn find(&amp;amp;mut self, uuid: &amp;amp;str) -&amp;gt; Result&amp;lt;Record, LucyError&amp;gt; {
+}
+
+pub fn record(&amp;amp;mut self, record: Record) -&amp;gt; Result&amp;lt;bool, String&amp;gt; {
+}
+
+pub fn all(&amp;amp;mut self) -&amp;gt; Vec&amp;lt;Record&amp;gt; {
+}
+</code>
+<p>}
+</code></p>
+<p>I’d like to address a few other things. The Record from the above code is simply a structure for holding an uuid and url.</p>
+<code class="language-rust">pub struct Record {
+    pub url: String,
+    pub uuid: String,
+}
+</code>
+<p>And LucyError is an enum for the errors specific from this library.</p>
+<code class="language-rust">pub enum LucyError {
+    UrlNotFoundError,
+    NotAValidUrlError
+}
+<p>impl LucyError {
+pub fn to_string(&amp;self) -&gt; String {
+match *self {
+Self::UrlNotFoundError =&gt; &quot;url not found&quot;.to_string(),
+Self::NotAValidUrlError =&gt; &quot;not a valid url&quot;.to_string(),
+}
+}
+}
+</code></p>
+<h2 id="implement-lucy">Implement Lucy</h2>
+<p>Our simple Lucy needs to be instantiated with a datastore , which can be selected from the outside.</p>
+<code class="language-rust">impl Lucy {
+    pub fn new(driver: DatastoreDriver) -&gt; Lucy {
+        let ds = Lucy::get_datastore(driver);
+        Lucy { ds }
+    }
+<code>fn get_datastore(driver: DatastoreDriver) -&amp;gt; Box&amp;lt;dyn Datastore&amp;gt; {
+    match driver {
+        DatastoreDriver::InMemoryHashmap =&amp;gt; Box::new(HashmapStore::new()),
+        DatastoreDriver::Redis =&amp;gt; Box::new(RedisStore::new()),
+    }
+}
+</code>
+<p>}
+</code></p>
+<p>We want our datastore to be something dynamic, something that implements Datastore trait, anything that implements Datastore trait. For starters, we had two options, either go with generics or dynamic dispatch.</p>
+<p>Box is a pointer to heap allocation. More details here.</p>
+<p>From our library’s user point of view, a user (dev) would run the following code to create an instance of our Lucyservice.</p>
+<code class="language-rust">let mut lucy = Lucy::new(DatastoreDriver::InMemoryHashmap);
+To record (save) an url, we call,
+<p>for _ in 0..100 {
+match lucy.record(Record::new(faker.gen(&amp;FakeOption::URL))) {
+Err(err) =&gt; println!(&quot;error: {}&quot;,err),
+_ =&gt; {},
+}
+}
+</code></p>
+<p>To find a specific one,</p>
+<code class="language-rust">match lucy.find(&amp;y) {
+    Ok(r) =&gt; {
+        println!(&quot;FOUND URL: {}&quot;,r.url)
+      },
+<code>Err(e) =&amp;gt; print!(&amp;quot;NOT FOUND {}&amp;quot;,e.to_string()),
+</code>
+<p>}
+</code></p>
+<p>And to find all of them,</p>
+<code class="language-rust">for record in lucy.all() {
+    println!(&quot;uuid: {} url:{}&quot;,record.uuid, record.url);
+}
+</code>
+<p>It’s a very simple API. Let’s implement the RedisStore to satisfy Datastore trait.</p>
+<h2 id="implement-redisstore">Implement RedisStore</h2>
+<p>Our redis store for only holds a connect for now. We use the conventional new function to return an new instance that has the connection to communicate with redis.</p>
+<code class="language-rust">pub struct RedisStore {
+    con: redis::Connection,
+}
+<p>impl RedisStore {
+pub fn new() -&gt; RedisStore {
+// @TODO take connection string as parameter.
+let client = redis::Client::open(&quot;redis://127.0.0.1/&quot;).expect(&quot;could not connect to redis&quot;);</p>
+<code>    let con = client
+        .get_connection()
+        .expect(&amp;quot;could not get connection to redis&amp;quot;);
+
+    RedisStore { con }
+}
+</code>
+<p>}
+</code></p>
+<h2 id="implement-datastore-for-redisstore">Implement Datastore for RedisStore</h2>
+<p>For redis’s data structure, it’ll only be a simple string SET KEY VALUE where the KEY is an uuid and value is the URL itself. I’m using redis-rs crate.</p>
+<p><strong>record</strong> To set a record, we just run SET with given arguments.</p>
+<code class="language-rust">fn record(&amp;mut self, record: Record) -&gt; Result&lt;bool, String&gt; {
+        match redis::cmd(&quot;SET&quot;).arg(record.uuid).arg(record.url).query::&lt;String&gt;(&amp;mut self.con) {
+            Ok(_) =&gt; Ok(true),
+            Err(err) =&gt; Err(err.to_string()),
+        }
+    }
+</code>
+<p>Explanation, we run a command using cmd , with our arguments. The order of the arguments are necessary.</p>
+<p>find To find a record, we use the previous approach, simply with GET command.</p>
+<code class="language-rust">  fn find(&amp;mut self, uuid: &amp;str) -&gt; Result&lt;Record, LucyError&gt; {
+        match redis::cmd(&quot;GET&quot;).arg(uuid).query::&lt;String&gt;(&amp;mut self.con) {
+            Ok(url) =&gt; {
+                match Record::from(url, uuid.to_string()) {
+                    Ok(record) =&gt; Ok(record),
+                    Err(_) =&gt; Err(LucyError::NotAValidUrlError)
+                }
+            },
+            Err(_) =&gt; Err(LucyError::UrlNotFoundError),
+        }
+    }
+</code>
+<p>all To implement all method, which will retrieve all saved records in our datastore, we first need to get all the keys and then find all the uuids and then making a bulk call using MGET key1 key2 … keyNwith all the given ids.</p>
+<code class="language-rust">    fn all(&amp;mut self) -&gt; Vec&lt;Record&gt; {
+        // Get all the keys
+        let keys = match redis::cmd(&quot;KEYS&quot;).arg(&quot;*&quot;).query::&lt;Vec&lt;String&gt;&gt;(&amp;mut self.con) {
+            Ok(keyset) =&gt; keyset,
+            Err(_) =&gt; vec![],
+        };
+<code>    if keys.len() == 0 {
+        return vec![];
+    }
+
+    let mut cmd = redis::cmd(&amp;quot;MGET&amp;quot;);
+
+    // build the command
+    for k in keys.clone() {
+        cmd.arg(k);
+    }
+
+    // get redis results using MGET key1, key2, ..., keyN
+    let urls = match cmd.query::&amp;lt;Vec&amp;lt;String&amp;gt;&amp;gt;(&amp;amp;mut self.con) {
+        Ok(results) =&amp;gt; results,
+        Err(_) =&amp;gt; vec![],
+    };
+
+    if urls.len() == 0 {
+        return vec![];
+    }
+
+    // Result mapping
+    let mut res : Vec&amp;lt;Record&amp;gt; = vec![];
+
+    for (i, uuid) in keys.iter().enumerate() {
+        let url = &amp;amp;urls[i];
+
+        match Record::from(url.to_string(), uuid.to_string()) {
+            Ok(record) =&amp;gt; res.push(record),
+            Err(_) =&amp;gt; {},
+        }
+    }
+
+    res
+}
+</code>
+</code>
+<p>And that does it. This is the core. Using it with a REST api, gRPC or even building a CLI or anything else is up to the dev. If the given datastores don’t work, simply write a datastore that implements Datastore.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>This code doesn’t have any tests written, not yet at least.</li>
+<li>This is just a demo project.</li>
+<li>Doesn’t have a method for find_by_url to check if an url exists already.</li>
+<li>Welcoming mistakes to be pointed out.</li>
+<li>UUID collision was not addressed in the code, not yet at least.</li>
+<li>An implementation for serving to the web and over gRPC using Tokio Tonic is in drafts (built for learning purpose only).</li>
+</ul>
+<p>The following logic was using to generate uuid of a given length.</p>
+<h2 id="generate-uuid">Generate UUID</h2>
+<code class="language-rust">let unique_string: String = rand::thread_rng()
+        .sample_iter(&amp;Alphanumeric)
+        .take(char_length)
+        .map(char::from)
+        .collect();
+</code>
+<h2 id="quick-links">Quick Links</h2>
+<ul>
+<li>A video on using <a href="https://www.youtube.com/watch?v=gocwRvLhDf8&amp;t=1s&amp;ab_channel=TomScott">alpha numeric ids for n characters by Tom Scott</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Consistent_hashing">Consistent hashing</a></li>
+<li>An article on <a href="https://tom-e-white.com/2007/11/consistent-hashing.html">Consistent hashing</a> by Tom E White</li>
+<li>More on <a href="https://doc.rust-lang.org/std/boxed/struct.Box.html">Rust’s std::boxed::Box</a></li>
+</ul>
+</div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="h-20"></div>
+    </div>
+    </main>
+
+    <!-- Calendly link widget begin -->
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+        <script type="module">
+            const imgs = document.getElementsByTagName('img')
+
+            for (let i = 0; i < imgs.length; i++) {
+                const img = imgs[i]
+
+                let src = img.getAttribute('src')
+
+                if (src.startsWith('art::')) {
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    img.setAttribute('src', src)
+                }
+            }
+        </script>
+
+    <script src="https://thearyanahmed.com/js/functions.js"></script>
+    <footer class="max-w-lg mx-auto flex text-center mb-20">
+        <div class="flex flex-col mx-auto text-gray-300">
+            <span>
+                v<span class="text-gray-400">2.27.0</span>
+            </span>
+            <span class="text-sm"><span class="text-gray-500/60">288</span>ヅ<span class="text-gray-500/60">c38054ec83d9d8be9639b2cf738845db134f56eb</span></span>
+        </div>
+    </footer>
+</body>
+
+</html>
