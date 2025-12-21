@@ -1,6 +1,6 @@
 base_url = "https://thearyanahmed.com"
-title = "thearyanahmed"
-description = "Personal website and blog"
+title = "Aryan Ahmed"
+description = "A personal blog focused on software and other entertaining fads"
 theme = "apollo"
 build_search_index = true
 generate_feeds = true
@@ -26,19 +26,26 @@ highlight_themes_css = [
 [extra]
 toc = true
 use_cdn = false
-theme = "toggle"              # light, dark, auto, toggle
+theme = "auto"              # light, dark, auto, toggle
 fancy_code = true
-dynamic_note = true           # a note that can be toggled
+dynamic_note = true
 mathjax = false
 mathjax_dollar_inline_enable = false
 
 menu = [
-    { name = "/posts", url = "/posts", weight = 1 },
-    { name = "/tags", url = "/tags", weight = 2 },
+    { name = "Posts", url = "/posts", weight = 1 },
+    { name = "Subscribe", url = "/subscribe", weight = 2 },
+    { name = "Book", url = "/book", weight = 3 },
+    { name = "Talks", url = "/talks", weight = 4 },
 ]
 
 socials = [
     { name = "github", url = "https://github.com/thearyanahmed", icon = "github" },
+    { name = "twitter", url = "https://twitter.com/yourusername", icon = "twitter" },
+    { name = "mastodon", url = "https://mastodon.social/@yourusername", icon = "mastodon" },
+    { name = "linkedin", url = "https://linkedin.com/in/yourusername", icon = "linkedin" },
+    { name = "email", url = "mailto:your.email@example.com", icon = "email" },
+    { name = "rss", url = "/atom.xml", icon = "rss" },
 ]
 
 [extra.taxonomies]
