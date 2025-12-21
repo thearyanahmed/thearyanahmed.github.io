@@ -1,0 +1,49 @@
+base_url = "https://thearyanahmed.com"
+title = "thearyanahmed"
+description = "Personal website and blog"
+theme = "apollo"
+build_search_index = true
+generate_feeds = true
+compile_sass = true
+minify_html = true
+taxonomies = [{ name = "tags" }]
+
+[search]
+include_title = true
+include_description = true
+include_path = true
+include_content = true
+index_format = "elasticlunr_json"
+
+[markdown]
+highlight_code = true
+highlight_theme = "css"
+highlight_themes_css = [
+  { theme = "ayu-dark", filename = "syntax-theme-dark.css" },
+  { theme = "ayu-light", filename = "syntax-theme-light.css" },
+]
+
+[extra]
+toc = true
+use_cdn = false
+theme = "toggle"              # light, dark, auto, toggle
+fancy_code = true
+dynamic_note = true           # a note that can be toggled
+mathjax = false
+mathjax_dollar_inline_enable = false
+
+menu = [
+    { name = "/posts", url = "/posts", weight = 1 },
+    { name = "/tags", url = "/tags", weight = 2 },
+]
+
+socials = [
+    { name = "github", url = "https://github.com/thearyanahmed", icon = "github" },
+]
+
+[extra.taxonomies]
+sort_by = "page_count"
+reverse = true
+
+[extra.analytics]
+enabled = false
