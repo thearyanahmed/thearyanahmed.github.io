@@ -24,7 +24,9 @@ The `&str` type, often called a "string slice," represents a borrowed reference 
 Example:
 ```rust
 fn print_greeting(greeting: &str) {
-    println!("{}", greeting);
+```rust
+println!("{}", greeting);
+```
 }
 ```
 
@@ -41,7 +43,9 @@ Example:
 use std::borrow::Cow;
 
 fn process_text(text: Cow<str>) {
-    // ...
+```rust
+// ...
+```
 }
 ```
 
@@ -57,7 +61,9 @@ Example:
 use std::ffi::{OsString, OsStr};
 
 fn read_file(file_path: &OsStr) -> Result<OsString, std::io::Error> {
-    // ...
+```rust
+// ...
+```
 }
 ```
 

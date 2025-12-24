@@ -8,11 +8,13 @@ What happens we need something dynamic of different types?
 
 I’m trying to build a storage library, that supports multiple drivers. Sort of like [laravel’s storage](https://laravel.com/docs/9.x/filesystem) class. In my design, we’d have something like
 
-    Storage::put('file-01.txt', content);
-    
-    Storage::disk('s3')->put('file-02.png', content);
-    
-    Storage::download('file-03.docs');
+```rust
+Storage::put('file-01.txt', content);
+
+Storage::disk('s3')->put('file-02.png', content);
+
+Storage::download('file-03.docs');
+```
 
 As it’ll have different types of disks, which will work as adapters to our storage.
 
@@ -28,48 +30,56 @@ Now, I want to have a method something similar to Storage::new(config) or someth
 
 For better understanding, I’m paining two config structs.
 
-    pub struct LocalFileSystemAdapterConfig {
-      pub root_dir: String,
-    }
-    
-    pub struct S3AdapterConfig {
-      pub public_key: String,
-      pub secret_key: String,
-      pub bucket: String,
-      pub use_path_style_endpoint: false,
-    }
+```rust
+pub struct LocalFileSystemAdapterConfig {
+  pub root_dir: String,
+}
+
+pub struct S3AdapterConfig {
+  pub public_key: String,
+  pub secret_key: String,
+  pub bucket: String,
+  pub use_path_style_endpoint: false,
+}
+```
 
 And I need something like
 
-    trait StorageAdapter {
-      // ... methods
-    }
-    struct Storage {
-      disk: StorageAdapter,
-      // other props
-    }
-    
-    let storage = Storage::from(LocalFileSystemAdapterConfig | S3AdapterConfig); 
-    
-    // and based on the given config
-    storage.disk = LocalFileSystem | S3
+```rust
+trait StorageAdapter {
+  // ... methods
+}
+struct Storage {
+  disk: StorageAdapter,
+  // other props
+}
+
+let storage = Storage::from(LocalFileSystemAdapterConfig | S3AdapterConfig); 
+
+// and based on the given config
+storage.disk = LocalFileSystem | S3
+```
 
 Defining a function that takes a dynamic parameter and casts it down to a specific / concrete type. The initial thought was maybe we should have something like
 
-    struct LocalAdapterConfig {
-      base_dir: String,
-    }
-    
-    impl LocalAdapter {
-      pub fn new<T : dyn StorageAdapterConfigTrait>(config: T) -> LocalAdapter {
-        let local_config = config as LocalAdapterConfig;
-        // THIS IS NOT ALLOWED
-      }
-    }
+```rust
+struct LocalAdapterConfig {
+  base_dir: String,
+}
+
+impl LocalAdapter {
+  pub fn new<T : dyn StorageAdapterConfigTrait>(config: T) -> LocalAdapter {
+    let local_config = config as LocalAdapterConfig;
+    // THIS IS NOT ALLOWED
+  }
+}
+```
 
 The attempt resulted in a failure and gave me:
 
-    ... an `as` expression can only be used to convert between primitive types
+```rust
+... an `as` expression can only be used to convert between primitive types
+```
 
 Rust is saying, you can use the as keyword to convert between primitive types. This was not working. But as we are using a dynamictrait (as an interface concept). We can cast that trait to a concrete type.
 
@@ -82,73 +92,85 @@ We want to use the Any trait, it uses reflection to allow dynamic typing of any 
 
 Our initial code is as follows
 
-    
-    use std::any::Any;
-    
-    pub struct LocalFileSystemAdapterConfig {
-        pub base_directory: String,
-    }
-    
-    pub struct LocalFileSystemAdapter {
-      pub base_dir: String, // just for demo purpose
-    }
-    
-    // the trait config that every storage adapter's config will implement
-    pub trait StorageAdapterConfig {
-        fn as_any(&self) -> &dyn Any;
-    }
+```rust
+
+use std::any::Any;
+
+pub struct LocalFileSystemAdapterConfig {
+    pub base_directory: String,
+}
+
+pub struct LocalFileSystemAdapter {
+  pub base_dir: String, // just for demo purpose
+}
+
+// the trait config that every storage adapter's config will implement
+pub trait StorageAdapterConfig {
+    fn as_any(&self) -> &dyn Any;
+}
+```
 
 We need the as_any method to be implemented for concrete struct/s where we want to allow *downcasting*. Therefore,
 
-    
-    use std::any::Any;
-    
-    impl StorageAdapterConfig for LocalFileSystemAdapterConfig {
-        fn as_any(&self) -> &dyn Any {
-            self
-        }
+```rust
+
+use std::any::Any;
+
+impl StorageAdapterConfig for LocalFileSystemAdapterConfig {
+    fn as_any(&self) -> &dyn Any {
+        self
     }
+}
+```
 
 We also need to change our method’s signature from
 
-    pub fn new<T : dyn StorageAdapterConfigTrait>(config: T) 
+```rust
+pub fn new<T : dyn StorageAdapterConfigTrait>(config: T) 
+```
 
 to
 
-    pub fn new(config: &dyn Any)
-    
-    // make sure to import std::any::Any;
+```rust
+pub fn new(config: &dyn Any)
+
+// make sure to import std::any::Any;
+```
 
 And finally, to downcast a variable of type dyn Any to our concrete LocalFileSystemAdapterConfig ,
 
-    
-    let cfg : &LocalFileSystemAdapterConfig = config
-                .downcast_ref::<LocalFileSystemAdapterConfig>()
-                .expect("failed to downcast");
-    
-    // the syntax is 
-    // .downcast_ref::<$CONCRETE_TYPE>().expect("msg");
+```rust
+
+let cfg : &LocalFileSystemAdapterConfig = config
+            .downcast_ref::<LocalFileSystemAdapterConfig>()
+            .expect("failed to downcast");
+
+// the syntax is 
+// .downcast_ref::<$CONCRETE_TYPE>().expect("msg");
+```
 
 The full code,
 
-    
-    impl LocalFileSystemAdapter {
-    
-        pub fn new(config: &dyn Any) -> LocalFileSystemAdapter {
-    
-            let cfg : &LocalFileSystemAdapterConfig = config
-                .downcast_ref::<LocalFileSystemAdapterConfig>()
-                .expect("failed to downcast");
-    
-            let base_dir = &cfg.base_directory;
-    
-            LocalFileSystemAdapter {
-                base_dir: base_dir.to_string(),
-            }
+```rust
+
+impl LocalFileSystemAdapter {
+
+    pub fn new(config: &dyn Any) -> LocalFileSystemAdapter {
+
+        let cfg : &LocalFileSystemAdapterConfig = config
+            .downcast_ref::<LocalFileSystemAdapterConfig>()
+            .expect("failed to downcast");
+
+        let base_dir = &cfg.base_directory;
+
+        LocalFileSystemAdapter {
+            base_dir: base_dir.to_string(),
         }
-      
-      // ...
     }
+  
+  // ...
+}
+```
 
 Our IDE picks up the change and returns proper intellisense.
 

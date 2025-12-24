@@ -36,33 +36,39 @@ We want our service class to have access to a datastore via a public trait objec
 
 ```rust
 pub trait Datastore {
-    fn find(&mut self, uuid: &str) -> Result<Record, LucyError>;
+```rust
+fn find(&mut self, uuid: &str) -> Result<Record, LucyError>;
 
-    fn record(&mut self, record: Record) -> Result<bool, String>;
+fn record(&mut self, record: Record) -> Result<bool, String>;
 
-    fn all(&mut self) -> Vec<Record>;
+fn all(&mut self) -> Vec<Record>;
+```
 }
 ```
 We’ll call our library Lucy (just needed a name). And the structure is simple.
 
 ```rust
 pub struct Lucy {
-    ds: Box<dyn Datastore>,
+```rust
+ds: Box<dyn Datastore>,
+```
 }
 
 impl Lucy {
-    pub fn new(driver: DatastoreDriver) -> Lucy {
+```rust
+pub fn new(driver: DatastoreDriver) -> Lucy {
 
-    }
+}
 
-    pub fn find(&mut self, uuid: &str) -> Result<Record, LucyError> {
-    }
+pub fn find(&mut self, uuid: &str) -> Result<Record, LucyError> {
+}
 
-    pub fn record(&mut self, record: Record) -> Result<bool, String> {
-    }
+pub fn record(&mut self, record: Record) -> Result<bool, String> {
+}
 
-    pub fn all(&mut self) -> Vec<Record> {
-    }
+pub fn all(&mut self) -> Vec<Record> {
+}
+```
 
 }
 ```
@@ -71,25 +77,31 @@ I’d like to address a few other things. The Record from the above code is simp
 
 ```rust
 pub struct Record {
-    pub url: String,
-    pub uuid: String,
+```rust
+pub url: String,
+pub uuid: String,
+```
 }
 ```
 And LucyError is an enum for the errors specific from this library.
 
 ```rust
 pub enum LucyError {
-    UrlNotFoundError,
-    NotAValidUrlError
+```rust
+UrlNotFoundError,
+NotAValidUrlError
+```
 }
 
 impl LucyError {
-    pub fn to_string(&self) -> String {
-        match *self {
-            Self::UrlNotFoundError => "url not found".to_string(),
-            Self::NotAValidUrlError => "not a valid url".to_string(),
-        }
+```rust
+pub fn to_string(&self) -> String {
+    match *self {
+        Self::UrlNotFoundError => "url not found".to_string(),
+        Self::NotAValidUrlError => "not a valid url".to_string(),
     }
+}
+```
 }
 ```
 
@@ -98,17 +110,19 @@ Our simple Lucy needs to be instantiated with a datastore , which can be selecte
 
 ```rust
 impl Lucy {
-    pub fn new(driver: DatastoreDriver) -> Lucy {
-        let ds = Lucy::get_datastore(driver);
-        Lucy { ds }
-    }
+```rust
+pub fn new(driver: DatastoreDriver) -> Lucy {
+    let ds = Lucy::get_datastore(driver);
+    Lucy { ds }
+}
 
-    fn get_datastore(driver: DatastoreDriver) -> Box<dyn Datastore> {
-        match driver {
-            DatastoreDriver::InMemoryHashmap => Box::new(HashmapStore::new()),
-            DatastoreDriver::Redis => Box::new(RedisStore::new()),
-        }
+fn get_datastore(driver: DatastoreDriver) -> Box<dyn Datastore> {
+    match driver {
+        DatastoreDriver::InMemoryHashmap => Box::new(HashmapStore::new()),
+        DatastoreDriver::Redis => Box::new(RedisStore::new()),
     }
+}
+```
 }
 ```
 
@@ -124,20 +138,24 @@ To record (save) an url, we call,
 
 for _ in 0..100 {
   match lucy.record(Record::new(faker.gen(&FakeOption::URL))) {
-    Err(err) => println!("error: {}",err),
-      _ => {},
-    }
+```rust
+Err(err) => println!("error: {}",err),
+  _ => {},
+}
+```
 }
 ```
 To find a specific one,
 
 ```rust
 match lucy.find(&y) {
-    Ok(r) => {
-        println!("FOUND URL: {}",r.url)
-      },
+```rust
+Ok(r) => {
+    println!("FOUND URL: {}",r.url)
+  },
 
-    Err(e) => print!("NOT FOUND {}",e.to_string()),
+Err(e) => print!("NOT FOUND {}",e.to_string()),
+```
 }
 ```
 
@@ -145,7 +163,9 @@ And to find all of them,
 
 ```rust
 for record in lucy.all() {
-    println!("uuid: {} url:{}",record.uuid, record.url);
+```rust
+println!("uuid: {} url:{}",record.uuid, record.url);
+```
 }
 ```
 It’s a very simple API. Let’s implement the RedisStore to satisfy Datastore trait.
@@ -156,20 +176,24 @@ Our redis store for only holds a connect for now. We use the conventional new fu
 
 ```rust
 pub struct RedisStore {
-    con: redis::Connection,
+```rust
+con: redis::Connection,
+```
 }
 
 impl RedisStore {
-    pub fn new() -> RedisStore {
-        // @TODO take connection string as parameter.
-        let client = redis::Client::open("redis://127.0.0.1/").expect("could not connect to redis");
+```rust
+pub fn new() -> RedisStore {
+    // @TODO take connection string as parameter.
+    let client = redis::Client::open("redis://127.0.0.1/").expect("could not connect to redis");
 
-        let con = client
-            .get_connection()
-            .expect("could not get connection to redis");
+    let con = client
+        .get_connection()
+        .expect("could not get connection to redis");
 
-        RedisStore { con }
-    }
+    RedisStore { con }
+}
+```
 }
 ```
 
@@ -180,11 +204,13 @@ For redis’s data structure, it’ll only be a simple string SET KEY VALUE wher
 
 ```rust
 fn record(&mut self, record: Record) -> Result<bool, String> {
-        match redis::cmd("SET").arg(record.uuid).arg(record.url).query::<String>(&mut self.con) {
-            Ok(_) => Ok(true),
-            Err(err) => Err(err.to_string()),
-        }
+```rust
+    match redis::cmd("SET").arg(record.uuid).arg(record.url).query::<String>(&mut self.con) {
+        Ok(_) => Ok(true),
+        Err(err) => Err(err.to_string()),
     }
+}
+```
 ```
 Explanation, we run a command using cmd , with our arguments. The order of the arguments are necessary.
 
@@ -192,63 +218,67 @@ find To find a record, we use the previous approach, simply with GET command.
 
 ```rust
   fn find(&mut self, uuid: &str) -> Result<Record, LucyError> {
-        match redis::cmd("GET").arg(uuid).query::<String>(&mut self.con) {
-            Ok(url) => {
-                match Record::from(url, uuid.to_string()) {
-                    Ok(record) => Ok(record),
-                    Err(_) => Err(LucyError::NotAValidUrlError)
-                }
-            },
-            Err(_) => Err(LucyError::UrlNotFoundError),
-        }
+```rust
+    match redis::cmd("GET").arg(uuid).query::<String>(&mut self.con) {
+        Ok(url) => {
+            match Record::from(url, uuid.to_string()) {
+                Ok(record) => Ok(record),
+                Err(_) => Err(LucyError::NotAValidUrlError)
+            }
+        },
+        Err(_) => Err(LucyError::UrlNotFoundError),
     }
+}
+```
 ```
 
 all To implement all method, which will retrieve all saved records in our datastore, we first need to get all the keys and then find all the uuids and then making a bulk call using MGET key1 key2 … keyNwith all the given ids.
 
 ```rust
-    fn all(&mut self) -> Vec<Record> {
-        // Get all the keys
-        let keys = match redis::cmd("KEYS").arg("*").query::<Vec<String>>(&mut self.con) {
-            Ok(keyset) => keyset,
-            Err(_) => vec![],
-        };
+```rust
+fn all(&mut self) -> Vec<Record> {
+    // Get all the keys
+    let keys = match redis::cmd("KEYS").arg("*").query::<Vec<String>>(&mut self.con) {
+        Ok(keyset) => keyset,
+        Err(_) => vec![],
+    };
 
-        if keys.len() == 0 {
-            return vec![];
-        }
-
-        let mut cmd = redis::cmd("MGET");
-
-        // build the command
-        for k in keys.clone() {
-            cmd.arg(k);
-        }
-
-        // get redis results using MGET key1, key2, ..., keyN
-        let urls = match cmd.query::<Vec<String>>(&mut self.con) {
-            Ok(results) => results,
-            Err(_) => vec![],
-        };
-
-        if urls.len() == 0 {
-            return vec![];
-        }
-
-        // Result mapping
-        let mut res : Vec<Record> = vec![];
-
-        for (i, uuid) in keys.iter().enumerate() {
-            let url = &urls[i];
-
-            match Record::from(url.to_string(), uuid.to_string()) {
-                Ok(record) => res.push(record),
-                Err(_) => {},
-            }
-        }
-
-        res
+    if keys.len() == 0 {
+        return vec![];
     }
+
+    let mut cmd = redis::cmd("MGET");
+
+    // build the command
+    for k in keys.clone() {
+        cmd.arg(k);
+    }
+
+    // get redis results using MGET key1, key2, ..., keyN
+    let urls = match cmd.query::<Vec<String>>(&mut self.con) {
+        Ok(results) => results,
+        Err(_) => vec![],
+    };
+
+    if urls.len() == 0 {
+        return vec![];
+    }
+
+    // Result mapping
+    let mut res : Vec<Record> = vec![];
+
+    for (i, uuid) in keys.iter().enumerate() {
+        let url = &urls[i];
+
+        match Record::from(url.to_string(), uuid.to_string()) {
+            Ok(record) => res.push(record),
+            Err(_) => {},
+        }
+    }
+
+    res
+}
+```
 ```
 And that does it. This is the core. Using it with a REST api, gRPC or even building a CLI or anything else is up to the dev. If the given datastores don’t work, simply write a datastore that implements Datastore.
 
@@ -268,12 +298,16 @@ The following logic was using to generate uuid of a given length.
 
 ```rust
 let unique_string: String = rand::thread_rng()
-        .sample_iter(&Alphanumeric)
-        .take(char_length)
-        .map(char::from)
-        .collect();
+```rust
+    .sample_iter(&Alphanumeric)
+    .take(char_length)
+    .map(char::from)
+    .collect();
 ```
-        
+```
+```rust
+    
+```
 ## Quick Links
 - A video on using [alpha numeric ids for n characters by Tom Scott](https://www.youtube.com/watch?v=gocwRvLhDf8&t=1s&ab_channel=TomScott)
 - [Consistent hashing](https://en.wikipedia.org/wiki/Consistent_hashing)

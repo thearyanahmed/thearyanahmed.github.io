@@ -61,7 +61,9 @@ You can also try rust online from [Rust Playground](https://play.rust-lang.org/?
 In a folder, create a file called `main.rs` and add the following code,
 ```rust
 fn main() {
-    println!("Hello World!");
+```rust
+println!("Hello World!");
+```
 }
 ```
  

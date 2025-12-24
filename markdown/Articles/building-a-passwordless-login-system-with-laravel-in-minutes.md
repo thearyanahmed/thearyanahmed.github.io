@@ -32,8 +32,10 @@ According to our ‘plain-text’ way, we need 3 routes. One that displays a for
 
 So our first route is pretty simple.
 
-    Route::get('/login/passwordless',[LoginWithEmail::class,'displayPasswordlessLoginForm'])
-        ->name('passwordlessLoginView');
+```rust
+Route::get('/login/passwordless',[LoginWithEmail::class,'displayPasswordlessLoginForm'])
+    ->name('passwordlessLoginView');
+```
 
 Btw, I’m trying to keep the naming long and easy to read and understand. Use the naming convention that you follow and best for your project & team.
 
@@ -43,54 +45,60 @@ This route simply renders a view that looks like so,
 
 Using inertiajs, so this form only does the following,
 
-    
-    const submit = () => {
-        form.post(route('handlePasswordlessLoginRequest'), {
-            onFinish: () => { /** handle according to your applicaton logic **/ },
-        });
-    };
+```rust
+
+const submit = () => {
+    form.post(route('handlePasswordlessLoginRequest'), {
+        onFinish: () => { /** handle according to your applicaton logic **/ },
+    });
+};
+```
 
 Secondly, the code for `handlePasswordlessLoginRequest` would be
 
-    Route::post('/login/passwordless',[LoginWithEmail::class,'handlePasswordlessLoginRequest'])
-        ->name('handlePasswordlessLoginRequest');
+```rust
+Route::post('/login/passwordless',[LoginWithEmail::class,'handlePasswordlessLoginRequest'])
+    ->name('handlePasswordlessLoginRequest');
+```
 
 And the controller logic,
 
-    public function handlePasswordlessLoginRequest(Request $request): Response
-    {
-        // step 2
-        // we validate the given input is an email and exists in our database
-        $request->validate(['email' => 'email|exists:users,email']);
+```rust
+public function handlePasswordlessLoginRequest(Request $request): Response
+{
+    // step 2
+    // we validate the given input is an email and exists in our database
+    $request->validate(['email' => 'email|exists:users,email']);
+
+    // at this point, we have a record with that email
+    // so we grab the user
+
     
-        // at this point, we have a record with that email
-        // so we grab the user
+    // would be good just to select id and email, cause thats what we are using.
+    $user = User::where('email',$request->get('email'))->first();
     
-        
-        // would be good just to select id and email, cause thats what we are using.
-        $user = User::where('email',$request->get('email'))->first();
-        
-        // step 3
-        // create a temporary signed url
-        // the URL::temporarySignedRoute() method takes a route name,
-        // time or expiration and any extra parameter can be passed as an array.
+    // step 3
+    // create a temporary signed url
+    // the URL::temporarySignedRoute() method takes a route name,
+    // time or expiration and any extra parameter can be passed as an array.
+
+    // our route for handling the callback url is 
+    // `/login/passwordless/{user}` 
+    // and we have given the name `processPasswordlessLogin`
+    // the {user} param is being populated using 
+    // ['user' => $id], this is step 4
+    $url = URL::temporarySignedRoute('processPasswordlessLogin',now()->addMinutes(10), ['user' => $user->id]);
     
-        // our route for handling the callback url is 
-        // `/login/passwordless/{user}` 
-        // and we have given the name `processPasswordlessLogin`
-        // the {user} param is being populated using 
-        // ['user' => $id], this is step 4
-        $url = URL::temporarySignedRoute('processPasswordlessLogin',now()->addMinutes(10), ['user' => $user->id]);
-        
-        // step 5
-        // we are using notify to send the link, it could've been a (new Mail)->send()
-        $user->notify(new PasswordlessLinkNotification($url));
-    
-        // finally, let our viewing user now, that we've sent an email.
-        return Inertia::render('Auth/LoginWithEmail',[
-               'status' => 'please check your email.'
-        ]);
-    }
+    // step 5
+    // we are using notify to send the link, it could've been a (new Mail)->send()
+    $user->notify(new PasswordlessLinkNotification($url));
+
+    // finally, let our viewing user now, that we've sent an email.
+    return Inertia::render('Auth/LoginWithEmail',[
+           'status' => 'please check your email.'
+    ]);
+}
+```
 
 ### A bit about Signed URLs
 
@@ -112,25 +120,29 @@ After our user has clicked the link that was sent to his email, we need to verif
 
 So our route looks like,
 
-    Route::get('/login/passwordless/{user}',[LoginWithEmail::class,'processPasswordlessLogin'])
-        ->name('processPasswordlessLogin')
-        ->middleware('signed');
+```rust
+Route::get('/login/passwordless/{user}',[LoginWithEmail::class,'processPasswordlessLogin'])
+    ->name('processPasswordlessLogin')
+    ->middleware('signed');
+```
 
 Note the **signed** middleware. Without that bit, our application will be vulnerable. the signed middleware handles the tamper verification part.
 
 And as the middleware is taking care of our validation’s heavy lifting, our controller is pretty simple with this part,
 
-    public function processPasswordlessLogin(Request $request, User $user): RedirectResponse
-    {
-        // we have the user from the route /{user} param
-        // and as we are using route model binding, if the user id is invalid 
-        // or not found, it should abort(404) automatically.
-        Auth::login($user);
-    
-        $request->session()->regenerate();
-    
-        return redirect()->route('dashboard');
-    }
+```php
+public function processPasswordlessLogin(Request $request, User $user): RedirectResponse
+{
+    // we have the user from the route /{user} param
+    // and as we are using route model binding, if the user id is invalid 
+    // or not found, it should abort(404) automatically.
+    Auth::login($user);
+
+    $request->session()->regenerate();
+
+    return redirect()->route('dashboard');
+}
+```
 
 Thats it. Now, if we try it out, after sending a valid email, it’ll send us an email with the appropriate link and clicking it will log us in.
 

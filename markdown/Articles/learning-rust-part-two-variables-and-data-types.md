@@ -40,7 +40,9 @@ warning: unused variable: `hello`
 
 warning: `hello_world` (bin "hello_world") generated 1 warning (run `cargo fix --bin "hello_world"` to app
 ly 1 suggestion)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+```rust
+Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+```
 ```
 
 Here, I want to talk about the compiler’s suggestions. It says there `hello` is unused. And specifies the line number. It also suggests prefixing the variable with an underscore if that is intentional. 
@@ -94,19 +96,29 @@ We need to ensure all the data types match. Even adding a `float` and `int` woul
 ```rust
 // <-- Scope A Starts
 let x : f32 = 12.0;
-    
+```rust
+
+```
 println!("x is originally {}",x);
-    
+```rust
+
+```
 { // <-- Scope B Starts
-    let x =  x as i32;
+```rust
+let x =  x as i32;
+```
 
 	let a_string = "hello";
-        
-    println!("The value x inside the scope {}", x / 2);
+```rust
+    
+println!("The value x inside the scope {}", x / 2);
+```
 	println!("a_string is {}",a_string);
 
 } // <-- Scope B Ends, drops the value of x that is inside the Scoep B
-    
+```rust
+
+```
 println!("Outside the scope, the value of scope is {}",
 
 println!("a_string outside the scope is {}", a_string); // Error: cannot find value `a_string` in this scope
@@ -148,23 +160,25 @@ Rust has support for `8`, `16`, `32`, `64`, `128`, `arch` bits, each of them are
 Rust has a special `arch` type. It denotes `architecture` . Assigning the data type of `isize` or `usize` would fall back into the architecture of the system. If the system is running on 64 bit, then it will be 64 bit value. If 32 bit, that will fall back to 32 bit value.
 
 ```rust
-    let integer_8: i8 = 1;     // Range: -128 to 127
-    let integer_16: i16 = 1;   // Range: -32,768 to 32,767
-    let integer_32: i32 = 1;   // Range: -2,147,483,648 to 2,147,483,647
-    let integer_64: i64 = 1;   // Range: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807
-    let integer_128: i128 = 1; // Range: -170,141,183,460,469,231,731,687,303,715,884,105,728 
-                                //        to 170,141,183,460,469,231,731,687,303,715,884,105,727
-    
-    // Unsigned integers
-    let uinteger_8: u8 = 1;    // Range: 0 to 255
-    let uinteger_16: u16 = 1;  // Range: 0 to 65,535
-    let uinteger_32: u32 = 1;  // Range: 0 to 4,294,967,295
-    let uinteger_64: u64 = 1;  // Range: 0 to 18,446,744,073,709,551,615
-    let uinteger_128: u128 = 1;// Range: 0 to 340,282,366,920,938,463,463,374,607,431,768,211,455
-    
-    // Floating-point types
-    let float_32: f32 = 1.0;   // IEEE-754 single-precision floating point
-    let float_64: f64 = 1.0;   // IEEE-754 double-precision floating point
+```rust
+let integer_8: i8 = 1;     // Range: -128 to 127
+let integer_16: i16 = 1;   // Range: -32,768 to 32,767
+let integer_32: i32 = 1;   // Range: -2,147,483,648 to 2,147,483,647
+let integer_64: i64 = 1;   // Range: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807
+let integer_128: i128 = 1; // Range: -170,141,183,460,469,231,731,687,303,715,884,105,728 
+                            //        to 170,141,183,460,469,231,731,687,303,715,884,105,727
+
+// Unsigned integers
+let uinteger_8: u8 = 1;    // Range: 0 to 255
+let uinteger_16: u16 = 1;  // Range: 0 to 65,535
+let uinteger_32: u32 = 1;  // Range: 0 to 4,294,967,295
+let uinteger_64: u64 = 1;  // Range: 0 to 18,446,744,073,709,551,615
+let uinteger_128: u128 = 1;// Range: 0 to 340,282,366,920,938,463,463,374,607,431,768,211,455
+
+// Floating-point types
+let float_32: f32 = 1.0;   // IEEE-754 single-precision floating point
+let float_64: f64 = 1.0;   // IEEE-754 double-precision floating point
+```
 
 ```
 

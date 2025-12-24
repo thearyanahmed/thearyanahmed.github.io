@@ -49,38 +49,54 @@ Benefits of Controllers:
 Kinds of controllers
 
    - **ReplicaSets**
-      - Ensures a specificed number of replicas are running at all times. Needs to be used inside a deployment. Uses want vs have condition. New deployment will trigger new replica set while keeping the old ones, in case of rollbacks.
+```rust
+  - Ensures a specificed number of replicas are running at all times. Needs to be used inside a deployment. Uses want vs have condition. New deployment will trigger new replica set while keeping the old ones, in case of rollbacks.
+```
    - **Deployments**
-      - Declartive updates config objects Allows us to do pod managment. Running replicate set allows us to deploy a number of pods and check their status as a single unit.
-      - Sclaing a replicateSet sacles out the pods, allows for the deployment to handle more traffic.
-      - Pause and resume During pause state, only updates are paused. Network will flow to existing ReplicaSets
-      - Status
+```rust
+  - Declartive updates config objects Allows us to do pod managment. Running replicate set allows us to deploy a number of pods and check their status as a single unit.
+  - Sclaing a replicateSet sacles out the pods, allows for the deployment to handle more traffic.
+  - Pause and resume During pause state, only updates are paused. Network will flow to existing ReplicaSets
+  - Status
+```
    - **DaemonSets**
-      - Ensures all nodes run a copy of a specific pod. DaemonSets will add or remove the required pods.
+```rust
+  - Ensures all nodes run a copy of a specific pod. DaemonSets will add or remove the required pods.
+```
    - **Jobs**
-      - Supervisor process for pods carrying out batch jobs. Usually runs as a cron.
+```rust
+  - Supervisor process for pods carrying out batch jobs. Usually runs as a cron.
+```
    - **Services**
-      - Allows communication between one set of deployments with another. Solves the problem of new (dynamic) IP (I guess). Service as DNS.
-      - Kinds:
-         - Internal service: IP is reachable within the cluster
-         - External : Endpoint available through node ip. NodePort.
-         - Load Balancer: Exposes application to the internet with a load balancer.
+```rust
+  - Allows communication between one set of deployments with another. Solves the problem of new (dynamic) IP (I guess). Service as DNS.
+  - Kinds:
+     - Internal service: IP is reachable within the cluster
+     - External : Endpoint available through node ip. NodePort.
+     - Load Balancer: Exposes application to the internet with a load balancer.
+```
 
 **Labels, Selectors and Namespaces**
 
    Labes:
 
-      - Key-Value pairs. For developers, image tags with value. Label keys are unique per object.
+```rust
+  - Key-Value pairs. For developers, image tags with value. Label keys are unique per object.
+```
 
    Selectors:
 
-      - Equality based selectors. `=` and `!=` .
-      - Set based selectors. Has: `IN` , `NOTIN` and `EXISTS`
+```rust
+  - Equality based selectors. `=` and `!=` .
+  - Set based selectors. Has: `IN` , `NOTIN` and `EXISTS`
+```
 
    Namespaces:
 
-      - Multiple virtual clusters backed by a single physical server. Mainly for separation or concern and divide cluster resoruces.
-      - K8s starts with default namespace. Newer applications install with their resources in a different namespace.
+```rust
+  - Multiple virtual clusters backed by a single physical server. Mainly for separation or concern and divide cluster resoruces.
+  - K8s starts with default namespace. Newer applications install with their resources in a different namespace.
+```
 
 **Kubelet**
 
@@ -129,16 +145,20 @@ spec:
   # select pod where label = 'app' and label_value = 'echo-hostname'
   # and forward the request to one of them
   selector:
-    app: echo-hostname 
+```rust
+app: echo-hostname 
+```
 
   ports:
-    # Three types of ports for a service
-    # nodePort - a static port assigned on each the node
-    # port - port exposed internally in the cluster
-    # targetPort - the container port to send requests to
-    - nodePort: 30163
-      port: 8080 // the service is internally available on this port
-      targetPort: 80 // the container running inside the port exposes this port
+```rust
+# Three types of ports for a service
+# nodePort - a static port assigned on each the node
+# port - port exposed internally in the cluster
+# targetPort - the container port to send requests to
+- nodePort: 30163
+  port: 8080 // the service is internally available on this port
+  targetPort: 80 // the container running inside the port exposes this port
+```
 ```
 
 **Kubectl Commands**

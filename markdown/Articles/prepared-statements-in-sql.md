@@ -15,15 +15,21 @@ During an SQL injection attack, the attacker tries to bind malicious sql code wi
 
 Imagine we want to just read the user data from database where the id is $id (from query param). Our sql query would translate to something like this
 
-    SELECT (coulmns…) FROM users WHERE id = 1;
+```rust
+SELECT (coulmns…) FROM users WHERE id = 1;
+```
 
 But what if the the attacker used the following instead of the id
 
-    user?id=1;DROP TABLE users;
+```rust
+user?id=1;DROP TABLE users;
+```
 
 As HTTP requests are parsed as strings (primarily), though we want id to be numeric, without proper sanitization the query would be
 
-    SELECT (coulmns…) FROM users WHERE id = 1; DROP TABLE users;
+```rust
+SELECT (coulmns…) FROM users WHERE id = 1; DROP TABLE users;
+```
 
 And given that there is sufficient permissions, this query would execute and drop the users table; A permanent mutation.
 
@@ -33,7 +39,9 @@ This can be prevented by using `prepared statement`s. The root cause of that pro
 
 Using prepared statements, we’ll have something like
 
-    SELECT (columns…) FROM users where id=?"
+```rust
+SELECT (columns…) FROM users where id=?"
+```
 
 and data would be `**1**`;
 
@@ -49,10 +57,12 @@ Or *to execute or not to*. So what happens if we still use the same input `?id=1
 
 Lets take a look at the following code,
 
-    $data = "1; DROP TABLE users;"
-    $db->prepare("SELECT (columns…) FROM users WHERE id=?");
-     
-    $db->execute($data);
+```rust
+$data = "1; DROP TABLE users;"
+$db->prepare("SELECT (columns…) FROM users WHERE id=?");
+ 
+$db->execute($data);
+```
 
 Shouldn’t this also translate to the same query? Well, the answer is **no**. AS mentioned, the query is a command that is executed, the data is not. For our instance, the data `*1; DROP Table users*` would fail to find a valid result.
 
