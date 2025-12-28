@@ -1,5 +1,3 @@
-# Transmitting Morse Code from the Lighthouse
-
 I started lighthouse quite some time ago. Which wasn't continued for various reasons. But I have the intention to continue again. In a slightly different way.
 
 A small project with Raspberry Pi and Rust. A project to get my feet dirty. I tinker with Rust from time to time. So I was thinking, what about, not a REST API but something much simpler? Yet it carries a significant real world value.
