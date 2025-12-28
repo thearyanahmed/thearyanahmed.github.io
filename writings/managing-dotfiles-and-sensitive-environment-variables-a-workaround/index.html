@@ -18,27 +18,19 @@
 <meta property="article:An 8-Minute Query Optimization Attempt" content="An 8-Minute Query Optimization Attempt" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:Transmitting Morse Code from the Lighthouse" content="Transmitting Morse Code from the Lighthouse" />
+<title>Managing Dotfiles and Sensitive Environment Variables: A Workaround</title>
+<meta property="og:title" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
+<meta name="twitter:title" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
+<meta name="embedx:title" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
+<meta name="description" content="The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token sh..." />
+<meta property="og:description" content="The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token sh..." />
+<meta name="twitter:description" content="The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token sh..." />
+<meta name="embedx:description" content="The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token sh..." />
 <meta name="author" content="Aryan Ahmed" />
-<meta property="article:Managing Dotfiles and Sensitive Environment Variables: A Workaround" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:My Journey at DigitalOcean So Far" content="My Journey at DigitalOcean So Far" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" content="Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
-<title>Dynamic trait to a concrete type in Rust</title>
-<meta property="og:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="twitter:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="embedx:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta property="og:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="twitter:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="embedx:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="author" content="Aryan Ahmed" />
-<meta name="twitter:card" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
+<meta name="twitter:card" content="The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token sh..." />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/writings/dynamic-trait-to-a-concrete-type-in-rust" />
-<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
+<link rel="canonical" href="https://thearyanahmed.substack.com/p/managing-dotfiles-and-sensitive-environment" />
+<meta property="article:Managing Dotfiles and Sensitive Environment Variables: A Workaround" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -213,140 +205,94 @@
             <div class="relative px-4 sm:px-6 lg:px-8">
                 <div class="text-lg max-w-prose mx-auto">
                     <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
-                        Dynamic trait to a concrete type in Rust
+                        Managing Dotfiles and Sensitive Environment Variables: A Workaround 
                     </h1>
                 </div>
 
                 
                 <div class="text-lg max-w-prose mx-auto">
                     <p class="mt-8 text-xl text-gray-500 leading-8">
-                        As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.
+                        The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token sh...
                     </p>
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.</p>
-<p>Every value in Rust is of a certain <em>data type</em>. Even null and errors are handled differently. In fact rust doesn’t have null. Null values are handled via the Option type and errors are handled via Result type. Every struct we define has specific values as well.</p>
-<p>What happens we need something dynamic of different types?</p>
-<h2>Context</h2>
-<p>I’m trying to build a storage library, that supports multiple drivers. Sort of like <a href="https://laravel.com/docs/9.x/filesystem">laravel’s storage</a> class. In my design, we’d have something like</p>
-<pre><code class="language-rust">Storage::put('file-01.txt', content);
+                    <h2>The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token shell file এ থাকা লাগে often (কিছু program আছে যেটা environment variable থেকে নিয়ে । আর প্রতিবার env variable pass করা ঝামেলা । Alternative option হলো something like 1password open করে copy paste করা । Not a fan of that.</h2>
+<p>যেমন, DigitalOcean API গুলোতে curl request দেয়া আছে যেটা <strong>DIGITALOCEAN_TOKEN</strong> নিয়ে কাজ করে । Env এ setup করা থাকলে curl request টা শুধু copy করলেই হয়ে যায়।</p>
+<p>আমার বেশ কয়েকবার এরকম হয়েছে যে নতুন environment এ বা ২ টা machine থেকে কাজ করতে গিয়ে .bashrc বা .zshrc file হারিয়ে গেছে । আর তখন ( বা অনেক সময় ) খেয়াল থাকে না কি কি environment variable ছিলো । আবার আগের মত setup এর জন্য একি variable name করতে হয় । যেটা আরেকটা hassle.</p>
+<p>At least আমার কাছে hassle. তাই আমি ভাবছিলাম, dot files গুলোর সাথে যদি একটা private file ও commit করা যেতো, যেটাতে আমার secret env variable গুলো থাকবে । কিন্ত value commit করতে চাচ্ছি না ।</p>
+<h2>The Solution (kinda)তাই একটা bash script add করেছি, যেটা git এর pre-commit hook এ run করে KEY গুলো রেখে value গুলো strip করে ফেলে । আর commit হলে গেলে, আরেকটা post-commit hook এর মাধ্যমে original value টা আবার restore করে দেয় ।</h2>
+<p>আর আমার local এ private.original একটা file এ original file টা রেখে দেয়, যেটা থেকে আবার restore করতে পারে । private.original টা .gitignore এ রাখা। So, no keys are pushed to version control.</p>
+<p>Not that fancy, but আমার জন্য, একটা problem এর solution. :D</p>
+<p>যদি আপনার এরকম কিছুর প্রয়োজন হয়, feel free to take a look the code.</p>
+<h4>Pre-commit hook```</h4>
+<h1>!/bin/bash</h1>
+<h1>pre-commit hook</h1>
+<h1>Set the path to the file you want to process</h1>
+<p>FILE_PATH=&quot;zsh/private&quot;</p>
+<h1>Check if the file exists</h1>
+<p>if [ ! -f &quot;$FILE_PATH&quot; ]; then
+echo &quot;Error: File '$FILE_PATH' not found.&quot;
+exit 1
+fi</p>
+<h1>Check if the file has been modified in the staging area</h1>
+<p>if ! git diff --cached --name-only | grep -q &quot;$FILE_PATH&quot;; then
+echo &quot;File '$FILE_PATH' not modified. Skipping secret stripping.&quot;
+exit 0
+fi</p>
+<h1>Create a backup of the original file</h1>
+<p>ORIGINAL_FILE_PATH=&quot;private.original&quot;</p>
+<h1>backup</h1>
+<p>cat &quot;$FILE_PATH&quot; &gt; &quot;$ORIGINAL_FILE_PATH&quot;</p>
+<h1>Create a temporary file to store the modified content</h1>
+<p>TEMP_FILE=$(mktemp)</p>
+<h1>Process the file line by line</h1>
+<p>while IFS= read -r line; do
+if [[ &quot;$line&quot; =~ ^[^#]*= ]]; then</p>
+<h1>If the line contains an assignment (key=value), strip the value</h1>
+<pre><code>key=$(echo "$line" | cut -d'=' -f1)
+echo "$key=\"\"" &gt;&gt; "$TEMP_FILE"</code></pre>
+<p>else</p>
+<h1>Otherwise, keep the line as it is (comments, empty lines, etc.)</h1>
+<pre><code>echo "$line" &gt;&gt; "$TEMP_FILE"</code></pre>
+<p>fi
+done &lt; &quot;$FILE_PATH&quot;</p>
+<h1>Replace the original file with the modified content</h1>
+<p>mv &quot;$TEMP_FILE&quot; &quot;$FILE_PATH&quot;</p>
+<p>echo &quot;Stripped values in '$FILE_PATH'.&quot;</p>
+<h1>Add the modified file to the staging area</h1>
+<p>git add &quot;$FILE_PATH&quot;</p>
+<p>echo &quot;Staged stripped secrets.&quot;</p>
+<h1>Allow the commit to continue. The commit message will be modified after this hook completes.</h1>
+<p>exit 0
+<code>#### Post-commit hook</code></p>
+<h1>!/bin/bash</h1>
+<h1>post-commit hook</h1>
+<p>FILE_PATH=&quot;zsh/private&quot;
+ORIGINAL_FILE_PATH=&quot;private.original&quot;</p>
+<p>if [ -f &quot;$ORIGINAL_FILE_PATH&quot; ]; then</p>
+<h1>Replace instead of concat</h1>
+<pre><code>cat "$ORIGINAL_FILE_PATH" &gt; "$FILE_PATH"
+echo "Original private file restored after commit."</code></pre>
+<p>else
+echo &quot;Original private file backup not found. Skipping restore.&quot;
+fi</p>
+<p>exit 0</p>
+<pre><code class="language-Test">
 
-Storage::disk('s3')-&gt;put('file-02.png', content);
+![](https://substackcdn.com/image/fetch/$s_!qTpv!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F97756404-a8a7-43f4-8432-c0f5c5c74b8f_1896x1410.png)আর এটা পুশ করার পরে github এ গিয়ে check করলে দেখতে পাচ্ছি
 
-Storage::download('file-03.docs');</code></pre>
-<p>As it’ll have different types of disks, which will work as adapters to our storage.</p>
-<h2>The problem</h2>
-<p>The problem I was facing was having different config files for each type of disks. Our LocalFileAdapter , S3BucketFileAdapater , FTPFileAdapter each will have different type of config files. Simply put, S3BucketFileAdapater will have public key ,secret key and bucket name. LocalFileAdapater will not need these.</p>
-<h3>Sketching</h3>
-<p>Now, I want to have a method something similar to Storage::new(config) or something like this. The config should have which adapter/s to use, with their appropriate configuration (and unique) values.</p>
-<h3>Two cfgs</h3>
-<p>For better understanding, I’m paining two config structs.</p>
-<pre><code class="language-rust">pub struct LocalFileSystemAdapterConfig {
-  pub root_dir: String,
-}
+![](https://substackcdn.com/image/fetch/$s_!S5eV!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F55d274b3-8385-4cd7-88a6-f7489961aa73_2402x398.png)আপনার যদি অল্প কিছু env variable থাকে plus একাধিক environment এ কাজ করতে না হয়, তাহলে এই approach unnecessary. আমার কয়েকশো env variable এর মত হয়েছে যেগুলো over the years আমার setup এর জন্য use করি।
 
-pub struct S3AdapterConfig {
-  pub public_key: String,
-  pub secret_key: String,
-  pub bucket: String,
-  pub use_path_style_endpoint: false,
-}</code></pre>
-<p>And I need something like</p>
-<pre><code class="language-rust">trait StorageAdapter {
-  // ... methods
-}
-struct Storage {
-  disk: StorageAdapter,
-  // other props
-}
+Thanks for reading until this bit! Feel free to subscribe for free to receive new posts and support my work.
 
-let storage = Storage::from(LocalFileSystemAdapterConfig | S3AdapterConfig); 
+এছাড়া আমার কিছু dotfiles (shortcuts/alias/functions/settings) এখানে পাবেন
 
-// and based on the given config
-storage.disk = LocalFileSystem | S3</code></pre>
-<p>Defining a function that takes a dynamic parameter and casts it down to a specific / concrete type. The initial thought was maybe we should have something like</p>
-<pre><code class="language-rust">struct LocalAdapterConfig {
-  base_dir: String,
-}
+[https://github.com/thearyanahmed/dotfiles](https://github.com/thearyanahmed/dotfiles) । বর্তমানে এটা incomplete. তবে আমি আমার dotfiles গুলো overtime collect করে share করবো inshallah. 
 
-impl LocalAdapter {
-  pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) -&gt; LocalAdapter {
-    let local_config = config as LocalAdapterConfig;
-    // THIS IS NOT ALLOWED
-  }
-}</code></pre>
-<p>The attempt resulted in a failure and gave me:</p>
-<pre><code class="language-rust">... an `as` expression can only be used to convert between primitive types</code></pre>
-<p>Rust is saying, you can use the as keyword to convert between primitive types. This was not working. But as we are using a dynamictrait (as an interface concept). We can cast that trait to a concrete type.</p>
-<h2>Solution: Downcast</h2>
-<p>In this case, our config: T would be converted to LocalAdapterConfig. Though the method signature needs to change a bit.</p>
-<p>We want to use the Any trait, it uses reflection to allow dynamic typing of any 'static type.</p>
-<blockquote>
-<p>Downcasting is converting a trait into a concrete type.</p>
-</blockquote>
-<p>Our initial code is as follows</p>
-<pre><code class="language-rust">
-use std::any::Any;
+![](https://substackcdn.com/image/fetch/$s_!BAXj!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8e7cf956-d717-4484-b836-d596ba8d6263_2602x2898.png)However, আমি কি এটা নিয়ে happy ? পুরোপুরি না। তাই maybe I should build something a bit more … um manageable? 
 
-pub struct LocalFileSystemAdapterConfig {
-    pub base_directory: String,
-}
-
-pub struct LocalFileSystemAdapter {
-  pub base_dir: String, // just for demo purpose
-}
-
-// the trait config that every storage adapter's config will implement
-pub trait StorageAdapterConfig {
-    fn as_any(&amp;self) -&gt; &amp;dyn Any;
-}</code></pre>
-<p>We need the as_any method to be implemented for concrete struct/s where we want to allow <em>downcasting</em>. Therefore,</p>
-<pre><code class="language-rust">
-use std::any::Any;
-
-impl StorageAdapterConfig for LocalFileSystemAdapterConfig {
-    fn as_any(&amp;self) -&gt; &amp;dyn Any {
-        self
-    }
-}</code></pre>
-<p>We also need to change our method’s signature from</p>
-<pre><code class="language-rust">pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) </code></pre>
-<p>to</p>
-<pre><code class="language-rust">pub fn new(config: &amp;dyn Any)
-
-// make sure to import std::any::Any;</code></pre>
-<p>And finally, to downcast a variable of type dyn Any to our concrete LocalFileSystemAdapterConfig ,</p>
-<pre><code class="language-rust">
-let cfg : &amp;LocalFileSystemAdapterConfig = config
-            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
-            .expect("failed to downcast");
-
-// the syntax is 
-// .downcast_ref::&lt;$CONCRETE_TYPE&gt;().expect("msg");</code></pre>
-<p>The full code,</p>
-<pre><code class="language-rust">
-impl LocalFileSystemAdapter {
-
-    pub fn new(config: &amp;dyn Any) -&gt; LocalFileSystemAdapter {
-
-        let cfg : &amp;LocalFileSystemAdapterConfig = config
-            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
-            .expect("failed to downcast");
-
-        let base_dir = &amp;cfg.base_directory;
-
-        LocalFileSystemAdapter {
-            base_dir: base_dir.to_string(),
-        }
-    }
-
-  // ...
-}</code></pre>
-<p>Our IDE picks up the change and returns proper intellisense.</p>
-<p><img src="https://cdn-images-1.medium.com/max/3676/1*Wc_P7YRnKepKZIwN-e-zlA.png" alt="**Downcasting a dyn trait to a concrete type**" /></p>
-<p><em><strong>Note </strong>maybe there are better ways of achieving the same result, maybe the API Design could have been better to avoid it in the first place. Well, I’m still learning rust.</em></p>
-<p>Found a mistake? Feel free to point it out.</p>
+আমার অন্য কিছু article</code></pre>
                 </div>
             </div>
         </div>

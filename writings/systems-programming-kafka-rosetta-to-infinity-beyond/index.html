@@ -22,23 +22,19 @@
 <meta property="article:Managing Dotfiles and Sensitive Environment Variables: A Workaround" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:My Journey at DigitalOcean So Far" content="My Journey at DigitalOcean So Far" />
+<title>Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond</title>
+<meta property="og:title" content="Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" />
+<meta name="twitter:title" content="Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" />
+<meta name="embedx:title" content="Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" />
+<meta name="description" content="Systems programming is resource-constrained programming where every byte counts. From Kafka&#039;s sequential disk I/O to Rosetta calling home from space after 31 months - explore the foundation layer on which all software is built." />
+<meta property="og:description" content="Systems programming is resource-constrained programming where every byte counts. From Kafka&#039;s sequential disk I/O to Rosetta calling home from space after 31 months - explore the foundation layer on which all software is built." />
+<meta name="twitter:description" content="Systems programming is resource-constrained programming where every byte counts. From Kafka&#039;s sequential disk I/O to Rosetta calling home from space after 31 months - explore the foundation layer on which all software is built." />
+<meta name="embedx:description" content="Systems programming is resource-constrained programming where every byte counts. From Kafka&#039;s sequential disk I/O to Rosetta calling home from space after 31 months - explore the foundation layer on which all software is built." />
 <meta name="author" content="Aryan Ahmed" />
-<meta property="article:Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" content="Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
-<title>Dynamic trait to a concrete type in Rust</title>
-<meta property="og:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="twitter:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="embedx:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta property="og:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="twitter:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="embedx:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="author" content="Aryan Ahmed" />
-<meta name="twitter:card" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
+<meta name="twitter:card" content="Systems programming is resource-constrained programming where every byte counts. From Kafka&#039;s sequential disk I/O to Rosetta calling home from space after 31 months - explore the foundation layer on which all software is built." />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/writings/dynamic-trait-to-a-concrete-type-in-rust" />
-<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
+<link rel="canonical" href="https://thearyanahmed.substack.com/p/systems-programming-kafka-rosetta" />
+<meta property="article:Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" content="Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -213,140 +209,136 @@
             <div class="relative px-4 sm:px-6 lg:px-8">
                 <div class="text-lg max-w-prose mx-auto">
                     <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
-                        Dynamic trait to a concrete type in Rust
+                        Systems Programming: Kafka, Rosetta - To Infinity & Beyond
                     </h1>
                 </div>
 
                 
                 <div class="text-lg max-w-prose mx-auto">
                     <p class="mt-8 text-xl text-gray-500 leading-8">
-                        As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.
+                        Systems programming is resource-constrained programming where every byte counts. From Kafka&#039;s sequential disk I/O to Rosetta calling home from space after 31 months - explore the foundation layer on which all software is built.
                     </p>
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.</p>
-<p>Every value in Rust is of a certain <em>data type</em>. Even null and errors are handled differently. In fact rust doesn’t have null. Null values are handled via the Option type and errors are handled via Result type. Every struct we define has specific values as well.</p>
-<p>What happens we need something dynamic of different types?</p>
-<h2>Context</h2>
-<p>I’m trying to build a storage library, that supports multiple drivers. Sort of like <a href="https://laravel.com/docs/9.x/filesystem">laravel’s storage</a> class. In my design, we’d have something like</p>
-<pre><code class="language-rust">Storage::put('file-01.txt', content);
-
-Storage::disk('s3')-&gt;put('file-02.png', content);
-
-Storage::download('file-03.docs');</code></pre>
-<p>As it’ll have different types of disks, which will work as adapters to our storage.</p>
-<h2>The problem</h2>
-<p>The problem I was facing was having different config files for each type of disks. Our LocalFileAdapter , S3BucketFileAdapater , FTPFileAdapter each will have different type of config files. Simply put, S3BucketFileAdapater will have public key ,secret key and bucket name. LocalFileAdapater will not need these.</p>
-<h3>Sketching</h3>
-<p>Now, I want to have a method something similar to Storage::new(config) or something like this. The config should have which adapter/s to use, with their appropriate configuration (and unique) values.</p>
-<h3>Two cfgs</h3>
-<p>For better understanding, I’m paining two config structs.</p>
-<pre><code class="language-rust">pub struct LocalFileSystemAdapterConfig {
-  pub root_dir: String,
-}
-
-pub struct S3AdapterConfig {
-  pub public_key: String,
-  pub secret_key: String,
-  pub bucket: String,
-  pub use_path_style_endpoint: false,
-}</code></pre>
-<p>And I need something like</p>
-<pre><code class="language-rust">trait StorageAdapter {
-  // ... methods
-}
-struct Storage {
-  disk: StorageAdapter,
-  // other props
-}
-
-let storage = Storage::from(LocalFileSystemAdapterConfig | S3AdapterConfig); 
-
-// and based on the given config
-storage.disk = LocalFileSystem | S3</code></pre>
-<p>Defining a function that takes a dynamic parameter and casts it down to a specific / concrete type. The initial thought was maybe we should have something like</p>
-<pre><code class="language-rust">struct LocalAdapterConfig {
-  base_dir: String,
-}
-
-impl LocalAdapter {
-  pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) -&gt; LocalAdapter {
-    let local_config = config as LocalAdapterConfig;
-    // THIS IS NOT ALLOWED
-  }
-}</code></pre>
-<p>The attempt resulted in a failure and gave me:</p>
-<pre><code class="language-rust">... an `as` expression can only be used to convert between primitive types</code></pre>
-<p>Rust is saying, you can use the as keyword to convert between primitive types. This was not working. But as we are using a dynamictrait (as an interface concept). We can cast that trait to a concrete type.</p>
-<h2>Solution: Downcast</h2>
-<p>In this case, our config: T would be converted to LocalAdapterConfig. Though the method signature needs to change a bit.</p>
-<p>We want to use the Any trait, it uses reflection to allow dynamic typing of any 'static type.</p>
+                    <p>Systems programming is resource-constrained programming. It is programming when every byte counts.</p>
+<p>We write many amazing programs in our day-to-day life, but most of us programmers don't know about systems programming, although it underlies everything we do.</p>
+<p>We suddenly close our laptop lid with programs running. The operating system detects it, suspends all running programs, turns off the screen with millions of tiny pixels, and puts the computer to sleep. Later when we open the lid, the OS kicks in again, all the components are powered on, we see the same programs running, and we take it for granted.</p>
+<p>Every keystroke, every DNS call before your REST API call, every CRUD query to your database, every time you start your computer, close the lid of your laptop and come back to see the same software running, every ssh call you make, everything.</p>
+<h2>Do You Know Rosetta?</h2>
+<p>Rosetta, our comet chaser. After launch, when the situation changed, it was hibernated for 31 months. In the deep dark space, no GPS, chasing comet 67p during hibernation with navigation computer and heating on, everything else off (or low power mode), it was instructed: after 31 months, you should be at this point in space and time, go there, and call us home.</p>
+<p>Can you imagine? If we send a person with an address, many (including myself) can't find it many times, and here bunch of computers are being given such a task?</p>
+<p>Do you see those two upticks? On <strong>January 20, 2014</strong>, Rosetta called home, saying &quot;<strong>I'm awake</strong>&quot; (and I'm where I should be).</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!m8m0!,w_2400,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F770f4ad6-cef5-4db5-b4f7-4c8f6c40db95_2390x1010.png" alt="" /></p>
+<p>I didn't work on this team, but I was so proud that we, human beings achieved that.</p>
+<p>What's the relation with systems programming? Well, communication with Rosetta didn't happen through REST API. Rosetta heavily relies on embedded systems, for functionalities like Proportion, communication, attitude control etc.</p>
+<p>If you like my writing, feel free to subscribe here.</p>
+<h2>Not Systems Programming</h2>
+<p>Recently I was <a href="https://www.linkedin.com/feed/update/urn:li:activity:7304834574604271616/">looking for</a> systems programming and lower level programming content in the Bangladesh community. Many people shared many resources (and thank you for that) but I want to share 2 things (and not to shame anyone, I didn't and probably still don't know much about systems programming myself):</p>
+<ul>
+<li>
+<p>System Design articles</p>
+</li>
+<li>
+<p>Building something using tools outside typical programming frameworks</p>
+</li>
+</ul>
+<h3>System Design</h3>
+<p>These are architecture level content. Usually, if you develop a system with one or more application level programs, it will meet certain objectives. There might be some aspects of systems programming (as it underlies everything), but systems programming doesn't refer to these.</p>
+<p>Also not application level client building. For example, emitting events with kafka isn't systems programming. That's just using it as a client. Those who built kafka did systems programming. Kafka is very fast, can handle huge traffic.</p>
+<p>If you're thinking why emitting something with Kafka in our application isn't systems programming, well, do we know why Kafka is so fast? Here are some key points.</p>
+<p><strong>Sequential Disk I/O</strong></p>
+<p>One of Kafka's features is that even though it works with disk, it's not only fast on SSD but also very fast on HDD. HDD has a physical needle that needs to move. Usually when we write to disk, it writes to available blocks. Sometimes it's sequential, sometimes or most of the times it's random.</p>
+<p>Kafka's engineers take advantage of HDD's sequential disk I/O. Kafka writes data in append-only-fashion. So whatever is written will only be added at the end of the dataset, i.e., sequentially.</p>
+<p>Along with this, some beautifully crafted algorithms help kafka minimize disk seek.</p>
+<p><strong>Zero-Copy Principle</strong></p>
+<p>Kafka uses zero-copy technique to send data directly from disk to network, instead of copying to RAM. Because of this, data copy is reduced.</p>
+<p><strong>Efficient Memory Management</strong></p>
+<p>Kafka leverages the operating system's page cache to keep frequently accessed data in memory, which reduces the need for additional disk seeks.</p>
+<p>First of all, to use kafka in our application, even without very in-depth knowledge of these, it works. Not saying that should be the case. But it works. You don't need to understand these that much, can be learned from documentation/tutorial/course.</p>
 <blockquote>
-<p>Downcasting is converting a trait into a concrete type.</p>
+<p>Any fool can know, but the point is to understand.</p>
 </blockquote>
-<p>Our initial code is as follows</p>
-<pre><code class="language-rust">
-use std::any::Any;
-
-pub struct LocalFileSystemAdapterConfig {
-    pub base_directory: String,
-}
-
-pub struct LocalFileSystemAdapter {
-  pub base_dir: String, // just for demo purpose
-}
-
-// the trait config that every storage adapter's config will implement
-pub trait StorageAdapterConfig {
-    fn as_any(&amp;self) -&gt; &amp;dyn Any;
-}</code></pre>
-<p>We need the as_any method to be implemented for concrete struct/s where we want to allow <em>downcasting</em>. Therefore,</p>
-<pre><code class="language-rust">
-use std::any::Any;
-
-impl StorageAdapterConfig for LocalFileSystemAdapterConfig {
-    fn as_any(&amp;self) -&gt; &amp;dyn Any {
-        self
-    }
-}</code></pre>
-<p>We also need to change our method’s signature from</p>
-<pre><code class="language-rust">pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) </code></pre>
-<p>to</p>
-<pre><code class="language-rust">pub fn new(config: &amp;dyn Any)
-
-// make sure to import std::any::Any;</code></pre>
-<p>And finally, to downcast a variable of type dyn Any to our concrete LocalFileSystemAdapterConfig ,</p>
-<pre><code class="language-rust">
-let cfg : &amp;LocalFileSystemAdapterConfig = config
-            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
-            .expect("failed to downcast");
-
-// the syntax is 
-// .downcast_ref::&lt;$CONCRETE_TYPE&gt;().expect("msg");</code></pre>
-<p>The full code,</p>
-<pre><code class="language-rust">
-impl LocalFileSystemAdapter {
-
-    pub fn new(config: &amp;dyn Any) -&gt; LocalFileSystemAdapter {
-
-        let cfg : &amp;LocalFileSystemAdapterConfig = config
-            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
-            .expect("failed to downcast");
-
-        let base_dir = &amp;cfg.base_directory;
-
-        LocalFileSystemAdapter {
-            base_dir: base_dir.to_string(),
-        }
-    }
-
-  // ...
-}</code></pre>
-<p>Our IDE picks up the change and returns proper intellisense.</p>
-<p><img src="https://cdn-images-1.medium.com/max/3676/1*Wc_P7YRnKepKZIwN-e-zlA.png" alt="**Downcasting a dyn trait to a concrete type**" /></p>
-<p><em><strong>Note </strong>maybe there are better ways of achieving the same result, maybe the API Design could have been better to avoid it in the first place. Well, I’m still learning rust.</em></p>
-<p>Found a mistake? Feel free to point it out.</p>
+<p>For Kafka's amazing performance, very good understanding of this (+ more topics like this) is necessary. Good knowledge about computer systems is necessary. And to know is to understand.</p>
+<h3>JavaScript</h3>
+<p>It damn sure ain't for Systems Programming.</p>
+<h2>Systems Programming</h2>
+<p>Systems programming is resource-constrained programming. It is programming when every byte counts.</p>
+<p>Those that directly interact with and manage computer's core components. Which core components? OS, device drivers, hardware, firmware etc. It's about optimizing resource management, ensuring reliability, and maximizing performance by working at a lower level of abstraction.</p>
+<p>Essentially, it's about building that foundation layer on which all other software will be built. System programming is for:</p>
+<ul>
+<li>
+<p><strong>Operating Systems:</strong> Computer's foundation, service provider, interface for other stuff</p>
+</li>
+<li>
+<p><strong>Device drivers:</strong> Those programs that run and interact with different devices</p>
+</li>
+<li>
+<p><strong>Filesystems</strong></p>
+</li>
+<li>
+<p><strong>Databases:</strong> Not as a client, but the engine that runs those queries, stores data</p>
+</li>
+<li>
+<p><strong>Cryptography</strong></p>
+</li>
+<li>
+<p><strong>Media codecs</strong></p>
+</li>
+<li>
+<p>Those programs that run on very cheap level devices (eg: <strong>embedded</strong> systems)</p>
+</li>
+<li>
+<p><strong>Networking</strong>: Imagine the internet</p>
+</li>
+<li>
+<p><strong>Virtualization and software containers:</strong> Docker, hypervisor, virtual machine</p>
+</li>
+<li>
+<p><strong>Scientific simulations</strong></p>
+</li>
+<li>
+<p>Building a higher level programming: like Python or PHP</p>
+</li>
+<li>
+<p><strong>Memory management:</strong> like implementing garbage collector</p>
+</li>
+<li>
+<p>Real-time systems</p>
+</li>
+<li>
+<p>Embedded systems (Rosetta)</p>
+</li>
+</ul>
+<h2>Why Learn Systems Programming?</h2>
+<p>Why not? Not everyone has to become a systems programmer. And to be a good programmer, you don't have to be a systems programmer. However,</p>
+<p>If you work with systems programming, you'll work with resource constrained environments, work with computer's very core, work with those topics and tools on which the whole world is built. Does it not fascinate you?</p>
+<p>Maybe, someday, you'll build something like Rosetta and embark on a journey, to infinity &amp; beyond.</p>
+<p>I hope by now the difference between systems programming and application programming has become somewhat clear. If not, I guess I've failed successfully.</p>
+<h2>Contribution</h2>
+<h4>What can I do?</h4>
+<p>Currently, there's probably no content about systems programming in the Bangladesh community. For the record, from someone who has been working with this community for a while,</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!cQHt!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F09013bc9-16f4-4280-833a-a93c28e0c824_1086x294.png" alt="" /></p>
+<p>So, I'll try to slowly write about systems programming. To create various types of programs and write about them in (enough) details. I won't start by writing about kernels. Well, one of the reasons is I don't know how to write a kernel from scratch. But inshallah, I'll :D And I'll share it with you. In Bangla.</p>
+<p>If you like systems programming or find it interesting, and want to read the articles, feel free to subscribe here. Articles will reach your email.</p>
+<h4>What can you do?</h4>
+<p>You can do what I'm doing. No reason not to. If you also create content about systems programming, preferably articles, or videos, or a markdown README, or if you build any program, feel free to reach out. I'd love to read it, and to learn from it.</p>
+<p>You can also help me with another thing.</p>
+<h4>Sidenotes</h4>
+<p>This picture was taken 500 million kms away, on Comet 67p.</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!zx9C!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0499b825-45d8-48d6-9533-bf844925da10_3362x3236.png" alt="" /></p>
+<h3>References</h3>
+<ul>
+<li>
+<p><a href="https://www.youtube.com/watch?v=MWxijOjmn-g">How we landed on a comet 300 million miles away</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=k1GJp6JCJU8">A picture from 500 million kms away</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=Wp4JAGbPMT8">Rosetta calls home</a></p>
+</li>
+</ul>
                 </div>
             </div>
         </div>

@@ -12,33 +12,19 @@
 <meta property="og:type" content="website" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:Building projectlighthouse - commitment towards correctness" content="Building projectlighthouse - commitment towards correctness" />
+<title>localhost and 127.0.0.1</title>
+<meta property="og:title" content="localhost and 127.0.0.1" />
+<meta name="twitter:title" content="localhost and 127.0.0.1" />
+<meta name="embedx:title" content="localhost and 127.0.0.1" />
+<meta name="description" content="A deep dive into the difference between localhost and 127.0.0.1, and how this subtle distinction caused a production CI failure. Learn about IPv4 vs IPv6, network namespaces, and why these seemingly interchangeable terms matter." />
+<meta property="og:description" content="A deep dive into the difference between localhost and 127.0.0.1, and how this subtle distinction caused a production CI failure. Learn about IPv4 vs IPv6, network namespaces, and why these seemingly interchangeable terms matter." />
+<meta name="twitter:description" content="A deep dive into the difference between localhost and 127.0.0.1, and how this subtle distinction caused a production CI failure. Learn about IPv4 vs IPv6, network namespaces, and why these seemingly interchangeable terms matter." />
+<meta name="embedx:description" content="A deep dive into the difference between localhost and 127.0.0.1, and how this subtle distinction caused a production CI failure. Learn about IPv4 vs IPv6, network namespaces, and why these seemingly interchangeable terms matter." />
 <meta name="author" content="Aryan Ahmed" />
-<meta property="article:localhost and 127.0.0.1" content="localhost and 127.0.0.1" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:An 8-Minute Query Optimization Attempt" content="An 8-Minute Query Optimization Attempt" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Transmitting Morse Code from the Lighthouse" content="Transmitting Morse Code from the Lighthouse" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Managing Dotfiles and Sensitive Environment Variables: A Workaround" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:My Journey at DigitalOcean So Far" content="My Journey at DigitalOcean So Far" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" content="Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
-<title>Dynamic trait to a concrete type in Rust</title>
-<meta property="og:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="twitter:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="embedx:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta property="og:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="twitter:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="embedx:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="author" content="Aryan Ahmed" />
-<meta name="twitter:card" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
+<meta name="twitter:card" content="A deep dive into the difference between localhost and 127.0.0.1, and how this subtle distinction caused a production CI failure. Learn about IPv4 vs IPv6, network namespaces, and why these seemingly interchangeable terms matter." />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/writings/dynamic-trait-to-a-concrete-type-in-rust" />
-<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
+<link rel="canonical" href="https://thearyanahmed.substack.com/p/localhost-127001" />
+<meta property="article:localhost and 127.0.0.1" content="localhost and 127.0.0.1" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -213,140 +199,118 @@
             <div class="relative px-4 sm:px-6 lg:px-8">
                 <div class="text-lg max-w-prose mx-auto">
                     <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
-                        Dynamic trait to a concrete type in Rust
+                        localhost and 127.0.0.1
                     </h1>
                 </div>
 
                 
                 <div class="text-lg max-w-prose mx-auto">
                     <p class="mt-8 text-xl text-gray-500 leading-8">
-                        As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.
+                        A deep dive into the difference between localhost and 127.0.0.1, and how this subtle distinction caused a production CI failure. Learn about IPv4 vs IPv6, network namespaces, and why these seemingly interchangeable terms matter.
                     </p>
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.</p>
-<p>Every value in Rust is of a certain <em>data type</em>. Even null and errors are handled differently. In fact rust doesn’t have null. Null values are handled via the Option type and errors are handled via Result type. Every struct we define has specific values as well.</p>
-<p>What happens we need something dynamic of different types?</p>
-<h2>Context</h2>
-<p>I’m trying to build a storage library, that supports multiple drivers. Sort of like <a href="https://laravel.com/docs/9.x/filesystem">laravel’s storage</a> class. In my design, we’d have something like</p>
-<pre><code class="language-rust">Storage::put('file-01.txt', content);
-
-Storage::disk('s3')-&gt;put('file-02.png', content);
-
-Storage::download('file-03.docs');</code></pre>
-<p>As it’ll have different types of disks, which will work as adapters to our storage.</p>
-<h2>The problem</h2>
-<p>The problem I was facing was having different config files for each type of disks. Our LocalFileAdapter , S3BucketFileAdapater , FTPFileAdapter each will have different type of config files. Simply put, S3BucketFileAdapater will have public key ,secret key and bucket name. LocalFileAdapater will not need these.</p>
-<h3>Sketching</h3>
-<p>Now, I want to have a method something similar to Storage::new(config) or something like this. The config should have which adapter/s to use, with their appropriate configuration (and unique) values.</p>
-<h3>Two cfgs</h3>
-<p>For better understanding, I’m paining two config structs.</p>
-<pre><code class="language-rust">pub struct LocalFileSystemAdapterConfig {
-  pub root_dir: String,
-}
-
-pub struct S3AdapterConfig {
-  pub public_key: String,
-  pub secret_key: String,
-  pub bucket: String,
-  pub use_path_style_endpoint: false,
-}</code></pre>
-<p>And I need something like</p>
-<pre><code class="language-rust">trait StorageAdapter {
-  // ... methods
-}
-struct Storage {
-  disk: StorageAdapter,
-  // other props
-}
-
-let storage = Storage::from(LocalFileSystemAdapterConfig | S3AdapterConfig); 
-
-// and based on the given config
-storage.disk = LocalFileSystem | S3</code></pre>
-<p>Defining a function that takes a dynamic parameter and casts it down to a specific / concrete type. The initial thought was maybe we should have something like</p>
-<pre><code class="language-rust">struct LocalAdapterConfig {
-  base_dir: String,
-}
-
-impl LocalAdapter {
-  pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) -&gt; LocalAdapter {
-    let local_config = config as LocalAdapterConfig;
-    // THIS IS NOT ALLOWED
-  }
-}</code></pre>
-<p>The attempt resulted in a failure and gave me:</p>
-<pre><code class="language-rust">... an `as` expression can only be used to convert between primitive types</code></pre>
-<p>Rust is saying, you can use the as keyword to convert between primitive types. This was not working. But as we are using a dynamictrait (as an interface concept). We can cast that trait to a concrete type.</p>
-<h2>Solution: Downcast</h2>
-<p>In this case, our config: T would be converted to LocalAdapterConfig. Though the method signature needs to change a bit.</p>
-<p>We want to use the Any trait, it uses reflection to allow dynamic typing of any 'static type.</p>
+                    <p><img src="https://substackcdn.com/image/fetch/$s_!nm7H!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png" alt="" /></p>
 <blockquote>
-<p>Downcasting is converting a trait into a concrete type.</p>
+<p>Based on true events.</p>
 </blockquote>
-<p>Our initial code is as follows</p>
-<pre><code class="language-rust">
-use std::any::Any;
+<p>I came to this article from a real production issue. Let me start by sharing the problem. DigitalOcean's current MCP server is a local MCP: <a href="https://github.com/digitalocean-labs/mcp-digitalocean">https://github.com/digitalocean-labs/mcp-digitalocean</a>. But adding remote MCP in MCP tooling is easier, and many tools can't integrate with local MCP, for example, remote MCP is suitable with chatGPT, local MCP is not.</p>
+<p>DigitalOcean's practice is to have a lot of tests written here, various types of tests. E2E (end-to-end) tests are written for remote MCP. Which run in our internal pipeline. However, the tests are public and you can see them <a href="https://github.com/digitalocean-labs/mcp-digitalocean/tree/main/testing">here</a>.</p>
+<p>Thanks for reading Aryan's Journal! Subscribe for free to receive new posts and support my work.</p>
+<p>So while setting up the remote MCP pipeline, I saw that CI was failing on E2E. Although locally, both mac and linux tests were passing! It was failing because I (myself) had overlooked a very basic thing.</p>
+<h2>Failing CI and Where It's Coming From</h2>
+<p><img src="https://substackcdn.com/image/fetch/$s_!hMkt!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2ca8a880-a68a-4207-8c0a-90b27c7bb75c_2720x678.png" alt="" /></p>
+<p>A failed test from our internal pipeline. The error is:</p>
+<pre><code>transport error: failed to send request: failed to send request: Post "http://localhost:32772/mcp": read tcp [::1]:41406-&gt;[::1]:32772: read: connection reset by peer</code></pre>
+<p>Now if we look at the error, it's showing that after requesting from localhost, the request is establishing but then the request is being closed. Connection reset by peer doesn't mean both parties agreed to close the connection, it's more like slamming the door!</p>
+<p>The interesting thing is that it successfully runs on local machine, both mac and linux, but not in github action! So what's happening? Many of you might have figured it out. For those still guessing, here's a hint:</p>
+<blockquote>
+<pre><code>Post "http://localhost:32772/mcp": read tcp [::1]:41406-&gt;[::1]:32772</code></pre>
+</blockquote>
+<h2>Root Cause Analysis</h2>
+<p>Here, the client is first requesting a local container running in github action, through localhost. Connection is establishing. But it established with <strong>IPv6</strong> (<code>**[::1]**</code>). Because when going through localhost, a hostname resolution lookup happens. Which returns IPv6. Although we didn't explicitly request for IPv6, we still got IPv6 result because the go client actually sends 2 requests by default when establishing a connection. This could have been configured with the <strong>DualStack</strong> boolean. DualStack means trying to dial IPv4 + IPv6 together (Happy Eyeballs algorithm).</p>
+<p>On Aug 31, 2016, this feature was added to go's <strong>net/http</strong> package: <a href="https://go-review.googlesource.com/c/go/+/28077/3/src/net/http/transport.go">https://go-review.googlesource.com/c/go/+/28077/3/src/net/http/transport.go</a>.</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!peTi!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F50ccff0d-fc4a-4b9d-ae46-123be894a278_3080x800.png" alt="" /></p>
+<p>But the problem is, <strong>FakeWebsocketServer</strong> is only listening on IPv4 <a href="https://github.com/digitalocean-labs/mcp-digitalocean/blob/main/testing/e2e_websocket_test.go#L136-L141">digitalocean-labs/mcp-digitalocean/testing/e2e_websocket_test.go</a>.</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!ARBE!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffa1d7f61-1b41-4a5d-b726-c8cac1850f93_1360x442.png" alt="" /></p>
+<p>If we look at go's <code>net/</code> package documentation, this is the following:</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!P8TU!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe0cc6bd3-9e4f-4a16-9615-df9d34a36b5c_2508x628.png" alt="" /></p>
+<p>Here I'm highlighting <code>**a literal unspecified IP address**</code>, we're explicitly specifying IPv4 with <code>**0.0.0.0**</code>. Trying to show a sequence.</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!l4tY!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F88975377-5dab-4005-9690-793f76d35944_2650x4536.png" alt="" /></p>
+<p>We didn't get connection failed from the start. A connection was established, then it failed while reading the stream. So, in short, we're getting connection RST (reset) from the linux kernel due to a mix and match of IPv6 and IPv4 here.</p>
+<h2>Solution</h2>
+<p>As a solution, if we don't leave it to go to decide whether to request on IPv6 or IPv4, but take control ourselves and tell it to request on IPv4, our problem is solved. This is the small PR <a href="https://github.com/digitalocean-labs/mcp-digitalocean/pull/195">https://github.com/digitalocean-labs/mcp-digitalocean/pull/195</a>. The changes in this PR simply change from localhost to 127.0.0.1.</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!nm7H!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png" alt="" /></p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!a8qX!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff9d58541-1c43-47ab-9e05-79ac76a27cba_2252x776.png" alt="" /></p>
+<p>And our CI is green.</p>
+<h2>localhost and 127.0.0.1</h2>
+<p>Many of us use localhost and 127.0.0.1 interchangeably. However, there's a fundamental difference between them. 127.0.0.1 is a <strong>fixed IP address</strong> in a larger loopback range. 127.0.0.1 is actually part of <strong>127.0.0.0/8</strong>. Being a specific IP, it doesn't require DNS resolution or hostname resolution here.</p>
+<p>On the other hand, localhost is a <strong>hostname</strong>. A hostname is a human-readable label/name for network connected devices. For example, printer.local, raspberrypi.local etc. If we dial/request with localhost, then the IP address needs to be resolved for that device first. Back to basics, OSI Networking layer 2.</p>
+<p>Since DNS isn't being used here, the <strong>/etc/hosts</strong> file (on unix like systems) has some records, which state which IP for which hostname. Same file on Mac too.</p>
+<p>If we change the /etc/hosts file and set facebook.com to 127.0.0.1 IP, then going to facebook.com from that machine will show unable to connect. My /etc/hosts file:</p>
+<pre><code>##
+# Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1       localhost
 
-pub struct LocalFileSystemAdapterConfig {
-    pub base_directory: String,
-}
+127.0.0.1       facebook.com
+::1             facebook.com       # For IPv6
+127.0.0.1       www.facebook.com
+::1             www.facebook.com   # For www. subdomain, IPv6</code></pre>
+<p><img src="https://substackcdn.com/image/fetch/$s_!cZEp!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4d7a0932-4544-40b4-b0da-43b2838bbc2e_3252x2214.png" alt="" /></p>
+<p>And running a ping command <code>**ping facebook.com**</code>; this is also failing. If you note the IP for ping, <strong>127.0.0.1</strong>!</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!tjM8!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7f2ad1fc-94a9-40ec-96dc-ffde7c55f548_1286x306.png" alt="" /></p>
+<p>If you tried this and facebook.com still keeps resolving, the reason is DNS caching. There's a program called dscacheutil that will help you show the resolved IP.</p>
+<pre><code>dscacheutil -q host -a name facebook.com
+name: facebook.com
+ipv6_address: ::1
 
-pub struct LocalFileSystemAdapter {
-  pub base_dir: String, // just for demo purpose
-}
+name: facebook.com
+ip_address: 127.0.0.1</code></pre>
+<p>Pretty cool hah?</p>
+<h2>A Fun Fact</h2>
+<p>Several years ago, using this technique, Bangladesh gray hat hackers (or rotating rotor whose admin it was) claimed to have hacked 3CA (3xp1r3 Cyber Army)'s forum, gave a video as proof. But actually, they edited the 3CA forum's hostname in /etc/hosts and uploaded a video of serving a local file as far as I remember &gt;_&lt;.</p>
+<h2>Docker and Container Networking</h2>
+<p>Understanding this in containerized environments is important. Many people mix and match here (I used to too at one time), and a lot of time was spent debugging.</p>
+<p>Both localhost and 127.0.0.1 always refer to the loopback interface of the current network namespace. However, each container has its own isolated network namespace. Let's say we have an app running:</p>
+<pre><code># From host machine:
+docker run -p 8080:8080 projectlighthouse
 
-// the trait config that every storage adapter's config will implement
-pub trait StorageAdapterConfig {
-    fn as_any(&amp;self) -&gt; &amp;dyn Any;
-}</code></pre>
-<p>We need the as_any method to be implemented for concrete struct/s where we want to allow <em>downcasting</em>. Therefore,</p>
-<pre><code class="language-rust">
-use std::any::Any;
+# On the host, localhost/127.0.0.1 refer to the HOST namespace:
+# Connects to host's 127.0.0.1:8080 (port forwarded to container)
+curl http://localhost:8080
 
-impl StorageAdapterConfig for LocalFileSystemAdapterConfig {
-    fn as_any(&amp;self) -&gt; &amp;dyn Any {
-        self
-    }
-}</code></pre>
-<p>We also need to change our method’s signature from</p>
-<pre><code class="language-rust">pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) </code></pre>
-<p>to</p>
-<pre><code class="language-rust">pub fn new(config: &amp;dyn Any)
+# Same - connects to host's loopback
+curl http://127.0.0.1:8080
 
-// make sure to import std::any::Any;</code></pre>
-<p>And finally, to downcast a variable of type dyn Any to our concrete LocalFileSystemAdapterConfig ,</p>
-<pre><code class="language-rust">
-let cfg : &amp;LocalFileSystemAdapterConfig = config
-            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
-            .expect("failed to downcast");
+# Inside the container, localhost/127.0.0.1 refer to the CONTAINER namespace:
+docker exec -it projectlighthouse bash
 
-// the syntax is 
-// .downcast_ref::&lt;$CONCRETE_TYPE&gt;().expect("msg");</code></pre>
-<p>The full code,</p>
-<pre><code class="language-rust">
-impl LocalFileSystemAdapter {
+# Connects to service INSIDE this container only
+curl http://localhost:8080
 
-    pub fn new(config: &amp;dyn Any) -&gt; LocalFileSystemAdapter {
-
-        let cfg : &amp;LocalFileSystemAdapterConfig = config
-            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
-            .expect("failed to downcast");
-
-        let base_dir = &amp;cfg.base_directory;
-
-        LocalFileSystemAdapter {
-            base_dir: base_dir.to_string(),
-        }
-    }
-
-  // ...
-}</code></pre>
-<p>Our IDE picks up the change and returns proper intellisense.</p>
-<p><img src="https://cdn-images-1.medium.com/max/3676/1*Wc_P7YRnKepKZIwN-e-zlA.png" alt="**Downcasting a dyn trait to a concrete type**" /></p>
-<p><em><strong>Note </strong>maybe there are better ways of achieving the same result, maybe the API Design could have been better to avoid it in the first place. Well, I’m still learning rust.</em></p>
-<p>Found a mistake? Feel free to point it out.</p>
+# Same - container's loopback, NOT the host
+curl http://127.0.0.1:8080</code></pre>
+<h2>127.0.0.1 != 127.0.0.1</h2>
+<p>An important point: <strong>container's 127.0.0.1 and host machine's 127.0.0.1 are different</strong>. Different namespaces. When we port forward from outside the container (-p 8000:8000), it creates a mapping, but it goes through the host's network interface, not loopback.</p>
+<h2>Conclusion</h2>
+<p>Although we often use localhost and 127.0.0.1 interchangeably, they are fundamentally different:</p>
+<ul>
+<li>
+<p><strong>127.0.0.1</strong> is a concrete IPv4 address with guaranteed behavior</p>
+</li>
+<li>
+<p><strong>localhost</strong> is a hostname, subject to resolution, configuration, and protocol negotiation</p>
+</li>
+</ul>
+<p>For production systems, prefer explicit IP addresses in binding configurations. And for development, use <code>127.0.0.1</code> when you need predictable IPv4 behavior.</p>
+<p>Understanding the difference between these two things in production debugging can save you hours of troubleshooting mysterious connection failures… hopefully.</p>
+<p>¹Just fyi, in 2019, DualStack was deprecated again <a href="https://go-review.googlesource.com/c/go/+/146659">https://go-review.googlesource.com/c/go/+/146659</a>, now it's enabled by default.</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!myib!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff6576728-9859-47cd-97f8-23e880e87361_3074x1848.png" alt="" /></p>
                 </div>
             </div>
         </div>

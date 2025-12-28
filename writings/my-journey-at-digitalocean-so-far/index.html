@@ -20,25 +20,19 @@
 <meta property="article:Transmitting Morse Code from the Lighthouse" content="Transmitting Morse Code from the Lighthouse" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:Managing Dotfiles and Sensitive Environment Variables: A Workaround" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
+<title>My Journey at DigitalOcean So Far</title>
+<meta property="og:title" content="My Journey at DigitalOcean So Far" />
+<meta name="twitter:title" content="My Journey at DigitalOcean So Far" />
+<meta name="embedx:title" content="My Journey at DigitalOcean So Far" />
+<meta name="description" content="A year ago, I got the opportunity to join DigitalOcean. This is my story of working on the App Platform team, from debugging network packets to managing Kubernetes clusters, and everything in between." />
+<meta property="og:description" content="A year ago, I got the opportunity to join DigitalOcean. This is my story of working on the App Platform team, from debugging network packets to managing Kubernetes clusters, and everything in between." />
+<meta name="twitter:description" content="A year ago, I got the opportunity to join DigitalOcean. This is my story of working on the App Platform team, from debugging network packets to managing Kubernetes clusters, and everything in between." />
+<meta name="embedx:description" content="A year ago, I got the opportunity to join DigitalOcean. This is my story of working on the App Platform team, from debugging network packets to managing Kubernetes clusters, and everything in between." />
 <meta name="author" content="Aryan Ahmed" />
-<meta property="article:My Journey at DigitalOcean So Far" content="My Journey at DigitalOcean So Far" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" content="Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
-<title>Dynamic trait to a concrete type in Rust</title>
-<meta property="og:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="twitter:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="embedx:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta property="og:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="twitter:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="embedx:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="author" content="Aryan Ahmed" />
-<meta name="twitter:card" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
+<meta name="twitter:card" content="A year ago, I got the opportunity to join DigitalOcean. This is my story of working on the App Platform team, from debugging network packets to managing Kubernetes clusters, and everything in between." />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/writings/dynamic-trait-to-a-concrete-type-in-rust" />
-<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
+<link rel="canonical" href="https://thearyanahmed.substack.com/p/my-journey-at-digitalocean-so-far" />
+<meta property="article:My Journey at DigitalOcean So Far" content="My Journey at DigitalOcean So Far" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -213,140 +207,101 @@
             <div class="relative px-4 sm:px-6 lg:px-8">
                 <div class="text-lg max-w-prose mx-auto">
                     <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
-                        Dynamic trait to a concrete type in Rust
+                        My Journey at DigitalOcean So Far
                     </h1>
                 </div>
 
                 
                 <div class="text-lg max-w-prose mx-auto">
                     <p class="mt-8 text-xl text-gray-500 leading-8">
-                        As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.
+                        A year ago, I got the opportunity to join DigitalOcean. This is my story of working on the App Platform team, from debugging network packets to managing Kubernetes clusters, and everything in between.
                     </p>
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.</p>
-<p>Every value in Rust is of a certain <em>data type</em>. Even null and errors are handled differently. In fact rust doesn’t have null. Null values are handled via the Option type and errors are handled via Result type. Every struct we define has specific values as well.</p>
-<p>What happens we need something dynamic of different types?</p>
-<h2>Context</h2>
-<p>I’m trying to build a storage library, that supports multiple drivers. Sort of like <a href="https://laravel.com/docs/9.x/filesystem">laravel’s storage</a> class. In my design, we’d have something like</p>
-<pre><code class="language-rust">Storage::put('file-01.txt', content);
-
-Storage::disk('s3')-&gt;put('file-02.png', content);
-
-Storage::download('file-03.docs');</code></pre>
-<p>As it’ll have different types of disks, which will work as adapters to our storage.</p>
-<h2>The problem</h2>
-<p>The problem I was facing was having different config files for each type of disks. Our LocalFileAdapter , S3BucketFileAdapater , FTPFileAdapter each will have different type of config files. Simply put, S3BucketFileAdapater will have public key ,secret key and bucket name. LocalFileAdapater will not need these.</p>
-<h3>Sketching</h3>
-<p>Now, I want to have a method something similar to Storage::new(config) or something like this. The config should have which adapter/s to use, with their appropriate configuration (and unique) values.</p>
-<h3>Two cfgs</h3>
-<p>For better understanding, I’m paining two config structs.</p>
-<pre><code class="language-rust">pub struct LocalFileSystemAdapterConfig {
-  pub root_dir: String,
-}
-
-pub struct S3AdapterConfig {
-  pub public_key: String,
-  pub secret_key: String,
-  pub bucket: String,
-  pub use_path_style_endpoint: false,
-}</code></pre>
-<p>And I need something like</p>
-<pre><code class="language-rust">trait StorageAdapter {
-  // ... methods
-}
-struct Storage {
-  disk: StorageAdapter,
-  // other props
-}
-
-let storage = Storage::from(LocalFileSystemAdapterConfig | S3AdapterConfig); 
-
-// and based on the given config
-storage.disk = LocalFileSystem | S3</code></pre>
-<p>Defining a function that takes a dynamic parameter and casts it down to a specific / concrete type. The initial thought was maybe we should have something like</p>
-<pre><code class="language-rust">struct LocalAdapterConfig {
-  base_dir: String,
-}
-
-impl LocalAdapter {
-  pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) -&gt; LocalAdapter {
-    let local_config = config as LocalAdapterConfig;
-    // THIS IS NOT ALLOWED
-  }
-}</code></pre>
-<p>The attempt resulted in a failure and gave me:</p>
-<pre><code class="language-rust">... an `as` expression can only be used to convert between primitive types</code></pre>
-<p>Rust is saying, you can use the as keyword to convert between primitive types. This was not working. But as we are using a dynamictrait (as an interface concept). We can cast that trait to a concrete type.</p>
-<h2>Solution: Downcast</h2>
-<p>In this case, our config: T would be converted to LocalAdapterConfig. Though the method signature needs to change a bit.</p>
-<p>We want to use the Any trait, it uses reflection to allow dynamic typing of any 'static type.</p>
-<blockquote>
-<p>Downcasting is converting a trait into a concrete type.</p>
-</blockquote>
-<p>Our initial code is as follows</p>
-<pre><code class="language-rust">
-use std::any::Any;
-
-pub struct LocalFileSystemAdapterConfig {
-    pub base_directory: String,
-}
-
-pub struct LocalFileSystemAdapter {
-  pub base_dir: String, // just for demo purpose
-}
-
-// the trait config that every storage adapter's config will implement
-pub trait StorageAdapterConfig {
-    fn as_any(&amp;self) -&gt; &amp;dyn Any;
-}</code></pre>
-<p>We need the as_any method to be implemented for concrete struct/s where we want to allow <em>downcasting</em>. Therefore,</p>
-<pre><code class="language-rust">
-use std::any::Any;
-
-impl StorageAdapterConfig for LocalFileSystemAdapterConfig {
-    fn as_any(&amp;self) -&gt; &amp;dyn Any {
-        self
-    }
-}</code></pre>
-<p>We also need to change our method’s signature from</p>
-<pre><code class="language-rust">pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) </code></pre>
-<p>to</p>
-<pre><code class="language-rust">pub fn new(config: &amp;dyn Any)
-
-// make sure to import std::any::Any;</code></pre>
-<p>And finally, to downcast a variable of type dyn Any to our concrete LocalFileSystemAdapterConfig ,</p>
-<pre><code class="language-rust">
-let cfg : &amp;LocalFileSystemAdapterConfig = config
-            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
-            .expect("failed to downcast");
-
-// the syntax is 
-// .downcast_ref::&lt;$CONCRETE_TYPE&gt;().expect("msg");</code></pre>
-<p>The full code,</p>
-<pre><code class="language-rust">
-impl LocalFileSystemAdapter {
-
-    pub fn new(config: &amp;dyn Any) -&gt; LocalFileSystemAdapter {
-
-        let cfg : &amp;LocalFileSystemAdapterConfig = config
-            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
-            .expect("failed to downcast");
-
-        let base_dir = &amp;cfg.base_directory;
-
-        LocalFileSystemAdapter {
-            base_dir: base_dir.to_string(),
-        }
-    }
-
-  // ...
-}</code></pre>
-<p>Our IDE picks up the change and returns proper intellisense.</p>
-<p><img src="https://cdn-images-1.medium.com/max/3676/1*Wc_P7YRnKepKZIwN-e-zlA.png" alt="**Downcasting a dyn trait to a concrete type**" /></p>
-<p><em><strong>Note </strong>maybe there are better ways of achieving the same result, maybe the API Design could have been better to avoid it in the first place. Well, I’m still learning rust.</em></p>
-<p>Found a mistake? Feel free to point it out.</p>
+                    <p>A year ago, I got the opportunity to join DigitalOcean by the grace of Allah. And I took the chance to get on board the App Platform team.</p>
+<p>So, what is App Platform? App Platform is DigitalOcean's serverless offering. Developers focus on their application, and we manage the infrastructure to run their apps properly and hassle-free. This is not like a service-based company; in fact, it's a product. Our alternatives include AWS Beanstalk + Lambda, GCP App Engine + Cloud Run, Heroku, and Vercel. So we kinda do what they do.</p>
+<p>Getting a production server ready requires doing many things. For example:</p>
+<ul>
+<li>
+<p>Ensure the server has proper access so that random people can't SSH in or bruteforce/attempt alternative attacks</p>
+</li>
+<li>
+<p>Configure domain/subdomain (if needed)</p>
+</li>
+<li>
+<p>Ensure HTTPS</p>
+</li>
+<li>
+<p>Prevent DDoS, malicious requests, bot attacks</p>
+</li>
+<li>
+<p>Ensure zero downtime deployment, easy rollback if needed</p>
+</li>
+<li>
+<p>CDN for static assets or content</p>
+</li>
+<li>
+<p>Log analysis, alerting, monitoring</p>
+</li>
+<li>
+<p>Auto scaling based on resource usage</p>
+</li>
+<li>
+<p>Arrange for internal services that aren't connected to the outside world (ingress)</p>
+</li>
+<li>
+<p>Queue worker, job setup</p>
+</li>
+<li>
+<p>Secure connection for databases etc</p>
+</li>
+</ul>
+<p>These kinds of features are very essential for modern-day applications, but properly setting up and managing them is very time-consuming. Also, in many cases, dedicated (human) resources need to be hired. App Platform automates and manages these along with several other features.</p>
+<h2>My Contribution</h2>
+<p>My contribution is very small. A lot of beautiful work has been done here. Simple code that works. At the moment, I am currently the newest member of the team. However, the work here is quite diverse. It hardly gets boring.</p>
+<p>Along with regularly maintaining our existing features, we work on new features. Although I can't talk about these features, we are a community cloud. One way to stay engaged with the community can be found at <a href="https://ideas.digitalocean.com/app-platform?sort=top">Ideas for App Platform</a>. We look for what our users are telling us. If you have any ideas, you can share them here. Most of my work so far has been on the maintenance side.</p>
+<h3>Packets</h3>
+<p>One of my contributions has been directly solving customer problems. For example, once a customer complained that their app's database connection was failing very randomly. Well, although this might sound (and seem) normal, hunting it down… it was an adventure.</p>
+<p>In the end, we had to do <strong>network packet capture</strong> with <strong>tcpdump</strong> and analyze it. I used <strong>wireshark</strong> for the analysis.</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!bfjo!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff271469b-0b0c-4709-b6a5-9c4271ef9499_4400x2532.png" alt="" /></p>
+<p>Note: this is not the actual packet capture but of one of my private networks. We can learn so much from packet captures. You should try it often if you have interest in these.</p>
+<h3>Benchmarking</h3>
+<p>Another interesting task was testing and documenting the load-bearing capability of our underlying infrastructure. Though can't say much about that, but 2 load testing tools were <a href="https://github.com/rakyll/hey">https://github.com/rakyll/hey</a> and <a href="https://github.com/tsenart/vegeta">https://github.com/tsenart/vegeta</a>.</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!Ro5B!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8ed24afb-cf1e-4bd6-8492-fe7371715148_2020x1260.gif" alt="" /></p>
+<p>Note: This is not the actual benchmark image</p>
+<h3>Kubernetes</h3>
+<p>The underlying infrastructure needs to be managed along with the features. DigitalOcean App Platform uses Kubernetes. Well, at one layer. Regularly maintaining Kubernetes and its components is part of the job. And for those who are new to DevOps/similar roles wanting to work with Kubernetes microservices but are still exploring, well, most of the time, it's not always that much fun.</p>
+<p>Reading the release notes of each component, checking breaking changes, improvements, and security issues, testing them in different environments, and then slowly deploying them to clusters is often tiresome.</p>
+<h3>conntrack -L</h3>
+<p>And if the components fall behind once, catching up can be very troublesome. A lot of interesting things come with Kubernetes upgrades. For example, once after kube-proxy was updated, it was directly overriding conntrack. Our conntrack was set at another layer and it took 3 of us, 2 days to figure out.</p>
+<p><img src="https://substackcdn.com/image/fetch/$s_!H5l_!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff34f0166-ed52-4dbf-bb2a-d8ccfd8eb3ee_2218x826.png" alt="" /></p>
+<p>Note: This is not the actual conntrack image</p>
+<p>Besides these, another prominent task is investigation work. Something happened, we don't know why, and let's figure out why. Sometimes out-of-the-box solutions don't work either. For example, I'm working on a project where there's a POC going on to build something similar to the mechanism that Kubernetes uses to monitor desired vs current state for an internal task.</p>
+<h3>Terraform, RPC, Automation</h3>
+<p>Besides all these, various small tasks like updating terraform providers, making some changes in gRPC (since I came here, REST API hasn't been worked on; I guess this is the equivalent for that). Successfully migrating our PostgreSQL 12 users to PostgreSQL 13 or above (due to PostgreSQL coming to an End of Life last year). We often need to add/maintain various features in our internal tools. I really enjoy these bits; being able to automate is very fun. So much time-saving, not only for me but for everyone.</p>
+<h3>gVisor, Kata, cloud-hypervisor</h3>
+<p>Currently, I'm taking on another challenging (for me) task, which is maintaining our gVisor and kata container components. App Platform uses both in different places. And we use them so that bad actors can't exit from their container and tamper with other apps or cluster information + there are some other benefits. However, security is a big feature.</p>
+<p>One problem + feature of gVisor is that if there's a problem in the Linux kernel, even knowing that, the same issue is implemented to maintain compatibility and exact behavior &gt;_&lt;. If you're wondering what gVisor is, gVisor is Google's user-space kernel.</p>
+<p><strong>There is always a tradeoff</strong>. One tradeoff of Container vs VM is <strong>security</strong>. And that is why projects like gVisor, kata container, cloud-hypervisor exist. And thanks to Allah that it does exist! This is currently one of my learning topics. I have close to zero idea about this.</p>
+<p>In the future, I'll write more about Kubernetes, gVisor, kata, and many other things inshallah. If you're interested in these topics and like my writing style, you can subscribe.</p>
+<h2>Things I Like</h2>
+<p>I haven't had to write a single line of JavaScript here, haven't even seen it.</p>
+<p>Our team, in fact DigitalOcean as a whole, is RFC driven. Before working on a feature, a lot of research is done about it—technical, non-technical, competitor analysis, UI, UX, security, scalability, etc., everything is documented. And we discuss these and move forward.</p>
+<p>And the collaboration here is also amazing. No matter who is responsible for the feature, everyone gives input according to their ability. There are no silly questions. Everything is documented. Usually preceded or succeeded by a POC.</p>
+<p>Another place for team collaboration is Pull request review. Here anyone can ask for code changes from anyone, even a junior engineer can ask a senior engineer to change code, can say that the code isn't clear or can be done differently, or this isn't right.</p>
+<p>Team members; I think this is one of the best features. Folks here have amazing experience in different sectors and I'm able to learn a lot from everyone. And they really like to go in-depth. I'll share an incident.</p>
+<h4>Another Day at the Office</h4>
+<p>Once we got some alerts that a cluster ingress fail count had increased. But all the ingress nodes were up and running. The alert auto-resolved after a while. This happened 3-4 times. But why? While digging and discussing with our platform architect + now principal engineer, it was found that the bare-metal to which the hypervisor of the virtual machine of that node of that cluster was connected had failed on its primary ethernet and had fallen back to the secondary. Which doesn't give as much fast throughput as the primary.</p>
+<p>Because of this, very few connections were dropped, but it didn't cross the threshold that would signal Kubernetes that nodes or even pods are failing. Kubernetes was retrying on its own (I think), which is why even if it failed a bit, the next one was successful. But our alert is based on success and failure, not on Kubernetes retries.</p>
+<p>And all these network and hardware-related information are coming from a software engineer (our principal software engineer).</p>
+<p>Fascinating? To me, <strong>it damn well is</strong>.</p>
+<p>While on this topic, our alert system is quite aggressive? Proactive? Can't find the right word. But so far, all the problems that have occurred could have been much worse if these alerts weren't there.</p>
+<p>Also, DigitalOcean is <strong>fully worldwide remote</strong>. Next time if someone says remote isn't possible, well, it's a management skill issue, mostly. Our team alone works with people from 5 different timezones. Also, for team synchronization, we don't have the time-wasting unnecessary <strong>meeting</strong> called daily standup.</p>
+<p>Moreover, I'll say that having an engineer as a manager who works with similar technology is a blessing. And lastly, I'll say my most favorite part: I'm able to learn a lot. And I only have <strong>alhamdulillah</strong> to say.</p>
+<p>From building apps <strong>for the cloud</strong> to <strong>building the cloud itself</strong>, the journey continues.</p>
+<p>If you have any questions/suggestions, you can directly reach out at <a href="https://www.linkedin.com/in/thearyanahmed/">linkedin.com/thearyanahmed</a>.</p>
+<p>I'll often share these kinds of learnings along with my journey's learnings. If you are interested in reading, you can follow or subscribe. If you subscribe, you'll get articles in your inbox.</p>
                 </div>
             </div>
         </div>

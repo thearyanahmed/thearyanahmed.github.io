@@ -16,29 +16,19 @@
 <meta property="article:localhost and 127.0.0.1" content="localhost and 127.0.0.1" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:An 8-Minute Query Optimization Attempt" content="An 8-Minute Query Optimization Attempt" />
+<title>Transmitting Morse Code from the Lighthouse</title>
+<meta property="og:title" content="Transmitting Morse Code from the Lighthouse" />
+<meta name="twitter:title" content="Transmitting Morse Code from the Lighthouse" />
+<meta name="embedx:title" content="Transmitting Morse Code from the Lighthouse" />
+<meta name="description" content="বেশ কিছুদিন আগে lighthouse শুরু করেছিলাম। যেটা various কারণে continue করা হয় নি। তবে আবার continue �..." />
+<meta property="og:description" content="বেশ কিছুদিন আগে lighthouse শুরু করেছিলাম। যেটা various কারণে continue করা হয় নি। তবে আবার continue �..." />
+<meta name="twitter:description" content="বেশ কিছুদিন আগে lighthouse শুরু করেছিলাম। যেটা various কারণে continue করা হয় নি। তবে আবার continue �..." />
+<meta name="embedx:description" content="বেশ কিছুদিন আগে lighthouse শুরু করেছিলাম। যেটা various কারণে continue করা হয় নি। তবে আবার continue �..." />
 <meta name="author" content="Aryan Ahmed" />
-<meta property="article:Transmitting Morse Code from the Lighthouse" content="Transmitting Morse Code from the Lighthouse" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Managing Dotfiles and Sensitive Environment Variables: A Workaround" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:My Journey at DigitalOcean So Far" content="My Journey at DigitalOcean So Far" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" content="Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
-<title>Dynamic trait to a concrete type in Rust</title>
-<meta property="og:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="twitter:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="embedx:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta property="og:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="twitter:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="embedx:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="author" content="Aryan Ahmed" />
-<meta name="twitter:card" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
+<meta name="twitter:card" content="বেশ কিছুদিন আগে lighthouse শুরু করেছিলাম। যেটা various কারণে continue করা হয় নি। তবে আবার continue �..." />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/writings/dynamic-trait-to-a-concrete-type-in-rust" />
-<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
+<link rel="canonical" href="https://thearyanahmed.substack.com/p/transmitting-morse-code-from-the" />
+<meta property="article:Transmitting Morse Code from the Lighthouse" content="Transmitting Morse Code from the Lighthouse" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -213,140 +203,51 @@
             <div class="relative px-4 sm:px-6 lg:px-8">
                 <div class="text-lg max-w-prose mx-auto">
                     <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
-                        Dynamic trait to a concrete type in Rust
+                        Transmitting Morse Code from the Lighthouse
                     </h1>
                 </div>
 
                 
                 <div class="text-lg max-w-prose mx-auto">
                     <p class="mt-8 text-xl text-gray-500 leading-8">
-                        As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.
+                        বেশ কিছুদিন আগে lighthouse শুরু করেছিলাম। যেটা various কারণে continue করা হয় নি। তবে আবার continue �...
                     </p>
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.</p>
-<p>Every value in Rust is of a certain <em>data type</em>. Even null and errors are handled differently. In fact rust doesn’t have null. Null values are handled via the Option type and errors are handled via Result type. Every struct we define has specific values as well.</p>
-<p>What happens we need something dynamic of different types?</p>
-<h2>Context</h2>
-<p>I’m trying to build a storage library, that supports multiple drivers. Sort of like <a href="https://laravel.com/docs/9.x/filesystem">laravel’s storage</a> class. In my design, we’d have something like</p>
-<pre><code class="language-rust">Storage::put('file-01.txt', content);
-
-Storage::disk('s3')-&gt;put('file-02.png', content);
-
-Storage::download('file-03.docs');</code></pre>
-<p>As it’ll have different types of disks, which will work as adapters to our storage.</p>
-<h2>The problem</h2>
-<p>The problem I was facing was having different config files for each type of disks. Our LocalFileAdapter , S3BucketFileAdapater , FTPFileAdapter each will have different type of config files. Simply put, S3BucketFileAdapater will have public key ,secret key and bucket name. LocalFileAdapater will not need these.</p>
-<h3>Sketching</h3>
-<p>Now, I want to have a method something similar to Storage::new(config) or something like this. The config should have which adapter/s to use, with their appropriate configuration (and unique) values.</p>
-<h3>Two cfgs</h3>
-<p>For better understanding, I’m paining two config structs.</p>
-<pre><code class="language-rust">pub struct LocalFileSystemAdapterConfig {
-  pub root_dir: String,
-}
-
-pub struct S3AdapterConfig {
-  pub public_key: String,
-  pub secret_key: String,
-  pub bucket: String,
-  pub use_path_style_endpoint: false,
-}</code></pre>
-<p>And I need something like</p>
-<pre><code class="language-rust">trait StorageAdapter {
-  // ... methods
-}
-struct Storage {
-  disk: StorageAdapter,
-  // other props
-}
-
-let storage = Storage::from(LocalFileSystemAdapterConfig | S3AdapterConfig); 
-
-// and based on the given config
-storage.disk = LocalFileSystem | S3</code></pre>
-<p>Defining a function that takes a dynamic parameter and casts it down to a specific / concrete type. The initial thought was maybe we should have something like</p>
-<pre><code class="language-rust">struct LocalAdapterConfig {
-  base_dir: String,
-}
-
-impl LocalAdapter {
-  pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) -&gt; LocalAdapter {
-    let local_config = config as LocalAdapterConfig;
-    // THIS IS NOT ALLOWED
-  }
-}</code></pre>
-<p>The attempt resulted in a failure and gave me:</p>
-<pre><code class="language-rust">... an `as` expression can only be used to convert between primitive types</code></pre>
-<p>Rust is saying, you can use the as keyword to convert between primitive types. This was not working. But as we are using a dynamictrait (as an interface concept). We can cast that trait to a concrete type.</p>
-<h2>Solution: Downcast</h2>
-<p>In this case, our config: T would be converted to LocalAdapterConfig. Though the method signature needs to change a bit.</p>
-<p>We want to use the Any trait, it uses reflection to allow dynamic typing of any 'static type.</p>
-<blockquote>
-<p>Downcasting is converting a trait into a concrete type.</p>
-</blockquote>
-<p>Our initial code is as follows</p>
-<pre><code class="language-rust">
-use std::any::Any;
-
-pub struct LocalFileSystemAdapterConfig {
-    pub base_directory: String,
-}
-
-pub struct LocalFileSystemAdapter {
-  pub base_dir: String, // just for demo purpose
-}
-
-// the trait config that every storage adapter's config will implement
-pub trait StorageAdapterConfig {
-    fn as_any(&amp;self) -&gt; &amp;dyn Any;
-}</code></pre>
-<p>We need the as_any method to be implemented for concrete struct/s where we want to allow <em>downcasting</em>. Therefore,</p>
-<pre><code class="language-rust">
-use std::any::Any;
-
-impl StorageAdapterConfig for LocalFileSystemAdapterConfig {
-    fn as_any(&amp;self) -&gt; &amp;dyn Any {
-        self
-    }
-}</code></pre>
-<p>We also need to change our method’s signature from</p>
-<pre><code class="language-rust">pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) </code></pre>
-<p>to</p>
-<pre><code class="language-rust">pub fn new(config: &amp;dyn Any)
-
-// make sure to import std::any::Any;</code></pre>
-<p>And finally, to downcast a variable of type dyn Any to our concrete LocalFileSystemAdapterConfig ,</p>
-<pre><code class="language-rust">
-let cfg : &amp;LocalFileSystemAdapterConfig = config
-            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
-            .expect("failed to downcast");
-
-// the syntax is 
-// .downcast_ref::&lt;$CONCRETE_TYPE&gt;().expect("msg");</code></pre>
-<p>The full code,</p>
-<pre><code class="language-rust">
-impl LocalFileSystemAdapter {
-
-    pub fn new(config: &amp;dyn Any) -&gt; LocalFileSystemAdapter {
-
-        let cfg : &amp;LocalFileSystemAdapterConfig = config
-            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
-            .expect("failed to downcast");
-
-        let base_dir = &amp;cfg.base_directory;
-
-        LocalFileSystemAdapter {
-            base_dir: base_dir.to_string(),
-        }
-    }
-
-  // ...
-}</code></pre>
-<p>Our IDE picks up the change and returns proper intellisense.</p>
-<p><img src="https://cdn-images-1.medium.com/max/3676/1*Wc_P7YRnKepKZIwN-e-zlA.png" alt="**Downcasting a dyn trait to a concrete type**" /></p>
-<p><em><strong>Note </strong>maybe there are better ways of achieving the same result, maybe the API Design could have been better to avoid it in the first place. Well, I’m still learning rust.</em></p>
-<p>Found a mistake? Feel free to point it out.</p>
+                    <p>বেশ কিছুদিন আগে lighthouse শুরু করেছিলাম। যেটা various কারণে continue করা হয় নি। তবে আবার continue করার ইচ্ছা আছে । একটু different ভাবে ।</p>
+<p>Raspberry Pi আর rust দিয়ে ছোট্ট একটা project. A project to get my feet dirty. Rust নিয়ে মাঝে মাঝে tinker করা হয় । তাই ভাবছিলাম, what about, not a REST API but something much simpler? Yet it carries a significant real world value.</p>
+<h3>ProjectLighthouse যেমন sailor দের জন্য একটা guide, sea-তে journey করার সময় আরেটা important বিষয় communication.</h3>
+<p>Morse Code, dot আর dash signal use করে communication. Kinda like binary, ২ টা different representation ব্যবহার করা । </p>
+<p>Morse code এর আমার favorite usage interstellar এ, যেখানে Cooper অন্য galaxy থেকে dot-dot dash এ blackhole এর quantum data transmit করে ঘড়ির second-এর কাটায়। </p>
+<p>Morse code এর বেশ কিছু usage আছে , যেমন যখন বিপদ আসে । Titanic ডুবতে শুরু করলে তাদের একটা communication মাধ্যম ছিলো morse code. ‘২৪ এর জুলাই এ যখন internet আর mobile data off করে দেয়া হয়েছিলো, তখন হয়ত, আমরা চাইলে কোনো device দিয়ে morse code transmit করে অন্যদের সাথে at least basic communication ধরে রাখতে পারতাম। হয়ত। দরকার ছিলো কিছু radio transmitter এর, যেটার মাধ্যমে signal টা carry হবে ( কেউ চাইলে বানানোর try করতে পারেন ) । </p>
+<p>Morse code low bandwidth, weak signal দিয়েও অনেক effective transmission করা possible. As long as we can transmit two different signal and separate them. </p>
+<ul>
+<li>Extremely simple একটা device, emergency যেমন warzone এ communication এ ব্যবহার করা যেতে পারে, backup system হিসাবে রাখা যেতে পারে etc etc. You get the idea (hopefully). </li>
+</ul>
+<p>এগুলোর কি এখনো দরকার আছে? এখন 5G এর যুগ। High bandwith, fast internet etc. </p>
+<h4>Not so advanced techহ্যা, এখনো দরকার আছে । যদি robotics, aerospace industry তে কাজ করতে চান, যদি আপনার লিখা code দিয়ে কোনো একটা rocket বা satellite কে space এ পাঠাতে চান, যেটা probably আপনাকে outlive করবে, travelling across the stars, where probably no human would ever reach, দরকার আছে।</h4>
+<p>আমি morse code এর দরকরার এর কথা বলছি না। বলছি এই-সব simple, low level tech নিয়ে in general.</p>
+<h4>Programএসব random জিনিস চিন্তা করতে করতে ছোট্ট একটা program লিখেছি, যৈটা একটা text input কে morse code এ transmit করে । Light আকারে , LED blink করে ।</h4>
+<p><img src="https://substackcdn.com/image/fetch/$s_!3bws!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7999c613-6d57-4afc-b5ad-5912caf0aef1_1712x1848.png" alt="" />Full source code এখানে আছে :  <a href="https://github.com/thearyanahmed/x-bkon">https://github.com/thearyanahmed/x-bkon</a></p>
+<p>And the results</p>
+<p>আরো কিছু usage connect করতে চাইলে, <a href="https://thearyanahmed.substack.com/i/158828521/do-you-know-rosetta">rosetta was calling home</a> in the dark-vaccum of space. </p>
+<p>আমার কাছে এখন sound module নেই, তবে morse code এর famous যে sound টা, সেটা এটার sound module এর সাথে connect করলে চলে আসার কথা, along with the light.</p>
+<p>Sound module থাকলে kinda এরকম কিছু sound করতো (using a different morse code): </p>
+<p><a href="https://morsecode.world/international/translator.html">https://morsecode.world/international/translator.html</a> থেকে morse নিয়ে tinker করতে পারবেন । </p>
+<h3>Explaining the codeএই section টা নতুন দের জন্য,</h3>
+<p>আমাদের program টা <a href="https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L42-L78">main function execute</a> করে । প্রথমে check করে নেয় input দেয়া হয়েছে কিনা। যদি না হয়, তাহলে usage print করে exit করে । </p>
+<p>Proper input দেয়া হলে <a href="https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L53">morse code</a> এ text টা transform করে । Morse code এর conversion টা fix, তাই supported characters ( এখানে a-z ) গুলোকে একটা <a href="https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L81-L111">map এ রেখে দিয়েছি</a> । যাতে O(1) lookup time এ চেক করা যায় কোন character এর morse representation কি? </p>
+<p>যেমন <strong>l</strong> (ছোটো হাতের L) এর morse code <strong>.-..</strong> ( <a href="https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L93">here</a> )<strong> .</strong> এরপরে input কে trim করে (removing left and right whitespaces) lowercase এ করে, সেটাকে শব্দগুলোর মাঝের whitespace গুলো দিয়ে split করলে word পাচ্ছি । Word এর প্রতিটা character এর জন্য morse code নিচ্ছি ঐ map থেকে । </p>
+<p>এভাবে আমরা text input এর morse representation টা পাচ্ছি । তারপরে একটা ( initially infinite ) <a href="https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L60-L75">loop</a> use করে morse blink করছি আর একটা count রাখছি। যেটা 100_000 এর বেশি হলে loop থেকে exit করছি ।  </p>
+<p>Blink করার function এর কাজটাও বেশ simple. উপরের কাজের পরে আমাদের input এর morse (dots and dash: “.-<em>..</em>” etc) আছে । আর এই dots and dash এর ওপর base করে আমরা light টা জালিয়ে রাখছি । </p>
+<p>একটা light দিয়ে ২ টা different state (dot and dash) কিভাবে represent করতে পারি আমরা? Well, এক্ষেত্রে একটা signification difference in delay use করা যেতে পারে । এখানে যেহেতু dot হোক বা dash হোক, light টা শুরুতে off থাকে, তারপরে জলে আবার off হয়ে যায়, তাই dot গুলো <a href="https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L7">50 ms</a> (shorter) আর dash গুলো <a href="https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L8">400 ms</a> (longer) time ধরে জালিয়ে রাখছি । </p>
+<p>So light দিয়ে শুধু on আর off phase না, but আরো data transmit করা possible. হয়ত submarine cable গুলোতে এরকম কিছুই করে ।</p>
+<p>আর light connected আছে Raspberry Pi এর <a href="https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L56-L57">GPIO pin 18</a> এর সাথে । </p>
+<p>Can you imagine ? A few lines of code, potentially can save someones life, transmit valuable information ? Notify that there is something wrong? Or right? </p>
+<h3>hum…ছোটো বেলায় কখনো battery’ র সাথে তার লাগিয়ে light জালিয়েছেন? If yes, do you remember the first experience? I was surprised, though was hoping for a similar experience. And boy it was :D</h3>
+<p>While this is not the lighthouse, but just a blink. </p>
+<p>Some of my writings</p>
                 </div>
             </div>
         </div>

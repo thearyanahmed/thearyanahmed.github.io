@@ -14,31 +14,19 @@
 <meta property="article:Building projectlighthouse - commitment towards correctness" content="Building projectlighthouse - commitment towards correctness" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:localhost and 127.0.0.1" content="localhost and 127.0.0.1" />
+<title>An 8-Minute Query Optimization Attempt</title>
+<meta property="og:title" content="An 8-Minute Query Optimization Attempt" />
+<meta name="twitter:title" content="An 8-Minute Query Optimization Attempt" />
+<meta name="embedx:title" content="An 8-Minute Query Optimization Attempt" />
+<meta name="description" content="A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds." />
+<meta property="og:description" content="A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds." />
+<meta name="twitter:description" content="A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds." />
+<meta name="embedx:description" content="A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds." />
 <meta name="author" content="Aryan Ahmed" />
-<meta property="article:An 8-Minute Query Optimization Attempt" content="An 8-Minute Query Optimization Attempt" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Transmitting Morse Code from the Lighthouse" content="Transmitting Morse Code from the Lighthouse" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Managing Dotfiles and Sensitive Environment Variables: A Workaround" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:My Journey at DigitalOcean So Far" content="My Journey at DigitalOcean So Far" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" content="Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
-<title>Dynamic trait to a concrete type in Rust</title>
-<meta property="og:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="twitter:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="embedx:title" content="Dynamic trait to a concrete type in Rust" />
-<meta name="description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta property="og:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="twitter:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="embedx:description" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
-<meta name="author" content="Aryan Ahmed" />
-<meta name="twitter:card" content="As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality." />
+<meta name="twitter:card" content="A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds." />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/writings/dynamic-trait-to-a-concrete-type-in-rust" />
-<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
+<link rel="canonical" href="https://thearyanahmed.substack.com/p/minute-query-optimization" />
+<meta property="article:An 8-Minute Query Optimization Attempt" content="An 8-Minute Query Optimization Attempt" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -213,140 +201,30 @@
             <div class="relative px-4 sm:px-6 lg:px-8">
                 <div class="text-lg max-w-prose mx-auto">
                     <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
-                        Dynamic trait to a concrete type in Rust
+                        An 8-Minute Query Optimization Attempt
                     </h1>
                 </div>
 
                 
                 <div class="text-lg max-w-prose mx-auto">
                     <p class="mt-8 text-xl text-gray-500 leading-8">
-                        As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.
+                        A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds.
                     </p>
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.</p>
-<p>Every value in Rust is of a certain <em>data type</em>. Even null and errors are handled differently. In fact rust doesn’t have null. Null values are handled via the Option type and errors are handled via Result type. Every struct we define has specific values as well.</p>
-<p>What happens we need something dynamic of different types?</p>
-<h2>Context</h2>
-<p>I’m trying to build a storage library, that supports multiple drivers. Sort of like <a href="https://laravel.com/docs/9.x/filesystem">laravel’s storage</a> class. In my design, we’d have something like</p>
-<pre><code class="language-rust">Storage::put('file-01.txt', content);
-
-Storage::disk('s3')-&gt;put('file-02.png', content);
-
-Storage::download('file-03.docs');</code></pre>
-<p>As it’ll have different types of disks, which will work as adapters to our storage.</p>
-<h2>The problem</h2>
-<p>The problem I was facing was having different config files for each type of disks. Our LocalFileAdapter , S3BucketFileAdapater , FTPFileAdapter each will have different type of config files. Simply put, S3BucketFileAdapater will have public key ,secret key and bucket name. LocalFileAdapater will not need these.</p>
-<h3>Sketching</h3>
-<p>Now, I want to have a method something similar to Storage::new(config) or something like this. The config should have which adapter/s to use, with their appropriate configuration (and unique) values.</p>
-<h3>Two cfgs</h3>
-<p>For better understanding, I’m paining two config structs.</p>
-<pre><code class="language-rust">pub struct LocalFileSystemAdapterConfig {
-  pub root_dir: String,
-}
-
-pub struct S3AdapterConfig {
-  pub public_key: String,
-  pub secret_key: String,
-  pub bucket: String,
-  pub use_path_style_endpoint: false,
-}</code></pre>
-<p>And I need something like</p>
-<pre><code class="language-rust">trait StorageAdapter {
-  // ... methods
-}
-struct Storage {
-  disk: StorageAdapter,
-  // other props
-}
-
-let storage = Storage::from(LocalFileSystemAdapterConfig | S3AdapterConfig); 
-
-// and based on the given config
-storage.disk = LocalFileSystem | S3</code></pre>
-<p>Defining a function that takes a dynamic parameter and casts it down to a specific / concrete type. The initial thought was maybe we should have something like</p>
-<pre><code class="language-rust">struct LocalAdapterConfig {
-  base_dir: String,
-}
-
-impl LocalAdapter {
-  pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) -&gt; LocalAdapter {
-    let local_config = config as LocalAdapterConfig;
-    // THIS IS NOT ALLOWED
-  }
-}</code></pre>
-<p>The attempt resulted in a failure and gave me:</p>
-<pre><code class="language-rust">... an `as` expression can only be used to convert between primitive types</code></pre>
-<p>Rust is saying, you can use the as keyword to convert between primitive types. This was not working. But as we are using a dynamictrait (as an interface concept). We can cast that trait to a concrete type.</p>
-<h2>Solution: Downcast</h2>
-<p>In this case, our config: T would be converted to LocalAdapterConfig. Though the method signature needs to change a bit.</p>
-<p>We want to use the Any trait, it uses reflection to allow dynamic typing of any 'static type.</p>
-<blockquote>
-<p>Downcasting is converting a trait into a concrete type.</p>
-</blockquote>
-<p>Our initial code is as follows</p>
-<pre><code class="language-rust">
-use std::any::Any;
-
-pub struct LocalFileSystemAdapterConfig {
-    pub base_directory: String,
-}
-
-pub struct LocalFileSystemAdapter {
-  pub base_dir: String, // just for demo purpose
-}
-
-// the trait config that every storage adapter's config will implement
-pub trait StorageAdapterConfig {
-    fn as_any(&amp;self) -&gt; &amp;dyn Any;
-}</code></pre>
-<p>We need the as_any method to be implemented for concrete struct/s where we want to allow <em>downcasting</em>. Therefore,</p>
-<pre><code class="language-rust">
-use std::any::Any;
-
-impl StorageAdapterConfig for LocalFileSystemAdapterConfig {
-    fn as_any(&amp;self) -&gt; &amp;dyn Any {
-        self
-    }
-}</code></pre>
-<p>We also need to change our method’s signature from</p>
-<pre><code class="language-rust">pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) </code></pre>
-<p>to</p>
-<pre><code class="language-rust">pub fn new(config: &amp;dyn Any)
-
-// make sure to import std::any::Any;</code></pre>
-<p>And finally, to downcast a variable of type dyn Any to our concrete LocalFileSystemAdapterConfig ,</p>
-<pre><code class="language-rust">
-let cfg : &amp;LocalFileSystemAdapterConfig = config
-            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
-            .expect("failed to downcast");
-
-// the syntax is 
-// .downcast_ref::&lt;$CONCRETE_TYPE&gt;().expect("msg");</code></pre>
-<p>The full code,</p>
-<pre><code class="language-rust">
-impl LocalFileSystemAdapter {
-
-    pub fn new(config: &amp;dyn Any) -&gt; LocalFileSystemAdapter {
-
-        let cfg : &amp;LocalFileSystemAdapterConfig = config
-            .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
-            .expect("failed to downcast");
-
-        let base_dir = &amp;cfg.base_directory;
-
-        LocalFileSystemAdapter {
-            base_dir: base_dir.to_string(),
-        }
-    }
-
-  // ...
-}</code></pre>
-<p>Our IDE picks up the change and returns proper intellisense.</p>
-<p><img src="https://cdn-images-1.medium.com/max/3676/1*Wc_P7YRnKepKZIwN-e-zlA.png" alt="**Downcasting a dyn trait to a concrete type**" /></p>
-<p><em><strong>Note </strong>maybe there are better ways of achieving the same result, maybe the API Design could have been better to avoid it in the first place. Well, I’m still learning rust.</em></p>
-<p>Found a mistake? Feel free to point it out.</p>
+                    <p>A database index is a type of data structure that we can use to greatly improve data retrieval performance. Typically, if we need to search the whole dataset, especially in larger datasets, the query time can increase significantly because this algorithm's time complexity is O(n), where n = length of dataset.</p>
+<p>But what if the dataset length was smaller? Then it would take less time just like before (under normal circumstances, for most common scenarios).</p>
+<p>So, indexes can help us a lot in these cases, for our query planner and engine. Kind of like reducing the lookup dataset's length. And indexing is very common and considered the de facto database optimization by many.</p>
+<p>At the same time, we need to ORDER our dataset. And sometimes we can satisfy the ORDER BY clause with an index. If the query needs to sort data on a column that has an index, the optimizer might choose that path. Remember, database software is a combination of many components. Our simple SELECT $columns FROM $somewhere is not so simple to the database engine. It goes through a lot of steps to get you the data you are looking for.</p>
+<p>Anyways, the optimizer can sometimes use index (pre-satisfied) sorting rather than executing a separate sorting step (filesorting)!</p>
+<p>Having said that, is indexing always beneficial? Well, not really. Recently, we had a table that runs JOIN queries with several other tables. Not the most complex query in our system. That query is quite common and is used in several places.</p>
+<p>A few days ago, one of our engineers noticed that the query was getting quite slow for certain users. After running EXPLAIN, we found that data read per join was around 70 MB. So, you can imagine that per table access, our database engine was reading about 70 MB of data. Which is quite a lot.</p>
+<p>As a solution, one proposal was to use NO_ORDER_INDEX, which tells the database query optimizer <strong>not to use a specific index (or any index) for sorting rows</strong> (i.e., for ORDER BY clauses).</p>
+<p>This brought the <strong>~8 minute query down to ~2 seconds</strong>! That is pretty cool, no? In the database world, this table doesn't have that many rows. Only around <strong>50 million</strong>. However, a lot depends on the column types, the types of tables being JOINed, and how those joins are happening.</p>
+<p>What's the tradeoff of this optimization? The tradeoff is that filesort uses both memory and disk, so now the chance of our db buffer pool getting exhausted increases significantly if we adopt this solution.</p>
+<p>Btw, only about <strong>10 rows were being fetched</strong> from this overall database. There was no SELECT *. So it's not only about how much data is being fetched but also about which path is being taken to fetch it. It was about the journey, not the destination :D</p>
+<p>Also, don't use functions on columns where you wish to utilize the index.</p>
                 </div>
             </div>
         </div>
