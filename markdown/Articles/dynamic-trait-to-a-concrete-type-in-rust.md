@@ -1,5 +1,3 @@
-# Dynamic Trait to a Concrete Type in Rust
-
 As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.
 
 Every value in Rust is of a certain *data type*. Even null and errors are handled differently. In fact rust doesn't have null. Null values are handled via the Option type and errors are handled via Result type. Every struct we define has specific values as well.

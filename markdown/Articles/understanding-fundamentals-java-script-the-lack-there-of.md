@@ -1,5 +1,3 @@
-# Understanding Fundamentals: JavaScript, the Lack There Of
-
 A highly opinionated take on my experience. Not saying everyone is like this. It is solely based on my experience.
 
 Programming is one of the most enjoyable things I could think of. The ability to create or build something, translating codes into something meaningful, the feeling is amazing. I've been coding professionally for 5 years, give or take. And started coding a few more years before that.
@@ -11,7 +9,7 @@ While I'm not the best programmer, I do believe to learn something, you should s
 While so, I've never felt so frustrated working with javascript and typescript . Every time I touch it, it feels like this is probably the worst it can be. But every single time, I'm surprised on a different level.
 And it's not just the language itself but the culture alongside it.
 
-I find javascript developers adopt to most alien practices and makes me wonder **like...why**?
+I found javascript developers with whom I worked with, adopt to most alien practices and makes me wonder **like...why**?
 
 ## Not So Interested In Fundamentals
 
@@ -19,7 +17,7 @@ I think I've never seen any other community where they don't want to learn funda
 ...
 well, nothing to say, there are none.
 
-everything goes with `var / let / const` .  You can not define an int or float or something like that precisely. Not for an array, you can not have an array of ints per say. You'll end up with an array of everything possible.
+Everything goes with `var / let / const` .  You can not define an int or float or something like that precisely. Not for an array, you can not have an array of ints per say. You'll end up with an array of everything possible.
 
 One might say this is a feature. But if you say that, let me ask you, why would you, the programmer would not know about the data type it's working with?
 
@@ -35,12 +33,17 @@ One can argue that you can have linter rules that prevent you from using any . W
 2. Add linter rule
 3. Take the time to learn about the fundamentals
 
-If it was me, I'd first `3. take the time to learn about the fundamentals` , then go for `2. add linter rule` and probably never use `1. ignore these and just use whatever you want` .
+If it was me, I'd first
+1. take the time to learn about the fundamentals
+2. then go for `add linter rule` and
+1. probably never use `ignore these and just use whatever you want`
 
 For what I've seen, most of the time it has been `1. ignore these and just use whatever you want` , sometimes brag about `2. add linter rule and most of the rules` , eventually, to be removed from the rules as the project grows. And never `3. take the time to learn about the fundamentals` .
 
-> Why? I mean... like why?
-Not everyone is not a fan of typescript. Read why Turbo 8 is dropping TypeScript .
+> Why? I mean... like why? Not everyone is not a fan of typescript. Read why Turbo 8 is dropping TypeScript ( see :
+> https://github.com/hotwired/turbo/pull/971 )
+
+
 
 
 Unstructured data follows unstructured code

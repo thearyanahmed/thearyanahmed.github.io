@@ -1,5 +1,3 @@
-# My Journey at DigitalOcean So Far
-
 A year ago, I got the opportunity to join DigitalOcean by the grace of Allah. And I took the chance to get on board the App Platform team.
 
 So, what is App Platform? App Platform is DigitalOcean's serverless offering. Developers focus on their application, and we manage the infrastructure to run their apps properly and hassle-free. This is not like a service-based company; in fact, it's a product. Our alternatives include AWS Beanstalk + Lambda, GCP App Engine + Cloud Run, Heroku, and Vercel. So we kinda do what they do.

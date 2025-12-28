@@ -1,4 +1,3 @@
-# The Cover Generator for My Articles
 
 This article was created using chatGPT.
 

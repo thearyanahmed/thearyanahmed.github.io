@@ -1,5 +1,3 @@
-# Concurrency in Golang: Part 1
-
 ## What is Concurrency?
 Concurrency refers to the simultaneous and autonomous execution of multiple processes. This approach ensures that when multiple threads share or access a common resource, undesirable scenarios such as race conditions or deadlocks are avoided. Concurrency also enables disparate computations to yield identical results regardless of the order in which they are performed.
 

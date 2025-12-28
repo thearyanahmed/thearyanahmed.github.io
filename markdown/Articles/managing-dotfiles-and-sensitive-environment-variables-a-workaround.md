@@ -1,7 +1,3 @@
-# Managing Dotfiles and Sensitive Environment Variables: A Workaround
-
-## The Problem
-
 Do you commit secret tokens or API keys that are in your shell RC file to git? If you do, GitHub/GitLab should flag it. Some API keys/tokens often need to be in shell files (some programs take them from environment variables). And passing env variables every time is a hassle. An alternative option is something like opening 1password and copy-pasting. Not a fan of that.
 
 For example, DigitalOcean API has curl requests that work with `DIGITALOCEAN_TOKEN`. If it's set up in env, you just need to copy the curl request and it works.

@@ -24,29 +24,19 @@
 <meta property="article:My Journey at DigitalOcean So Far" content="My Journey at DigitalOcean So Far" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" content="Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" />
+<title>Saying goodbye to Evernote; finally</title>
+<meta property="og:title" content="Saying goodbye to Evernote; finally" />
+<meta name="twitter:title" content="Saying goodbye to Evernote; finally" />
+<meta name="embedx:title" content="Saying goodbye to Evernote; finally" />
+<meta name="description" content="My experience with evernote. Over the years, tried to comeback from time to time to the favorite note taking app. Unfortunately, wasn&#039;t working out anymore." />
+<meta property="og:description" content="My experience with evernote. Over the years, tried to comeback from time to time to the favorite note taking app. Unfortunately, wasn&#039;t working out anymore." />
+<meta name="twitter:description" content="My experience with evernote. Over the years, tried to comeback from time to time to the favorite note taking app. Unfortunately, wasn&#039;t working out anymore." />
+<meta name="embedx:description" content="My experience with evernote. Over the years, tried to comeback from time to time to the favorite note taking app. Unfortunately, wasn&#039;t working out anymore." />
 <meta name="author" content="Aryan Ahmed" />
-<meta property="article:Saying goodbye to &lt;span class=&#039;text-green-500 font-medium hover:text-red-400&#039;&gt;Evernote;&lt;/span&gt; finally" content="Saying goodbye to &lt;span class=&#039;text-green-500 font-medium hover:text-red-400&#039;&gt;Evernote;&lt;/span&gt; finally" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Choosing the Right String Type in Rust: A Journey of a Novice" content="Choosing the Right String Type in Rust: A Journey of a Novice" />
-<meta name="author" content="Aryan Ahmed" />
-<meta property="article:Prepared statements in SQL" content="Prepared statements in SQL" />
-<title>Building a Passwordless Login System with Laravel in minutes</title>
-<meta property="og:title" content="Building a Passwordless Login System with Laravel in minutes" />
-<meta name="twitter:title" content="Building a Passwordless Login System with Laravel in minutes" />
-<meta name="embedx:title" content="Building a Passwordless Login System with Laravel in minutes" />
-<meta name="description" content="Implement passwordless authentication in Laravel: Collect user email, send signed URL, validate callback. Secure and convenient login without passwords." />
-<meta property="og:description" content="Implement passwordless authentication in Laravel: Collect user email, send signed URL, validate callback. Secure and convenient login without passwords." />
-<meta name="twitter:description" content="Implement passwordless authentication in Laravel: Collect user email, send signed URL, validate callback. Secure and convenient login without passwords." />
-<meta name="embedx:description" content="Implement passwordless authentication in Laravel: Collect user email, send signed URL, validate callback. Secure and convenient login without passwords." />
-<meta name="author" content="Aryan Ahmed" />
-<meta name="twitter:card" content="Implement passwordless authentication in Laravel: Collect user email, send signed URL, validate callback. Secure and convenient login without passwords." />
+<meta name="twitter:card" content="My experience with evernote. Over the years, tried to comeback from time to time to the favorite note taking app. Unfortunately, wasn&#039;t working out anymore." />
 <meta property="og:site_name" content="thearyanahmed.com" />
-<link rel="canonical" href="https://thearyanahmed.com/writings/building-a-passwordless-login-system-with-laravel-in-minutes" />
-<meta property="article:Building a Passwordless Login System with Laravel in minutes" content="Building a Passwordless Login System with Laravel in minutes" />
+<link rel="canonical" href="https://thearyanahmed.com/blog/articles/saying-goodbye-to-evernote-finally" />
+<meta property="article:Saying goodbye to &lt;span class=&#039;text-green-500 font-medium hover:text-red-400&#039;&gt;Evernote;&lt;/span&gt; finally" content="Saying goodbye to &lt;span class=&#039;text-green-500 font-medium hover:text-red-400&#039;&gt;Evernote;&lt;/span&gt; finally" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -221,129 +211,39 @@
             <div class="relative px-4 sm:px-6 lg:px-8">
                 <div class="text-lg max-w-prose mx-auto">
                     <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
-                        Building a Passwordless Login System with Laravel in minutes
+                        Saying goodbye to <span class='text-green-500 font-medium hover:text-red-400'>Evernote;</span> finally
                     </h1>
                 </div>
 
                 
                 <div class="text-lg max-w-prose mx-auto">
                     <p class="mt-8 text-xl text-gray-500 leading-8">
-                        Implement passwordless authentication in Laravel: Collect user email, send signed URL, validate callback. Secure and convenient login without passwords.
+                        My experience with evernote. Over the years, tried to comeback from time to time to the favorite note taking app. Unfortunately, wasn&#039;t working out anymore.
                     </p>
                 </div>
                 <div class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>Passwordless authentication is a popular alternative to traditional password-based systems. With passwordless authentication, users are able to securely access their accounts without the need for a password. This new approach to authentication has several benefits, including improved security, increased convenience, and reduced risk of password-related attacks. In this article, we'll take a closer look at what passwordless authentication is, how it works, and why it may be the future of online security.</p>
-<p>We'll be building a passwordless login system using laravel. But laravel is a tool being used here, the concept should be the same.</p>
-<h3>The setup</h3>
-<p>I have a <a href="http://laravel.com">laravel</a> application with breeze setup. And <a href="http://mailtrap.io">mailtrap</a> for trapping emails.</p>
-<h3>The approach</h3>
-<p>The idea is to take the email of the user as an input and send a unique url to that email, through which the user will be verified and authenticated. Without any password.</p>
-<p>To write it down the plain-text way,</p>
-<ol>
-<li>
-<p>Display a form where we can take email as an input.</p>
-</li>
-<li>
-<p>Validate that email, check if it exists in the database or not.</p>
-</li>
-<li>
-<p>If yes, create a temporary signed url.</p>
-</li>
-<li>
-<p>The signed url should have some sort of identifier of that user. So when we verify, we know which user is trying to login.</p>
-</li>
-<li>
-<p>Send that signed url via email.</p>
-</li>
-<li>
-<p>When a user clicks on the link of that email, we handle the request, verify if the url has been tampered with.</p>
-</li>
-<li>
-<p>If not tampered with (if verified), we log the user in.</p>
-</li>
-</ol>
-<h3>The coding part</h3>
-<p>According to our 'plain-text' way, we need 3 routes. One that displays a form for the email input, one route to handle that form request and sending the email. And one for handling the callback, meaning verifying the url and creating a session (or equivalent) to log the user in.</p>
-<p>So our first route is pretty simple.</p>
-<pre><code class="language-php">Route::get('/login/passwordless',[LoginWithEmail::class,'displayPasswordlessLoginForm'])
-    -&gt;name('passwordlessLoginView');</code></pre>
-<p>Btw, I'm trying to keep the naming long and easy to read and understand. Use the naming convention that you follow and best for your project &amp; team.</p>
-<p>This route simply renders a view that looks like so,</p>
-<p><img src="https://cdn-images-1.medium.com/max/4824/1*oGV1odqK-xbBTeDvZsRMeg.png" alt="passwordless authentication form" /></p>
-<p>Using inertiajs, so this form only does the following,</p>
-<pre><code class="language-javascript">const submit = () =&gt; {
-    form.post(route('handlePasswordlessLoginRequest'), {
-        onFinish: () =&gt; { /** handle according to your applicaton logic **/ },
-    });
-};</code></pre>
-<p>Secondly, the code for <code>handlePasswordlessLoginRequest</code> would be</p>
-<pre><code class="language-php">Route::post('/login/passwordless',[LoginWithEmail::class,'handlePasswordlessLoginRequest'])
-    -&gt;name('handlePasswordlessLoginRequest');</code></pre>
-<p>And the controller logic,</p>
-<pre><code class="language-php">public function handlePasswordlessLoginRequest(Request $request): Response
-{
-    // step 2
-    // we validate the given input is an email and exists in our database
-    $request-&gt;validate(['email' =&gt; 'email|exists:users,email']);
-
-    // at this point, we have a record with that email
-    // so we grab the user
-
-    // would be good just to select id and email, cause thats what we are using.
-    $user = User::where('email',$request-&gt;get('email'))-&gt;first();
-
-    // step 3
-    // create a temporary signed url
-    // the URL::temporarySignedRoute() method takes a route name,
-    // time or expiration and any extra parameter can be passed as an array.
-
-    // our route for handling the callback url is
-    // `/login/passwordless/{user}`
-    // and we have given the name `processPasswordlessLogin`
-    // the {user} param is being populated using
-    // ['user' =&gt; $id], this is step 4
-    $url = URL::temporarySignedRoute('processPasswordlessLogin',now()-&gt;addMinutes(10), ['user' =&gt; $user-&gt;id]);
-
-    // step 5
-    // we are using notify to send the link, it could've been a (new Mail)-&gt;send()
-    $user-&gt;notify(new PasswordlessLinkNotification($url));
-
-    // finally, let our viewing user now, that we've sent an email.
-    return Inertia::render('Auth/LoginWithEmail',[
-           'status' =&gt; 'please check your email.'
-    ]);
-}</code></pre>
-<h3>A bit about Signed URLs</h3>
-<p>Signed URLs, are URLs that include a signature or token to grant temporary access to a resource or endpoint.</p>
-<p>The purpose of a signed URL is to provide secure access to protected resources or endpoints for a limited period of time. This is often used in situations where you want to share a private resource, such as a video or file, with a specific user or set of users, but don't want to grant permanent access.</p>
-<p>When you generate a signed URL, you typically specify the resource or endpoint that you want to grant access to, as well as a time limit for how long the URL should be valid. The URL is then signed with a secret key or token, which is used to verify the authenticity of the request when the URL is accessed.</p>
-<h3>Vulnerability?</h3>
-<p>Some of us might that what is stopping us from changing the url parameter? As an attacker, I want to get a login url to my email and change the <strong>{user}</strong> parameter to gain access to someone else's account?</p>
-<p>Well, with signed urls, if we change 1 bit of it, it will be invalid. And this is handled by the <code>\App\Http\Middleware\ValidateSignature::class</code> middleware, which can be found registered inside the <code>Http/kernel.php</code></p>
-<h3>Handling callback</h3>
-<p>After our user has clicked the link that was sent to his email, we need to verify the url (make sure it wasn't tampered with), get the user and log the user in.</p>
-<p>So our route looks like,</p>
-<pre><code class="language-php">Route::get('/login/passwordless/{user}',[LoginWithEmail::class,'processPasswordlessLogin'])
-    -&gt;name('processPasswordlessLogin')
-    -&gt;middleware('signed');</code></pre>
-<p>Note the <strong>signed</strong> middleware. Without that bit, our application will be vulnerable. the signed middleware handles the tamper verification part.</p>
-<p>And as the middleware is taking care of our validation's heavy lifting, our controller is pretty simple with this part,</p>
-<pre><code class="language-php">public function processPasswordlessLogin(Request $request, User $user): RedirectResponse
-{
-    // we have the user from the route /{user} param
-    // and as we are using route model binding, if the user id is invalid
-    // or not found, it should abort(404) automatically.
-    Auth::login($user);
-
-    $request-&gt;session()-&gt;regenerate();
-
-    return redirect()-&gt;route('dashboard');
-}</code></pre>
-<p>Thats it. Now, if we try it out, after sending a valid email, it'll send us an email with the appropriate link and clicking it will log us in.</p>
-<p><img src="https://cdn-images-1.medium.com/max/5288/1*awdj8cERP2y3WgZ-cODEQg.png" alt="requesting for an invitation link" /></p>
-<p><img src="https://cdn-images-1.medium.com/max/4284/1*rjubcCGw3V19KGhwdPzT8A.png" alt="receiving the email with the signed url" /></p>
-<p><img src="https://cdn-images-1.medium.com/max/6640/1*0-REzXmv72_AyfY2xkxNYg.png" alt="and signing in without a password" /></p>
-<p>While using laravel made it super simple, the idea remains the same for all frameworks across the board.</p>
+                    <p>I'm an average note taker. But, I do take notes on a regular basis. I prefer writing things down, helps me tackle them. Whether it is a task, or just planning about next week or anything.</p>
+<p>As working in tech, obviously I tried out some digital note taking apps and I think I've tried out most of the major ones (till now, as of writing, 2. Mar 2024). I started my digital note taking with <a href="https://www.evernote.com/">Evernote</a>.  I then switched to something else but mainly for trying and finally settled for evernote in 2017.</p>
+<p>I liked their design, 3 column view. We could focus on the note itself when writing or perhaps reading. And supported many options for formatting. Like tables.</p>
+<p>However, over the years, evernote has lacked innovation and it's development was poor to say the least. I do not know what was going on inside the company. But as a customer, it was very very disappointing.</p>
+<p>I obviously switched to different notes and tried them out and kept an eye on evernote. I'd often switch back, take 1 month's subscription and see how things have improved. I risked more than a handful number of times to migrate all my notes to evernote and had to switch back after sometime.</p>
+<p>In the productivity space, which I think evernote roams around, simplicity is your best friend. In other words, complex systems can make you less productive. A productive note taking app (or any app in this space) should be a companion, I want it like something at the back of my head but not too bothered with. Simple, fast and it works.</p>
+<p>Over the years, evernote lost all three I guess. They were so busy with their '<strong>home</strong>' and '<strong>tasks</strong>', they didn't bother to keep the basic things running. Or they failed to do so.</p>
+<p>The only widget that was somewhat useful in evernote's home page was the Tasks area, which would show you today's tasks. Apart from that, showing notebooks, recently captured, pinned note, recent notes, none of them were that appealing or had made any impact.</p>
+<p>Integration with calendars, tasks, organize your home. But evernote became very slow. I had so much trouble syncing with my mobile and desktop version of the app. And if you are editing the same note, its a nightmare.</p>
+<p>And by editing, I just mean opeing that note on a different device, if the app thought it was in editing mode, maybe I had clicked somewhere which triggered collusions.</p>
+<p>Recently they went through some major changes and I thought, okay, maybe one last time. I wanna try it out for a longer period of time and see if I can make it or not.</p>
+<p>After (re)starting my days with evernote, they soon released a new UI and the classic black sidebar white 3 column were no more. I personally did not like the new glassy look. I at least hoped they'd allow us to choose. They did, but not between the glassy and old one. You can choose between light and dark mode and thats about it. At least I could not find the old one!</p>
+<p>I really liked this UI.
+<img src="https://store-images.s-microsoft.com/image/apps.34390.9007199266246247.98c8221f-8cff-4552-a6dc-72ec835527f0.6668eaf8-4d03-48a2-94b0-79ae4d2739bb" alt="Evernote" /></p>
+<p>Besides that, the space between the tasks themselves, the limited fonts, adding AI to do cleanup… why? Design is subjective, one can say they liked the design, and sure. But this article is about my own experience.</p>
+<p>However, the new design wasn't so poor though. I can make do. On March 2nd, 2024 I recevied a new notification that says new update available. I did. I had to restart my evernote and … it took around 12-15 seconds to start.</p>
+<p>It was horribly slow, even on the same notebook, if I clicked one note and then clicked another for editing, it would take a long time to render and then open in editing mode. I don't have the best computer in the world, but still running a macbook with m1. That can run other stuff well.</p>
+<p>After trying to troubleshoot for sometime, I finally tried to open other note apps (apple note and bear) and decided to move on.
+I'll be working ( going back ) to <a href="https://bear.app/">bear</a>. They are a small team, who built an amazing app. Very beautiful, simple and works.</p>
+<p>So, since 2017 till now, tried my best to keep up with evernote and go back when I could, in the end, the bear killed the elephant.</p>
+<p><img src="https://bear.app/images/website-icons/card.jpg" alt="Bear.app" /></p>
+<p>This was my experience, I hope and pray other people are having better experience. And I hope, the evernote team would remember about simplicity.</p>
                 </div>
             </div>
         </div>

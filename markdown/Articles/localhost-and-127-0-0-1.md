@@ -1,5 +1,3 @@
-# localhost and 127.0.0.1
-
 ![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png)
 
 > Based on true events.

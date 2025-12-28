@@ -1,5 +1,3 @@
-# Building a URL Shortener with Rust and Redis
-
 Our approach will be to make a plan for the features and work our way through.
 
 > All the code could be found at https://github.com/thearyanahmed/lucy

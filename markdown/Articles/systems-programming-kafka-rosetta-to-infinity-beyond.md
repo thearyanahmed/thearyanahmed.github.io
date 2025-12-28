@@ -1,5 +1,3 @@
-# Systems Programming: Kafka, Rosetta, to Infinity & Beyond
-
 Systems programming is resource-constrained programming. It is programming when every byte counts.
 
 We write many amazing programs in our day-to-day life, but most of us programmers don't know about systems programming, although it underlies everything we do.

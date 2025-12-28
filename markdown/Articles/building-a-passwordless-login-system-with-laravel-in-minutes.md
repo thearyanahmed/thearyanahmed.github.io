@@ -1,5 +1,3 @@
-# Building a Passwordless Login System with Laravel in Minutes
-
 Passwordless authentication is a popular alternative to traditional password-based systems. With passwordless authentication, users are able to securely access their accounts without the need for a password. This new approach to authentication has several benefits, including improved security, increased convenience, and reduced risk of password-related attacks. In this article, we'll take a closer look at what passwordless authentication is, how it works, and why it may be the future of online security.
 
 We'll be building a passwordless login system using laravel. But laravel is a tool being used here, the concept should be the same.

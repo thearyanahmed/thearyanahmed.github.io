@@ -1,5 +1,3 @@
-# Saying Goodbye to Evernote, Finally
-
 I'm an average note taker. But, I do take notes on a regular basis. I prefer writing things down, helps me tackle them. Whether it is a task, or just planning about next week or anything.
 
 As working in tech, obviously I tried out some digital note taking apps and I think I've tried out most of the major ones (till now, as of writing, 2. Mar 2024). I started my digital note taking with [Evernote](https://www.evernote.com/).  I then switched to something else but mainly for trying and finally settled for evernote in 2017.

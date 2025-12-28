@@ -25,6 +25,8 @@
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" content="Systems Programming: Kafka, Rosetta - To Infinity &amp; Beyond" />
 <meta name="author" content="Aryan Ahmed" />
+<meta property="article:Saying goodbye to &lt;span class=&#039;text-green-500 font-medium hover:text-red-400&#039;&gt;Evernote;&lt;/span&gt; finally" content="Saying goodbye to &lt;span class=&#039;text-green-500 font-medium hover:text-red-400&#039;&gt;Evernote;&lt;/span&gt; finally" />
+<meta name="author" content="Aryan Ahmed" />
 <meta property="article:Differences Between SSL and TLS" content="Differences Between SSL and TLS" />
 <meta name="author" content="Aryan Ahmed" />
 <meta property="article:Dynamic trait to a concrete type in Rust" content="Dynamic trait to a concrete type in Rust" />
@@ -176,39 +178,39 @@
 </div>
 
     <main class="lg:relative">
-        <div class="max-w-3xl mx-auto px-4 mt-8">
+        <div class="bg-white max-w-3xl mx-auto px-4 mt-8">
         <div class="relative py-16 bg-white overflow-hidden rounded-lg">
             <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full dotted-bg">
                 <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
                     <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none"
-                         viewBox="0 0 404 384">
+                        viewBox="0 0 404 384">
                         <defs>
                             <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                                patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
                             </pattern>
                         </defs>
-                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)"/>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)" />
                     </svg>
                     <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404"
-                         height="384" fill="none" viewBox="0 0 404 384">
+                        height="384" fill="none" viewBox="0 0 404 384">
                         <defs>
                             <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                                patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
                             </pattern>
                         </defs>
-                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)"/>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)" />
                     </svg>
                     <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384"
-                         fill="none" viewBox="0 0 404 384">
+                        fill="none" viewBox="0 0 404 384">
                         <defs>
                             <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                                patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
                             </pattern>
                         </defs>
-                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)"/>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)" />
                     </svg>
                 </div>
             </div>
@@ -225,10 +227,8 @@
                         Over the past years couple years, I go back to rust when I get the time to try something new.
                     </p>
                 </div>
-                <div
-                    class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <h1>Choosing the Right String Type in Rust: A Journey of a Novice</h1>
-<p>Rust has been a favorite. While doing so, I've come across various scenarios where choosing the right string type can significantly impact both performance and code maintainability. In this blog post, I'll share some insights into when to use different string types in Rust, based on real-world use cases.</p>
+                <div class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
+                    <p>Rust has been a favorite. While doing so, I've come across various scenarios where choosing the right string type can significantly impact both performance and code maintainability. In this blog post, I'll share some insights into when to use different string types in Rust, based on real-world use cases.</p>
 <h2>String</h2>
 <p>The <code>String</code> type in Rust is a growable, heap-allocated, UTF-8 encoded string. It's your go-to choice for most cases. Use <code>String</code> when:</p>
 <ul>
@@ -313,9 +313,9 @@ fn read_file(file_path: &amp;OsStr) -&gt; Result&lt;OsString, std::io::Error&gt;
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.28.0</span>
+                v<span class="text-gray-400">2.27.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">335</span>ヅ<span class="text-gray-500/60">fb16503ef8bb55b97b77738353a0d4a57d0250fa</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">338</span>ヅ<span class="text-gray-500/60">63e4fe0e94668d358d8a47bba6df1245d455a9a4</span></span>
         </div>
     </footer>
 </body>

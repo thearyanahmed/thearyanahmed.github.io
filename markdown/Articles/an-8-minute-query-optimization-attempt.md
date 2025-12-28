@@ -1,5 +1,3 @@
-# An 8-Minute Query Optimization Attempt
-
 A database index is a type of data structure that we can use to greatly improve data retrieval performance. Typically, if we need to search the whole dataset, especially in larger datasets, the query time can increase significantly because this algorithm's time complexity is O(n), where n = length of dataset.
 
 But what if the dataset length was smaller? Then it would take less time just like before (under normal circumstances, for most common scenarios).

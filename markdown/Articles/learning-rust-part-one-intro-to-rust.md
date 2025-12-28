@@ -1,6 +1,3 @@
-# Learning Rust Part One: Intro to Rust
-
-### Introduction to Rust
 In the ever-evolving world of programming, there's a constant quest for languages that excel in both speed and reliability. Enter Rust, a cutting-edge systems programming language rapidly gaining traction. Designed by Mozilla, Rust addresses the common pitfalls of low-level languages like C and C++ while offering modern features that boost productivity and code dependability.
 
 One of Rust's core goals is to eliminate bug classes like null pointer dereferences, buffer overflows, and data races, which frequently lead to security vulnerabilities and system crashes in other languages.

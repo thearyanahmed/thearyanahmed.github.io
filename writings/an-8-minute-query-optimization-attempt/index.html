@@ -162,39 +162,39 @@
 </div>
 
     <main class="lg:relative">
-        <div class="max-w-3xl mx-auto px-4 mt-8">
+        <div class="bg-white max-w-3xl mx-auto px-4 mt-8">
         <div class="relative py-16 bg-white overflow-hidden rounded-lg">
             <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full dotted-bg">
                 <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
                     <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none"
-                         viewBox="0 0 404 384">
+                        viewBox="0 0 404 384">
                         <defs>
                             <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                                patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
                             </pattern>
                         </defs>
-                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)"/>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)" />
                     </svg>
                     <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404"
-                         height="384" fill="none" viewBox="0 0 404 384">
+                        height="384" fill="none" viewBox="0 0 404 384">
                         <defs>
                             <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                                patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
                             </pattern>
                         </defs>
-                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)"/>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)" />
                     </svg>
                     <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384"
-                         fill="none" viewBox="0 0 404 384">
+                        fill="none" viewBox="0 0 404 384">
                         <defs>
                             <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                                patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
                             </pattern>
                         </defs>
-                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)"/>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)" />
                     </svg>
                 </div>
             </div>
@@ -211,10 +211,8 @@
                         A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds.
                     </p>
                 </div>
-                <div
-                    class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <h1>An 8-Minute Query Optimization Attempt</h1>
-<p>A database index is a type of data structure that we can use to greatly improve data retrieval performance. Typically, if we need to search the whole dataset, especially in larger datasets, the query time can increase significantly because this algorithm's time complexity is O(n), where n = length of dataset.</p>
+                <div class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
+                    <p>A database index is a type of data structure that we can use to greatly improve data retrieval performance. Typically, if we need to search the whole dataset, especially in larger datasets, the query time can increase significantly because this algorithm's time complexity is O(n), where n = length of dataset.</p>
 <p>But what if the dataset length was smaller? Then it would take less time just like before (under normal circumstances, for most common scenarios).</p>
 <p>So, indexes can help us a lot in these cases, for our query planner and engine. Kind of like reducing the lookup dataset's length. And indexing is very common and considered the de facto database optimization by many.</p>
 <p>At the same time, we need to ORDER our dataset. And sometimes we can satisfy the ORDER BY clause with an index. If the query needs to sort data on a column that has an index, the optimizer might choose that path. Remember, database software is a combination of many components. Our simple SELECT $columns FROM $somewhere is not so simple to the database engine. It goes through a lot of steps to get you the data you are looking for.</p>
@@ -263,9 +261,9 @@
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.28.0</span>
+                v<span class="text-gray-400">2.27.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">335</span>ヅ<span class="text-gray-500/60">fb16503ef8bb55b97b77738353a0d4a57d0250fa</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">338</span>ヅ<span class="text-gray-500/60">63e4fe0e94668d358d8a47bba6df1245d455a9a4</span></span>
         </div>
     </footer>
 </body>

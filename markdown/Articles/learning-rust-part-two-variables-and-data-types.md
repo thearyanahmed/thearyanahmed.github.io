@@ -1,5 +1,3 @@
-# Learning Rust Part Two: Variables and Data Types
-
 This is part 2 of learning rust series. In [part 1](https://thearyanahmed.com/blog/articles/learning-rust-part-one-intro-to-rust), I talked about what is rust, some of its benefits and how to get started. Today, I'll try to talk about variables and different data types.
 
 ## Variables

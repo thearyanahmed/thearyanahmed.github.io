@@ -22,12 +22,12 @@
 <meta property="og:title" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
 <meta name="twitter:title" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
 <meta name="embedx:title" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
-<meta name="description" content="The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token sh..." />
-<meta property="og:description" content="The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token sh..." />
-<meta name="twitter:description" content="The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token sh..." />
-<meta name="embedx:description" content="The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token sh..." />
+<meta name="description" content="A workaround for managing dotfiles and sensitive environment variables. Learn how to commit shell RC files with secret tokens to version control without exposing the actual values using git hooks." />
+<meta property="og:description" content="A workaround for managing dotfiles and sensitive environment variables. Learn how to commit shell RC files with secret tokens to version control without exposing the actual values using git hooks." />
+<meta name="twitter:description" content="A workaround for managing dotfiles and sensitive environment variables. Learn how to commit shell RC files with secret tokens to version control without exposing the actual values using git hooks." />
+<meta name="embedx:description" content="A workaround for managing dotfiles and sensitive environment variables. Learn how to commit shell RC files with secret tokens to version control without exposing the actual values using git hooks." />
 <meta name="author" content="Aryan Ahmed" />
-<meta name="twitter:card" content="The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token sh..." />
+<meta name="twitter:card" content="A workaround for managing dotfiles and sensitive environment variables. Learn how to commit shell RC files with secret tokens to version control without exposing the actual values using git hooks." />
 <meta property="og:site_name" content="thearyanahmed.com" />
 <link rel="canonical" href="https://thearyanahmed.substack.com/p/managing-dotfiles-and-sensitive-environment" />
 <meta property="article:Managing Dotfiles and Sensitive Environment Variables: A Workaround" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
@@ -166,39 +166,39 @@
 </div>
 
     <main class="lg:relative">
-        <div class="max-w-3xl mx-auto px-4 mt-8">
+        <div class="bg-white max-w-3xl mx-auto px-4 mt-8">
         <div class="relative py-16 bg-white overflow-hidden rounded-lg">
             <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full dotted-bg">
                 <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
                     <svg class="absolute top-12 left-full transform translate-x-32" width="404" height="384" fill="none"
-                         viewBox="0 0 404 384">
+                        viewBox="0 0 404 384">
                         <defs>
                             <pattern id="74b3fd99-0a6f-4271-bef2-e80eeafdf357" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                                patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
                             </pattern>
                         </defs>
-                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)"/>
+                        <rect width="404" height="384" fill="url(#74b3fd99-0a6f-4271-bef2-e80eeafdf357)" />
                     </svg>
                     <svg class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404"
-                         height="384" fill="none" viewBox="0 0 404 384">
+                        height="384" fill="none" viewBox="0 0 404 384">
                         <defs>
                             <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                                patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
                             </pattern>
                         </defs>
-                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)"/>
+                        <rect width="404" height="384" fill="url(#f210dbf6-a58d-4871-961e-36d5016a0f49)" />
                     </svg>
                     <svg class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384"
-                         fill="none" viewBox="0 0 404 384">
+                        fill="none" viewBox="0 0 404 384">
                         <defs>
                             <pattern id="d3eb07ae-5182-43e6-857d-35c643af9034" x="0" y="0" width="20" height="20"
-                                     patternUnits="userSpaceOnUse">
-                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                                patternUnits="userSpaceOnUse">
+                                <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
                             </pattern>
                         </defs>
-                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)"/>
+                        <rect width="404" height="384" fill="url(#d3eb07ae-5182-43e6-857d-35c643af9034)" />
                     </svg>
                 </div>
             </div>
@@ -212,14 +212,11 @@
                 
                 <div class="text-lg max-w-prose mx-auto">
                     <p class="mt-8 text-xl text-gray-500 leading-8">
-                        The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token sh...
+                        A workaround for managing dotfiles and sensitive environment variables. Learn how to commit shell RC files with secret tokens to version control without exposing the actual values using git hooks.
                     </p>
                 </div>
-                <div
-                    class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <h1>Managing Dotfiles and Sensitive Environment Variables: A Workaround</h1>
-<h2>The Problem</h2>
-<p>Do you commit secret tokens or API keys that are in your shell RC file to git? If you do, GitHub/GitLab should flag it. Some API keys/tokens often need to be in shell files (some programs take them from environment variables). And passing env variables every time is a hassle. An alternative option is something like opening 1password and copy-pasting. Not a fan of that.</p>
+                <div class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
+                    <p>Do you commit secret tokens or API keys that are in your shell RC file to git? If you do, GitHub/GitLab should flag it. Some API keys/tokens often need to be in shell files (some programs take them from environment variables). And passing env variables every time is a hassle. An alternative option is something like opening 1password and copy-pasting. Not a fan of that.</p>
 <p>For example, DigitalOcean API has curl requests that work with <code>DIGITALOCEAN_TOKEN</code>. If it's set up in env, you just need to copy the curl request and it works.</p>
 <p>I've had this happen several times where I lost my <code>.bashrc</code> or <code>.zshrc</code> file in a new environment or when working from 2 machines. And then (or often) I don't remember what environment variables there were. And to set it up like before, I have to use the same variable names. Which is another hassle.</p>
 <p>At least it's a hassle for me. So I was thinking, if I could commit a private file along with the dotfiles, which would have my secret env variables. But I don't want to commit the values.</p>
@@ -350,9 +347,9 @@ exit 0</code></pre>
     <footer class="max-w-lg mx-auto flex text-center mb-20">
         <div class="flex flex-col mx-auto text-gray-300">
             <span>
-                v<span class="text-gray-400">2.28.0</span>
+                v<span class="text-gray-400">2.27.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">335</span>ヅ<span class="text-gray-500/60">fb16503ef8bb55b97b77738353a0d4a57d0250fa</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">338</span>ヅ<span class="text-gray-500/60">63e4fe0e94668d358d8a47bba6df1245d455a9a4</span></span>
         </div>
     </footer>
 </body>

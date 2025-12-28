@@ -1,5 +1,3 @@
-> This is a highly opinionated article, part of a series "Building projectlighthouse".
-
 I was working on a CLI that interacts with [projectlighthouse](https://projectlighthouse.io/) via API. The CLI is written in Rust. One of the things that I want is **"correctness"**. Even for small things. And since lighthouse is my own project, I want to ensure that as much as I can. Obviously I can't guarantee nor do I expect that it will be a completely correct program, still.
 
 There's another reason - in many of Bangladesh's skill-based ed-Tech platforms, mainly the **tech-"edTech"** ones, you often see errors on the welcome page first, and the page may or may not load afterwards. In many cases there are manual features, which sometimes require learners to contact customer support, sometimes wait, sometimes the experience is not good. Often it's not good.

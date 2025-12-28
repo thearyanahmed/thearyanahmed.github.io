@@ -1,5 +1,3 @@
-# Hello World: Intro to Data Types
-
 In the vast realm of programming, data types play a crucial role. They're the building blocks that help us organize and manipulate data efficiently. Imagine them as the DNA of your code – guiding how it behaves and interacts.
 
 ## Hello World with Go

@@ -1,5 +1,3 @@
-# Rust Memory Ownership and Borrowing
-
 Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don't understand it quite well, then it'll be difficult for you to write good rust code.
 
 It's the ownership model. That keeps us safe and lets us sleep at night after we deploy we rust code to production. This is also how rust avoids a garbage collector.

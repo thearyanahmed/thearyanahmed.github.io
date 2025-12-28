@@ -1,5 +1,3 @@
-# Kubernetes Cluster Architecture
-
 **Master Node**
 
    - Communication using the API Server. Think of it as the frontend

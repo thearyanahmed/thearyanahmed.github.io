@@ -1,5 +1,3 @@
-# Prepared Statements in SQL
-
 ![](https://cdn-images-1.medium.com/max/2000/1*tmEFJ0LreB8wabdi67XY-Q.jpeg)
 
 **Prepared statement**s are a common thing sql world. It has many benefits like it can execute the same (or similar) SQL statements repeatedly with high efficiency. It can also prevent one of the biggest security vulnerabilities, **SQL injection**.
