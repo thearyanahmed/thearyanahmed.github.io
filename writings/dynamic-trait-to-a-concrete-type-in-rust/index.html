@@ -225,23 +225,24 @@
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.</p>
-<p>Every value in Rust is of a certain <em>data type</em>. Even null and errors are handled differently. In fact rust doesn’t have null. Null values are handled via the Option type and errors are handled via Result type. Every struct we define has specific values as well.</p>
+                    <h1>Dynamic Trait to a Concrete Type in Rust</h1>
+<p>As rust does not support interface , sometimes it can be difficult to cast a dynamic typed variable to a concrete type. Lets take a look how we can achieve similar functionality.</p>
+<p>Every value in Rust is of a certain <em>data type</em>. Even null and errors are handled differently. In fact rust doesn't have null. Null values are handled via the Option type and errors are handled via Result type. Every struct we define has specific values as well.</p>
 <p>What happens we need something dynamic of different types?</p>
 <h2>Context</h2>
-<p>I’m trying to build a storage library, that supports multiple drivers. Sort of like <a href="https://laravel.com/docs/9.x/filesystem">laravel’s storage</a> class. In my design, we’d have something like</p>
+<p>I'm trying to build a storage library, that supports multiple drivers. Sort of like <a href="https://laravel.com/docs/9.x/filesystem">laravel's storage</a> class. In my design, we'd have something like</p>
 <pre><code class="language-rust">Storage::put('file-01.txt', content);
 
 Storage::disk('s3')-&gt;put('file-02.png', content);
 
 Storage::download('file-03.docs');</code></pre>
-<p>As it’ll have different types of disks, which will work as adapters to our storage.</p>
+<p>As it'll have different types of disks, which will work as adapters to our storage.</p>
 <h2>The problem</h2>
 <p>The problem I was facing was having different config files for each type of disks. Our LocalFileAdapter , S3BucketFileAdapater , FTPFileAdapter each will have different type of config files. Simply put, S3BucketFileAdapater will have public key ,secret key and bucket name. LocalFileAdapater will not need these.</p>
 <h3>Sketching</h3>
 <p>Now, I want to have a method something similar to Storage::new(config) or something like this. The config should have which adapter/s to use, with their appropriate configuration (and unique) values.</p>
 <h3>Two cfgs</h3>
-<p>For better understanding, I’m paining two config structs.</p>
+<p>For better understanding, I'm paining two config structs.</p>
 <pre><code class="language-rust">pub struct LocalFileSystemAdapterConfig {
   pub root_dir: String,
 }
@@ -261,7 +262,7 @@ struct Storage {
   // other props
 }
 
-let storage = Storage::from(LocalFileSystemAdapterConfig | S3AdapterConfig); 
+let storage = Storage::from(LocalFileSystemAdapterConfig | S3AdapterConfig);
 
 // and based on the given config
 storage.disk = LocalFileSystem | S3</code></pre>
@@ -286,8 +287,7 @@ impl LocalAdapter {
 <p>Downcasting is converting a trait into a concrete type.</p>
 </blockquote>
 <p>Our initial code is as follows</p>
-<pre><code class="language-rust">
-use std::any::Any;
+<pre><code class="language-rust">use std::any::Any;
 
 pub struct LocalFileSystemAdapterConfig {
     pub base_directory: String,
@@ -302,31 +302,28 @@ pub trait StorageAdapterConfig {
     fn as_any(&amp;self) -&gt; &amp;dyn Any;
 }</code></pre>
 <p>We need the as_any method to be implemented for concrete struct/s where we want to allow <em>downcasting</em>. Therefore,</p>
-<pre><code class="language-rust">
-use std::any::Any;
+<pre><code class="language-rust">use std::any::Any;
 
 impl StorageAdapterConfig for LocalFileSystemAdapterConfig {
     fn as_any(&amp;self) -&gt; &amp;dyn Any {
         self
     }
 }</code></pre>
-<p>We also need to change our method’s signature from</p>
-<pre><code class="language-rust">pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T) </code></pre>
+<p>We also need to change our method's signature from</p>
+<pre><code class="language-rust">pub fn new&lt;T : dyn StorageAdapterConfigTrait&gt;(config: T)</code></pre>
 <p>to</p>
 <pre><code class="language-rust">pub fn new(config: &amp;dyn Any)
 
 // make sure to import std::any::Any;</code></pre>
 <p>And finally, to downcast a variable of type dyn Any to our concrete LocalFileSystemAdapterConfig ,</p>
-<pre><code class="language-rust">
-let cfg : &amp;LocalFileSystemAdapterConfig = config
+<pre><code class="language-rust">let cfg : &amp;LocalFileSystemAdapterConfig = config
             .downcast_ref::&lt;LocalFileSystemAdapterConfig&gt;()
             .expect("failed to downcast");
 
-// the syntax is 
+// the syntax is
 // .downcast_ref::&lt;$CONCRETE_TYPE&gt;().expect("msg");</code></pre>
 <p>The full code,</p>
-<pre><code class="language-rust">
-impl LocalFileSystemAdapter {
+<pre><code class="language-rust">impl LocalFileSystemAdapter {
 
     pub fn new(config: &amp;dyn Any) -&gt; LocalFileSystemAdapter {
 
@@ -345,7 +342,7 @@ impl LocalFileSystemAdapter {
 }</code></pre>
 <p>Our IDE picks up the change and returns proper intellisense.</p>
 <p><img src="https://cdn-images-1.medium.com/max/3676/1*Wc_P7YRnKepKZIwN-e-zlA.png" alt="**Downcasting a dyn trait to a concrete type**" /></p>
-<p><em><strong>Note </strong>maybe there are better ways of achieving the same result, maybe the API Design could have been better to avoid it in the first place. Well, I’m still learning rust.</em></p>
+<p><em><strong>Note </strong>maybe there are better ways of achieving the same result, maybe the API Design could have been better to avoid it in the first place. Well, I'm still learning rust.</em></p>
 <p>Found a mistake? Feel free to point it out.</p>
                 </div>
             </div>
@@ -386,7 +383,7 @@ impl LocalFileSystemAdapter {
             <span>
                 v<span class="text-gray-400">2.27.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">331</span>ヅ<span class="text-gray-500/60">ddd178719a0e56174264354fe989455d654d4614</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">335</span>ヅ<span class="text-gray-500/60">fb16503ef8bb55b97b77738353a0d4a57d0250fa</span></span>
         </div>
     </footer>
 </body>

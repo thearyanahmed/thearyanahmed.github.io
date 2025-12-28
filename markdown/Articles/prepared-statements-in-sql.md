@@ -1,3 +1,5 @@
+# Prepared Statements in SQL
+
 ![](https://cdn-images-1.medium.com/max/2000/1*tmEFJ0LreB8wabdi67XY-Q.jpeg)
 
 **Prepared statement**s are a common thing sql world. It has many benefits like it can execute the same (or similar) SQL statements repeatedly with high efficiency. It can also prevent one of the biggest security vulnerabilities, **SQL injection**.
@@ -15,19 +17,19 @@ During an SQL injection attack, the attacker tries to bind malicious sql code wi
 
 Imagine we want to just read the user data from database where the id is $id (from query param). Our sql query would translate to something like this
 
-```rust
+```sql
 SELECT (coulmns…) FROM users WHERE id = 1;
 ```
 
 But what if the the attacker used the following instead of the id
 
-```rust
+```sql
 user?id=1;DROP TABLE users;
 ```
 
 As HTTP requests are parsed as strings (primarily), though we want id to be numeric, without proper sanitization the query would be
 
-```rust
+```sql
 SELECT (coulmns…) FROM users WHERE id = 1; DROP TABLE users;
 ```
 
@@ -37,15 +39,15 @@ And given that there is sufficient permissions, this query would execute and dro
 
 This can be prevented by using `prepared statement`s. The root cause of that problem was not separating the sql code and input data. And **the query and the data are sent to the database server separately**.
 
-Using prepared statements, we’ll have something like
+Using prepared statements, we'll have something like
 
-```rust
+```sql
 SELECT (columns…) FROM users where id=?"
 ```
 
 and data would be `**1**`;
 
-As our SQL query is **a valid program as of itself**, if we are directly making a query, we are dynamically building the query aka *program* in the runtime and sending it to the sql server, but using prepared statements, we first send the query `*SELECT (columns…) FROM users where id=?”*` first. And thats our program.
+As our SQL query is **a valid program as of itself**, if we are directly making a query, we are dynamically building the query aka *program* in the runtime and sending it to the sql server, but using prepared statements, we first send the query `*SELECT (columns…) FROM users where id=?"*` first. And thats our program.
 
 Now, this program needs 1 (*id=?*) parameter in this example. Now we send the second piece, our data is *$data=1*;
 
@@ -57,26 +59,26 @@ Or *to execute or not to*. So what happens if we still use the same input `?id=1
 
 Lets take a look at the following code,
 
-```rust
+```php
 $data = "1; DROP TABLE users;"
 $db->prepare("SELECT (columns…) FROM users WHERE id=?");
- 
+
 $db->execute($data);
 ```
 
-Shouldn’t this also translate to the same query? Well, the answer is **no**. AS mentioned, the query is a command that is executed, the data is not. For our instance, the data `*1; DROP Table users*` would fail to find a valid result.
+Shouldn't this also translate to the same query? Well, the answer is **no**. AS mentioned, the query is a command that is executed, the data is not. For our instance, the data `*1; DROP Table users*` would fail to find a valid result.
 
 Here are some scenarios,
 
 * **If we have proper constraints and imagine the `id` column is `numeric` (eg int)** the query should not return any results because `*1;DROP TABLE users;*` is not a numeric value and not compareable.
 
-* **If we don’t have proper constraints and `id` is not `numeric` either. Say its a `text` field** well, its used as value and the query translate to something like `*SELECT (columns…) FROM users WHERE id=”1; DROP TABLE users”;*`. The `*1; DROP TABLE users”;*` portion is the data. In direct queries and sql injections, this would translate to `*1*` being the data and the later part would be a query, acting as data but also being executed, causing the injection.
+* **If we don't have proper constraints and `id` is not `numeric` either. Say its a `text` field** well, its used as value and the query translate to something like `*SELECT (columns…) FROM users WHERE id="1; DROP TABLE users";*`. The `*1; DROP TABLE users";*` portion is the data. In direct queries and sql injections, this would translate to `*1*` being the data and the later part would be a query, acting as data but also being executed, causing the injection.
 
-* **If its a write query** in this scenario, given its numeric, it’ll cause an error because that payload is not a numeric value, and if it’s a text field, it will be inserted in the field. In summary, it will behave according to the constraints but **WILL NOT EXECUTE**.
+* **If its a write query** in this scenario, given its numeric, it'll cause an error because that payload is not a numeric value, and if it's a text field, it will be inserted in the field. In summary, it will behave according to the constraints but **WILL NOT EXECUTE**.
 
 
 But either way, whether we get the results or not (with invalid inputs), and maybe the input was not sanitized, but not getting any results are not an vulnerability.
 
 Simple, yet amazing, is it not?
 
-Feel free to point out any mistakes I’ve made.
+Feel free to point out any mistakes I've made.

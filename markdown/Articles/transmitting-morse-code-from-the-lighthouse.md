@@ -1,61 +1,88 @@
-বেশ কিছুদিন আগে lighthouse শুরু করেছিলাম। যেটা various কারণে continue করা হয় নি। তবে আবার continue করার ইচ্ছা আছে । একটু different ভাবে ।
+# Transmitting Morse Code from the Lighthouse
 
-Raspberry Pi আর rust দিয়ে ছোট্ট একটা project. A project to get my feet dirty. Rust নিয়ে মাঝে মাঝে tinker করা হয় । তাই ভাবছিলাম, what about, not a REST API but something much simpler? Yet it carries a significant real world value.
+I started lighthouse quite some time ago. Which wasn't continued for various reasons. But I have the intention to continue again. In a slightly different way.
 
-### ProjectLighthouse যেমন sailor দের জন্য একটা guide, sea-তে journey করার সময় আরেটা important বিষয় communication. 
+A small project with Raspberry Pi and Rust. A project to get my feet dirty. I tinker with Rust from time to time. So I was thinking, what about, not a REST API but something much simpler? Yet it carries a significant real world value.
 
-Morse Code, dot আর dash signal use করে communication. Kinda like binary, ২ টা different representation ব্যবহার করা । 
+## ProjectLighthouse
 
-Morse code এর আমার favorite usage interstellar এ, যেখানে Cooper অন্য galaxy থেকে dot-dot dash এ blackhole এর quantum data transmit করে ঘড়ির second-এর কাটায়। 
+Just like it's a guide for sailors, during the journey at sea, another important thing is communication.
 
-Morse code এর বেশ কিছু usage আছে , যেমন যখন বিপদ আসে । Titanic ডুবতে শুরু করলে তাদের একটা communication মাধ্যম ছিলো morse code. ‘২৪ এর জুলাই এ যখন internet আর mobile data off করে দেয়া হয়েছিলো, তখন হয়ত, আমরা চাইলে কোনো device দিয়ে morse code transmit করে অন্যদের সাথে at least basic communication ধরে রাখতে পারতাম। হয়ত। দরকার ছিলো কিছু radio transmitter এর, যেটার মাধ্যমে signal টা carry হবে ( কেউ চাইলে বানানোর try করতে পারেন ) । 
+Morse Code: communication using dot and dash signals. Kinda like binary, using 2 different representations.
 
-Morse code low bandwidth, weak signal দিয়েও অনেক effective transmission করা possible. As long as we can transmit two different signal and separate them. 
+My favorite usage of Morse code is in Interstellar, where Cooper transmits the quantum data of the black hole from another galaxy in dot-dot-dash on the second hand of the watch.
 
-+ Extremely simple একটা device, emergency যেমন warzone এ communication এ ব্যবহার করা যেতে পারে, backup system হিসাবে রাখা যেতে পারে etc etc. You get the idea (hopefully). 
+Morse code has several uses, such as when danger comes. When the Titanic started sinking, one of their communication mediums was Morse code. When internet and mobile data were turned off in July '24, maybe we could have maintained at least basic communication with others by transmitting Morse code with some device. Maybe. We would have needed some radio transmitters through which the signal would carry (anyone can try to build one if they want).
 
-এগুলোর কি এখনো দরকার আছে? এখন 5G এর যুগ। High bandwith, fast internet etc. 
+Morse code is extremely effective for transmission even with low bandwidth, weak signals. As long as we can transmit two different signals and separate them.
 
-#### Not so advanced techহ্যা, এখনো দরকার আছে । যদি robotics, aerospace industry তে কাজ করতে চান, যদি আপনার লিখা code দিয়ে কোনো একটা rocket বা satellite কে space এ পাঠাতে চান, যেটা probably আপনাকে outlive করবে, travelling across the stars, where probably no human would ever reach, দরকার আছে।
+**Key benefits:**
 
-আমি morse code এর দরকরার এর কথা বলছি না। বলছি এই-সব simple, low level tech নিয়ে in general.
+- An extremely simple device can be used for communication in emergencies like warzones
+- Can be kept as a backup system
+- You get the idea (hopefully)
 
-#### Programএসব random জিনিস চিন্তা করতে করতে ছোট্ট একটা program লিখেছি, যৈটা একটা text input কে morse code এ transmit করে । Light আকারে , LED blink করে । 
+Do these still have a need? Now it's the era of 5G. High bandwidth, fast internet etc.
 
-![](https://substackcdn.com/image/fetch/$s_!3bws!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7999c613-6d57-4afc-b5ad-5912caf0aef1_1712x1848.png)Full source code এখানে আছে :  [https://github.com/thearyanahmed/x-bkon](https://github.com/thearyanahmed/x-bkon)
+### Not so advanced tech
 
-And the results
+Yes, there's still a need. If you want to work in robotics, the aerospace industry, if you want to send a rocket or satellite to space with code you've written, which will probably outlive you, travelling across the stars, where probably no human would ever reach, there's a need.
 
-আরো কিছু usage connect করতে চাইলে, [rosetta was calling home](https://thearyanahmed.substack.com/i/158828521/do-you-know-rosetta) in the dark-vaccum of space. 
+I'm not talking about the need for Morse code. I'm talking about these simple, low-level tech in general.
 
-আমার কাছে এখন sound module নেই, তবে morse code এর famous যে sound টা, সেটা এটার sound module এর সাথে connect করলে চলে আসার কথা, along with the light.
+## The Program
 
-Sound module থাকলে kinda এরকম কিছু sound করতো (using a different morse code): 
+While thinking about all these random things, I wrote a small program that transmits a text input in Morse code. In the form of light, by blinking LEDs.
 
-[https://morsecode.world/international/translator.html](https://morsecode.world/international/translator.html) থেকে morse নিয়ে tinker করতে পারবেন । 
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7999c613-6d57-4afc-b5ad-5912caf0aef1_1712x1848.png)
 
-### Explaining the codeএই section টা নতুন দের জন্য, 
+Full source code is here: <https://github.com/thearyanahmed/x-bkon>
 
-আমাদের program টা [main function execute](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L42-L78) করে । প্রথমে check করে নেয় input দেয়া হয়েছে কিনা। যদি না হয়, তাহলে usage print করে exit করে । 
+### Real-world connections
 
-Proper input দেয়া হলে [morse code](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L53) এ text টা transform করে । Morse code এর conversion টা fix, তাই supported characters ( এখানে a-z ) গুলোকে একটা [map এ রেখে দিয়েছি](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L81-L111) । যাতে O(1) lookup time এ চেক করা যায় কোন character এর morse representation কি? 
+If you want to connect more usage, [rosetta was calling home](https://thearyanahmed.substack.com/i/158828521/do-you-know-rosetta) in the dark vacuum of space.
 
-যেমন **l** (ছোটো হাতের L) এর morse code **.-..** ( [here](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L93) )** .** এরপরে input কে trim করে (removing left and right whitespaces) lowercase এ করে, সেটাকে শব্দগুলোর মাঝের whitespace গুলো দিয়ে split করলে word পাচ্ছি । Word এর প্রতিটা character এর জন্য morse code নিচ্ছি ঐ map থেকে । 
+I don't have a sound module right now, but the famous sound of Morse code should come out if connected with its sound module, along with the light.
 
-এভাবে আমরা text input এর morse representation টা পাচ্ছি । তারপরে একটা ( initially infinite ) [loop](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L60-L75) use করে morse blink করছি আর একটা count রাখছি। যেটা 100_000 এর বেশি হলে loop থেকে exit করছি ।  
+If there was a sound module, it would sound kinda like this (using a different Morse code):
 
-Blink করার function এর কাজটাও বেশ simple. উপরের কাজের পরে আমাদের input এর morse (dots and dash: “.-_.._” etc) আছে । আর এই dots and dash এর ওপর base করে আমরা light টা জালিয়ে রাখছি । 
+You can tinker with Morse from: <https://morsecode.world/international/translator.html>
 
-একটা light দিয়ে ২ টা different state (dot and dash) কিভাবে represent করতে পারি আমরা? Well, এক্ষেত্রে একটা signification difference in delay use করা যেতে পারে । এখানে যেহেতু dot হোক বা dash হোক, light টা শুরুতে off থাকে, তারপরে জলে আবার off হয়ে যায়, তাই dot গুলো [50 ms](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L7) (shorter) আর dash গুলো [400 ms](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L8) (longer) time ধরে জালিয়ে রাখছি । 
+## Explaining the code
 
-So light দিয়ে শুধু on আর off phase না, but আরো data transmit করা possible. হয়ত submarine cable গুলোতে এরকম কিছুই করে ।
+This section is for beginners.
 
-আর light connected আছে Raspberry Pi এর [GPIO pin 18](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L56-L57) এর সাথে । 
+Our program [executes the main function](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L42-L78). First it checks if input has been given. If not, it prints usage and exits.
 
-Can you imagine ? A few lines of code, potentially can save someones life, transmit valuable information ? Notify that there is something wrong? Or right? 
+If proper input is given, it [transforms the text into Morse code](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L53). The conversion to Morse code is fixed, so I've kept the supported characters (here a-z) in a [map](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L81-L111). So that we can check in O(1) lookup time what the Morse representation of a character is.
 
-### hum…ছোটো বেলায় কখনো battery’ র সাথে তার লাগিয়ে light জালিয়েছেন? If yes, do you remember the first experience? I was surprised, though was hoping for a similar experience. And boy it was :D 
+For example, the Morse code for **l** (lowercase L) is `.-..` ([here](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L93)). Then we trim the input (removing left and right whitespaces), make it lowercase, and split it by the whitespaces between words to get the words. For each character of the word, we get the Morse code from that map.
 
-While this is not the lighthouse, but just a blink. 
+This way we get the Morse representation of the text input. Then using an (initially infinite) [loop](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L60-L75), we blink the Morse and keep a count. When it exceeds 100_000, we exit the loop.
+
+### The blink function
+
+The work of the blink function is also quite simple. After the above work, we have the Morse (dots and dashes: `.-_.._` etc) of the input. And based on these dots and dashes, we're keeping the light on.
+
+How can we represent 2 different states (dot and dash) with one light? Well, in this case, a significant difference in delay can be used. Here, whether it's a dot or a dash, the light is initially off, then turns on and then goes off again, so we keep:
+
+- **Dots** lit for [50 ms](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L7) (shorter)
+- **Dashes** lit for [400 ms](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L8) (longer)
+
+So with light, not just on and off phases, but more data transmission is possible. Maybe the submarine cables do something like this.
+
+And the light is connected to [GPIO pin 18](https://github.com/thearyanahmed/x-bkon/blob/master/src/main.rs#L56-L57) of the Raspberry Pi.
+
+## Final thoughts
+
+Can you imagine? A few lines of code, potentially can save someone's life, transmit valuable information? Notify that there is something wrong? Or right?
+
+### Childhood memories
+
+Did you ever light a bulb by connecting wires to a battery in childhood? If yes, do you remember the first experience? I was surprised, though was hoping for a similar experience. And boy it was :D
+
+While this is not the lighthouse, but just a blink.
+
+---
 
 Some of my writings

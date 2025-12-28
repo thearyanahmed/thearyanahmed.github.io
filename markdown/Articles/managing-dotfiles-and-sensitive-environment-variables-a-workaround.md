@@ -1,20 +1,28 @@
-## The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token shell file এ থাকা লাগে often (কিছু program আছে যেটা environment variable থেকে নিয়ে । আর প্রতিবার env variable pass করা ঝামেলা । Alternative option হলো something like 1password open করে copy paste করা । Not a fan of that.
+# Managing Dotfiles and Sensitive Environment Variables: A Workaround
 
-যেমন, DigitalOcean API গুলোতে curl request দেয়া আছে যেটা **DIGITALOCEAN_TOKEN** নিয়ে কাজ করে । Env এ setup করা থাকলে curl request টা শুধু copy করলেই হয়ে যায়।
+## The Problem
 
-আমার বেশ কয়েকবার এরকম হয়েছে যে নতুন environment এ বা ২ টা machine থেকে কাজ করতে গিয়ে .bashrc বা .zshrc file হারিয়ে গেছে । আর তখন ( বা অনেক সময় ) খেয়াল থাকে না কি কি environment variable ছিলো । আবার আগের মত setup এর জন্য একি variable name করতে হয় । যেটা আরেকটা hassle.
+Do you commit secret tokens or API keys that are in your shell RC file to git? If you do, GitHub/GitLab should flag it. Some API keys/tokens often need to be in shell files (some programs take them from environment variables). And passing env variables every time is a hassle. An alternative option is something like opening 1password and copy-pasting. Not a fan of that.
 
-At least আমার কাছে hassle. তাই আমি ভাবছিলাম, dot files গুলোর সাথে যদি একটা private file ও commit করা যেতো, যেটাতে আমার secret env variable গুলো থাকবে । কিন্ত value commit করতে চাচ্ছি না ।
+For example, DigitalOcean API has curl requests that work with `DIGITALOCEAN_TOKEN`. If it's set up in env, you just need to copy the curl request and it works.
 
-## The Solution (kinda)তাই একটা bash script add করেছি, যেটা git এর pre-commit hook এ run করে KEY গুলো রেখে value গুলো strip করে ফেলে । আর commit হলে গেলে, আরেকটা post-commit hook এর মাধ্যমে original value টা আবার restore করে দেয় ।
+I've had this happen several times where I lost my `.bashrc` or `.zshrc` file in a new environment or when working from 2 machines. And then (or often) I don't remember what environment variables there were. And to set it up like before, I have to use the same variable names. Which is another hassle.
 
-আর আমার local এ private.original একটা file এ original file টা রেখে দেয়, যেটা থেকে আবার restore করতে পারে । private.original টা .gitignore এ রাখা। So, no keys are pushed to version control.
+At least it's a hassle for me. So I was thinking, if I could commit a private file along with the dotfiles, which would have my secret env variables. But I don't want to commit the values.
 
-Not that fancy, but আমার জন্য, একটা problem এর solution. :D
+## The Solution (kinda)
 
-যদি আপনার এরকম কিছুর প্রয়োজন হয়, feel free to take a look the code.
+So I added a bash script that runs in git's pre-commit hook that keeps the KEYs and strips out the values. And when it's committed, another post-commit hook restores the original values.
 
-#### Pre-commit hook```
+And in my local, it keeps the original file in a file called `private.original`, from which it can restore again. `private.original` is kept in `.gitignore`. So, no keys are pushed to version control.
+
+Not that fancy, but for me, a solution to a problem. :D
+
+If you need something like this, feel free to take a look at the code.
+
+### Pre-commit hook
+
+```bash
 #!/bin/bash
 
 # pre-commit hook
@@ -65,7 +73,11 @@ echo "Staged stripped secrets."
 
 #Allow the commit to continue. The commit message will be modified after this hook completes.
 exit 0
-```#### Post-commit hook```
+```
+
+### Post-commit hook
+
+```bash
 #!/bin/bash
 
 # post-commit hook
@@ -81,18 +93,40 @@ else
 fi
 
 exit 0
-```Test করতে চাইলে ~/.private এ কিছু file value রেখে commit and push দিয়ে দেখতে পারেন। আমার ~/.private এ API_TOKEN set করে push করার পরে https://github.com/thearyanahmed/dotfiles/blob/master/zsh/private
+```
 
-![](https://substackcdn.com/image/fetch/$s_!qTpv!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F97756404-a8a7-43f4-8432-c0f5c5c74b8f_1896x1410.png)আর এটা পুশ করার পরে github এ গিয়ে check করলে দেখতে পাচ্ছি
+## Testing
 
-![](https://substackcdn.com/image/fetch/$s_!S5eV!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F55d274b3-8385-4cd7-88a6-f7489961aa73_2402x398.png)আপনার যদি অল্প কিছু env variable থাকে plus একাধিক environment এ কাজ করতে না হয়, তাহলে এই approach unnecessary. আমার কয়েকশো env variable এর মত হয়েছে যেগুলো over the years আমার setup এর জন্য use করি।
+If you want to test it, you can put some file values in `~/.private` and commit and push to see. After I set `API_TOKEN` in my `~/.private` and pushed:
+
+<https://github.com/thearyanahmed/dotfiles/blob/master/zsh/private>
+
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F97756404-a8a7-43f4-8432-c0f5c5c74b8f_1896x1410.png)
+
+And after pushing this, when I check on GitHub I see:
+
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F55d274b3-8385-4cd7-88a6-f7489961aa73_2402x398.png)
+
+## When to use this
+
+If you have only a few env variables plus don't have to work in multiple environments, then this approach is unnecessary. I have like hundreds of env variables that I use for my setup over the years.
+
+---
 
 Thanks for reading until this bit! Feel free to subscribe for free to receive new posts and support my work.
 
-এছাড়া আমার কিছু dotfiles (shortcuts/alias/functions/settings) এখানে পাবেন
+## My dotfiles
 
-[https://github.com/thearyanahmed/dotfiles](https://github.com/thearyanahmed/dotfiles) । বর্তমানে এটা incomplete. তবে আমি আমার dotfiles গুলো overtime collect করে share করবো inshallah. 
+You can also find some of my dotfiles (shortcuts/alias/functions/settings) here:
 
-![](https://substackcdn.com/image/fetch/$s_!BAXj!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8e7cf956-d717-4484-b836-d596ba8d6263_2602x2898.png)However, আমি কি এটা নিয়ে happy ? পুরোপুরি না। তাই maybe I should build something a bit more … um manageable? 
+<https://github.com/thearyanahmed/dotfiles>
 
-আমার অন্য কিছু article
+Currently it's incomplete. But I will collect and share my dotfiles over time, inshallah.
+
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8e7cf956-d717-4484-b836-d596ba8d6263_2602x2898.png)
+
+However, am I happy with this? Not completely. So maybe I should build something a bit more … um manageable?
+
+---
+
+Some of my other articles

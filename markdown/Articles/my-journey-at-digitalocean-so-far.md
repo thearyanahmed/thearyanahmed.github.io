@@ -1,3 +1,5 @@
+# My Journey at DigitalOcean So Far
+
 A year ago, I got the opportunity to join DigitalOcean by the grace of Allah. And I took the chance to get on board the App Platform team.
 
 So, what is App Platform? App Platform is DigitalOcean's serverless offering. Developers focus on their application, and we manage the infrastructure to run their apps properly and hassle-free. This is not like a service-based company; in fact, it's a product. Our alternatives include AWS Beanstalk + Lambda, GCP App Engine + Cloud Run, Heroku, and Vercel. So we kinda do what they do.
@@ -38,9 +40,9 @@ Along with regularly maintaining our existing features, we work on new features.
 
 One of my contributions has been directly solving customer problems. For example, once a customer complained that their app's database connection was failing very randomly. Well, although this might sound (and seem) normal, hunting it down… it was an adventure.
 
-In the end, we had to do **network packet capture** with **tcpdump** and analyze it. I used **wireshark** for the analysis.
+In the end, we had to do network packet capture with tcpdump and analyze it. I used wireshark for the analysis.
 
-![](https://substackcdn.com/image/fetch/$s_!bfjo!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff271469b-0b0c-4709-b6a5-9c4271ef9499_4400x2532.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff271469b-0b0c-4709-b6a5-9c4271ef9499_4400x2532.png)
 
 Note: this is not the actual packet capture but of one of my private networks. We can learn so much from packet captures. You should try it often if you have interest in these.
 
@@ -48,7 +50,7 @@ Note: this is not the actual packet capture but of one of my private networks. W
 
 Another interesting task was testing and documenting the load-bearing capability of our underlying infrastructure. Though can't say much about that, but 2 load testing tools were [https://github.com/rakyll/hey](https://github.com/rakyll/hey) and [https://github.com/tsenart/vegeta](https://github.com/tsenart/vegeta).
 
-![](https://substackcdn.com/image/fetch/$s_!Ro5B!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8ed24afb-cf1e-4bd6-8492-fe7371715148_2020x1260.gif)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8ed24afb-cf1e-4bd6-8492-fe7371715148_2020x1260.gif)
 
 Note: This is not the actual benchmark image
 
@@ -62,7 +64,7 @@ Reading the release notes of each component, checking breaking changes, improvem
 
 And if the components fall behind once, catching up can be very troublesome. A lot of interesting things come with Kubernetes upgrades. For example, once after kube-proxy was updated, it was directly overriding conntrack. Our conntrack was set at another layer and it took 3 of us, 2 days to figure out.
 
-![](https://substackcdn.com/image/fetch/$s_!H5l_!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff34f0166-ed52-4dbf-bb2a-d8ccfd8eb3ee_2218x826.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff34f0166-ed52-4dbf-bb2a-d8ccfd8eb3ee_2218x826.png)
 
 Note: This is not the actual conntrack image
 
@@ -78,7 +80,7 @@ Currently, I'm taking on another challenging (for me) task, which is maintaining
 
 One problem + feature of gVisor is that if there's a problem in the Linux kernel, even knowing that, the same issue is implemented to maintain compatibility and exact behavior >_<. If you're wondering what gVisor is, gVisor is Google's user-space kernel.
 
-**There is always a tradeoff**. One tradeoff of Container vs VM is **security**. And that is why projects like gVisor, kata container, cloud-hypervisor exist. And thanks to Allah that it does exist! This is currently one of my learning topics. I have close to zero idea about this.
+There is always a tradeoff. One tradeoff of Container vs VM is security. And that is why projects like gVisor, kata container, cloud-hypervisor exist. And thanks to Allah that it does exist! This is currently one of my learning topics. I have close to zero idea about this.
 
 In the future, I'll write more about Kubernetes, gVisor, kata, and many other things inshallah. If you're interested in these topics and like my writing style, you can subscribe.
 
@@ -102,15 +104,15 @@ Because of this, very few connections were dropped, but it didn't cross the thre
 
 And all these network and hardware-related information are coming from a software engineer (our principal software engineer).
 
-Fascinating? To me, **it damn well is**.
+Fascinating? To me, it damn well is.
 
 While on this topic, our alert system is quite aggressive? Proactive? Can't find the right word. But so far, all the problems that have occurred could have been much worse if these alerts weren't there.
 
-Also, DigitalOcean is **fully worldwide remote**. Next time if someone says remote isn't possible, well, it's a management skill issue, mostly. Our team alone works with people from 5 different timezones. Also, for team synchronization, we don't have the time-wasting unnecessary **meeting** called daily standup.
+Also, DigitalOcean is fully worldwide remote. Next time if someone says remote isn't possible, well, it's a management skill issue, mostly. Our team alone works with people from 5 different timezones. Also, for team synchronization, we don't have the time-wasting unnecessary meeting called daily standup.
 
-Moreover, I'll say that having an engineer as a manager who works with similar technology is a blessing. And lastly, I'll say my most favorite part: I'm able to learn a lot. And I only have **alhamdulillah** to say.
+Moreover, I'll say that having an engineer as a manager who works with similar technology is a blessing. And lastly, I'll say my most favorite part: I'm able to learn a lot. And I only have alhamdulillah to say.
 
-From building apps **for the cloud** to **building the cloud itself**, the journey continues.
+From building apps for the cloud to building the cloud itself, the journey continues.
 
 If you have any questions/suggestions, you can directly reach out at [linkedin.com/thearyanahmed](https://www.linkedin.com/in/thearyanahmed/).
 

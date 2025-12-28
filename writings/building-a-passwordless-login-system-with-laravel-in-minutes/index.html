@@ -231,8 +231,9 @@
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>Passwordless authentication is a popular alternative to traditional password-based systems. With passwordless authentication, users are able to securely access their accounts without the need for a password. This new approach to authentication has several benefits, including improved security, increased convenience, and reduced risk of password-related attacks. In this article, we’ll take a closer look at what passwordless authentication is, how it works, and why it may be the future of online security.</p>
-<p>We’ll be building a passwordless login system using laravel. But laravel is a tool being used here, the concept should be the same.</p>
+                    <h1>Building a Passwordless Login System with Laravel in Minutes</h1>
+<p>Passwordless authentication is a popular alternative to traditional password-based systems. With passwordless authentication, users are able to securely access their accounts without the need for a password. This new approach to authentication has several benefits, including improved security, increased convenience, and reduced risk of password-related attacks. In this article, we'll take a closer look at what passwordless authentication is, how it works, and why it may be the future of online security.</p>
+<p>We'll be building a passwordless login system using laravel. But laravel is a tool being used here, the concept should be the same.</p>
 <h3>The setup</h3>
 <p>I have a <a href="http://laravel.com">laravel</a> application with breeze setup. And <a href="http://mailtrap.io">mailtrap</a> for trapping emails.</p>
 <h3>The approach</h3>
@@ -262,25 +263,24 @@
 </li>
 </ol>
 <h3>The coding part</h3>
-<p>According to our ‘plain-text’ way, we need 3 routes. One that displays a form for the email input, one route to handle that form request and sending the email. And one for handling the callback, meaning verifying the url and creating a session (or equivalent) to log the user in.</p>
+<p>According to our 'plain-text' way, we need 3 routes. One that displays a form for the email input, one route to handle that form request and sending the email. And one for handling the callback, meaning verifying the url and creating a session (or equivalent) to log the user in.</p>
 <p>So our first route is pretty simple.</p>
-<pre><code class="language-rust">Route::get('/login/passwordless',[LoginWithEmail::class,'displayPasswordlessLoginForm'])
+<pre><code class="language-php">Route::get('/login/passwordless',[LoginWithEmail::class,'displayPasswordlessLoginForm'])
     -&gt;name('passwordlessLoginView');</code></pre>
-<p>Btw, I’m trying to keep the naming long and easy to read and understand. Use the naming convention that you follow and best for your project &amp; team.</p>
+<p>Btw, I'm trying to keep the naming long and easy to read and understand. Use the naming convention that you follow and best for your project &amp; team.</p>
 <p>This route simply renders a view that looks like so,</p>
 <p><img src="https://cdn-images-1.medium.com/max/4824/1*oGV1odqK-xbBTeDvZsRMeg.png" alt="passwordless authentication form" /></p>
 <p>Using inertiajs, so this form only does the following,</p>
-<pre><code class="language-rust">
-const submit = () =&gt; {
+<pre><code class="language-javascript">const submit = () =&gt; {
     form.post(route('handlePasswordlessLoginRequest'), {
         onFinish: () =&gt; { /** handle according to your applicaton logic **/ },
     });
 };</code></pre>
 <p>Secondly, the code for <code>handlePasswordlessLoginRequest</code> would be</p>
-<pre><code class="language-rust">Route::post('/login/passwordless',[LoginWithEmail::class,'handlePasswordlessLoginRequest'])
+<pre><code class="language-php">Route::post('/login/passwordless',[LoginWithEmail::class,'handlePasswordlessLoginRequest'])
     -&gt;name('handlePasswordlessLoginRequest');</code></pre>
 <p>And the controller logic,</p>
-<pre><code class="language-rust">public function handlePasswordlessLoginRequest(Request $request): Response
+<pre><code class="language-php">public function handlePasswordlessLoginRequest(Request $request): Response
 {
     // step 2
     // we validate the given input is an email and exists in our database
@@ -297,10 +297,10 @@ const submit = () =&gt; {
     // the URL::temporarySignedRoute() method takes a route name,
     // time or expiration and any extra parameter can be passed as an array.
 
-    // our route for handling the callback url is 
-    // `/login/passwordless/{user}` 
+    // our route for handling the callback url is
+    // `/login/passwordless/{user}`
     // and we have given the name `processPasswordlessLogin`
-    // the {user} param is being populated using 
+    // the {user} param is being populated using
     // ['user' =&gt; $id], this is step 4
     $url = URL::temporarySignedRoute('processPasswordlessLogin',now()-&gt;addMinutes(10), ['user' =&gt; $user-&gt;id]);
 
@@ -315,23 +315,23 @@ const submit = () =&gt; {
 }</code></pre>
 <h3>A bit about Signed URLs</h3>
 <p>Signed URLs, are URLs that include a signature or token to grant temporary access to a resource or endpoint.</p>
-<p>The purpose of a signed URL is to provide secure access to protected resources or endpoints for a limited period of time. This is often used in situations where you want to share a private resource, such as a video or file, with a specific user or set of users, but don’t want to grant permanent access.</p>
+<p>The purpose of a signed URL is to provide secure access to protected resources or endpoints for a limited period of time. This is often used in situations where you want to share a private resource, such as a video or file, with a specific user or set of users, but don't want to grant permanent access.</p>
 <p>When you generate a signed URL, you typically specify the resource or endpoint that you want to grant access to, as well as a time limit for how long the URL should be valid. The URL is then signed with a secret key or token, which is used to verify the authenticity of the request when the URL is accessed.</p>
 <h3>Vulnerability?</h3>
-<p>Some of us might that what is stopping us from changing the url parameter? As an attacker, I want to get a login url to my email and change the <strong>{user}</strong> parameter to gain access to someone else’s account?</p>
-<p>Well, with signed urls, if we change 1 bit of it, it will be invalid. And this is handled by the <code>**\App\Http\Middleware\ValidateSignature::class**</code> middleware, which can be found registered inside the <code>Http/kernel.php</code></p>
+<p>Some of us might that what is stopping us from changing the url parameter? As an attacker, I want to get a login url to my email and change the <strong>{user}</strong> parameter to gain access to someone else's account?</p>
+<p>Well, with signed urls, if we change 1 bit of it, it will be invalid. And this is handled by the <code>\App\Http\Middleware\ValidateSignature::class</code> middleware, which can be found registered inside the <code>Http/kernel.php</code></p>
 <h3>Handling callback</h3>
-<p>After our user has clicked the link that was sent to his email, we need to verify the url (make sure it wasn’t tampered with), get the user and log the user in.</p>
+<p>After our user has clicked the link that was sent to his email, we need to verify the url (make sure it wasn't tampered with), get the user and log the user in.</p>
 <p>So our route looks like,</p>
-<pre><code class="language-rust">Route::get('/login/passwordless/{user}',[LoginWithEmail::class,'processPasswordlessLogin'])
+<pre><code class="language-php">Route::get('/login/passwordless/{user}',[LoginWithEmail::class,'processPasswordlessLogin'])
     -&gt;name('processPasswordlessLogin')
     -&gt;middleware('signed');</code></pre>
 <p>Note the <strong>signed</strong> middleware. Without that bit, our application will be vulnerable. the signed middleware handles the tamper verification part.</p>
-<p>And as the middleware is taking care of our validation’s heavy lifting, our controller is pretty simple with this part,</p>
+<p>And as the middleware is taking care of our validation's heavy lifting, our controller is pretty simple with this part,</p>
 <pre><code class="language-php">public function processPasswordlessLogin(Request $request, User $user): RedirectResponse
 {
     // we have the user from the route /{user} param
-    // and as we are using route model binding, if the user id is invalid 
+    // and as we are using route model binding, if the user id is invalid
     // or not found, it should abort(404) automatically.
     Auth::login($user);
 
@@ -339,7 +339,7 @@ const submit = () =&gt; {
 
     return redirect()-&gt;route('dashboard');
 }</code></pre>
-<p>Thats it. Now, if we try it out, after sending a valid email, it’ll send us an email with the appropriate link and clicking it will log us in.</p>
+<p>Thats it. Now, if we try it out, after sending a valid email, it'll send us an email with the appropriate link and clicking it will log us in.</p>
 <p><img src="https://cdn-images-1.medium.com/max/5288/1*awdj8cERP2y3WgZ-cODEQg.png" alt="requesting for an invitation link" /></p>
 <p><img src="https://cdn-images-1.medium.com/max/4284/1*rjubcCGw3V19KGhwdPzT8A.png" alt="receiving the email with the signed url" /></p>
 <p><img src="https://cdn-images-1.medium.com/max/6640/1*0-REzXmv72_AyfY2xkxNYg.png" alt="and signing in without a password" /></p>
@@ -383,7 +383,7 @@ const submit = () =&gt; {
             <span>
                 v<span class="text-gray-400">2.27.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">331</span>ヅ<span class="text-gray-500/60">ddd178719a0e56174264354fe989455d654d4614</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">335</span>ヅ<span class="text-gray-500/60">fb16503ef8bb55b97b77738353a0d4a57d0250fa</span></span>
         </div>
     </footer>
 </body>

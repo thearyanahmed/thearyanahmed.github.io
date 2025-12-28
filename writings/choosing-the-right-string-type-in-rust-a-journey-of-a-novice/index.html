@@ -227,7 +227,8 @@
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>Rust has been a favorite. While doing so, I’ve come across various scenarios where choosing the right string type can significantly impact both performance and code maintainability. In this blog post, I’ll share some insights into when to use different string types in Rust, based on real-world use cases.</p>
+                    <h1>Choosing the Right String Type in Rust: A Journey of a Novice</h1>
+<p>Rust has been a favorite. While doing so, I've come across various scenarios where choosing the right string type can significantly impact both performance and code maintainability. In this blog post, I'll share some insights into when to use different string types in Rust, based on real-world use cases.</p>
 <h2>String</h2>
 <p>The <code>String</code> type in Rust is a growable, heap-allocated, UTF-8 encoded string. It's your go-to choice for most cases. Use <code>String</code> when:</p>
 <ul>
@@ -246,47 +247,35 @@
 </ul>
 <p>Example:</p>
 <pre><code class="language-rust">fn print_greeting(greeting: &amp;str) {
-```rust
-println!("{}", greeting);</code></pre>
-<p>}</p>
-<pre><code>
-## Cow&lt;str&gt;
-
-The `Cow` (short for "clone on write") type is versatile. It can be either a borrowed reference (`&amp;str`) or an owned `String`, depending on the situation. Use `Cow&lt;str&gt;` when:
-
-- Your function should accept both static and dynamic strings.
-- You want to minimize unnecessary cloning.
-- You need to balance performance and flexibility.
-
-Example:
-```rust
-use std::borrow::Cow;
+    println!("{}", greeting);
+}</code></pre>
+<h2>Cow<str></h2>
+<p>The <code>Cow</code> (short for &quot;clone on write&quot;) type is versatile. It can be either a borrowed reference (<code>&amp;str</code>) or an owned <code>String</code>, depending on the situation. Use <code>Cow&lt;str&gt;</code> when:</p>
+<ul>
+<li>Your function should accept both static and dynamic strings.</li>
+<li>You want to minimize unnecessary cloning.</li>
+<li>You need to balance performance and flexibility.</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-rust">use std::borrow::Cow;
 
 fn process_text(text: Cow&lt;str&gt;) {
-```rust
-// ...</code></pre>
-<p>}</p>
-<pre><code>
-## OsString and OsStr
-
-These types deal with platform-specific strings. Use `OsString` and `OsStr` when:
-
-- You're working with file paths or environment variables that need to be compatible with the underlying OS.
-- You need to handle non-UTF-8 encoded data (e.g., on Windows).
-
-Example:
-```rust
-use std::ffi::{OsString, OsStr};
+    // ...
+}</code></pre>
+<h2>OsString and OsStr</h2>
+<p>These types deal with platform-specific strings. Use <code>OsString</code> and <code>OsStr</code> when:</p>
+<ul>
+<li>You're working with file paths or environment variables that need to be compatible with the underlying OS.</li>
+<li>You need to handle non-UTF-8 encoded data (e.g., on Windows).</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-rust">use std::ffi::{OsString, OsStr};
 
 fn read_file(file_path: &amp;OsStr) -&gt; Result&lt;OsString, std::io::Error&gt; {
-```rust
-// ...</code></pre>
-<p>}</p>
-<pre><code>
-
-In conclusion, choosing the right string type in Rust is crucial for writing efficient and maintainable code. The decision largely depends on your specific use case, whether you need dynamic growth, want to avoid allocations, or deal with platform-specific data.
-
-From this journey, I've found that understanding the nuances of these string types is invaluable for crafting robust and performant Rust applications. Happy coding, Rustaceans!</code></pre>
+    // ...
+}</code></pre>
+<p>In conclusion, choosing the right string type in Rust is crucial for writing efficient and maintainable code. The decision largely depends on your specific use case, whether you need dynamic growth, want to avoid allocations, or deal with platform-specific data.</p>
+<p>From this journey, I've found that understanding the nuances of these string types is invaluable for crafting robust and performant Rust applications. Happy coding, Rustaceans!</p>
                 </div>
             </div>
         </div>
@@ -326,7 +315,7 @@ From this journey, I've found that understanding the nuances of these string typ
             <span>
                 v<span class="text-gray-400">2.27.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">331</span>ヅ<span class="text-gray-500/60">ddd178719a0e56174264354fe989455d654d4614</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">335</span>ヅ<span class="text-gray-500/60">fb16503ef8bb55b97b77738353a0d4a57d0250fa</span></span>
         </div>
     </footer>
 </body>

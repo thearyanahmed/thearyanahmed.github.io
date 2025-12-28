@@ -1,3 +1,5 @@
+# Systems Programming: Kafka, Rosetta, to Infinity & Beyond
+
 Systems programming is resource-constrained programming. It is programming when every byte counts.
 
 We write many amazing programs in our day-to-day life, but most of us programmers don't know about systems programming, although it underlies everything we do.
@@ -14,7 +16,7 @@ Can you imagine? If we send a person with an address, many (including myself) ca
 
 Do you see those two upticks? On **January 20, 2014**, Rosetta called home, saying "**I'm awake**" (and I'm where I should be).
 
-![](https://substackcdn.com/image/fetch/$s_!m8m0!,w_2400,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F770f4ad6-cef5-4db5-b4f7-4c8f6c40db95_2390x1010.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F770f4ad6-cef5-4db5-b4f7-4c8f6c40db95_2390x1010.png)
 
 I didn't work on this team, but I was so proud that we, human beings achieved that.
 
@@ -116,7 +118,7 @@ I hope by now the difference between systems programming and application program
 
 Currently, there's probably no content about systems programming in the Bangladesh community. For the record, from someone who has been working with this community for a while,
 
-![](https://substackcdn.com/image/fetch/$s_!cQHt!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F09013bc9-16f4-4280-833a-a93c28e0c824_1086x294.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F09013bc9-16f4-4280-833a-a93c28e0c824_1086x294.png)
 
 So, I'll try to slowly write about systems programming. To create various types of programs and write about them in (enough) details. I won't start by writing about kernels. Well, one of the reasons is I don't know how to write a kernel from scratch. But inshallah, I'll :D And I'll share it with you. In Bangla.
 
@@ -132,7 +134,7 @@ You can also help me with another thing.
 
 This picture was taken 500 million kms away, on Comet 67p.
 
-![](https://substackcdn.com/image/fetch/$s_!zx9C!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0499b825-45d8-48d6-9533-bf844925da10_3362x3236.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0499b825-45d8-48d6-9533-bf844925da10_3362x3236.png)
 
 ### References
 

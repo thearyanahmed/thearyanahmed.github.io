@@ -213,7 +213,8 @@
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>A database index is a type of data structure that we can use to greatly improve data retrieval performance. Typically, if we need to search the whole dataset, especially in larger datasets, the query time can increase significantly because this algorithm's time complexity is O(n), where n = length of dataset.</p>
+                    <h1>An 8-Minute Query Optimization Attempt</h1>
+<p>A database index is a type of data structure that we can use to greatly improve data retrieval performance. Typically, if we need to search the whole dataset, especially in larger datasets, the query time can increase significantly because this algorithm's time complexity is O(n), where n = length of dataset.</p>
 <p>But what if the dataset length was smaller? Then it would take less time just like before (under normal circumstances, for most common scenarios).</p>
 <p>So, indexes can help us a lot in these cases, for our query planner and engine. Kind of like reducing the lookup dataset's length. And indexing is very common and considered the de facto database optimization by many.</p>
 <p>At the same time, we need to ORDER our dataset. And sometimes we can satisfy the ORDER BY clause with an index. If the query needs to sort data on a column that has an index, the optimizer might choose that path. Remember, database software is a combination of many components. Our simple SELECT $columns FROM $somewhere is not so simple to the database engine. It goes through a lot of steps to get you the data you are looking for.</p>
@@ -264,7 +265,7 @@
             <span>
                 v<span class="text-gray-400">2.27.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">331</span>ヅ<span class="text-gray-500/60">ddd178719a0e56174264354fe989455d654d4614</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">335</span>ヅ<span class="text-gray-500/60">fb16503ef8bb55b97b77738353a0d4a57d0250fa</span></span>
         </div>
     </footer>
 </body>

@@ -217,82 +217,102 @@
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <h2>The ProblemShell RC file এর থাকা Secret Token বা API Key কি git এ commit করেন? করলে github/lab এর flag করার কথা। কিছু API key/token shell file এ থাকা লাগে often (কিছু program আছে যেটা environment variable থেকে নিয়ে । আর প্রতিবার env variable pass করা ঝামেলা । Alternative option হলো something like 1password open করে copy paste করা । Not a fan of that.</h2>
-<p>যেমন, DigitalOcean API গুলোতে curl request দেয়া আছে যেটা <strong>DIGITALOCEAN_TOKEN</strong> নিয়ে কাজ করে । Env এ setup করা থাকলে curl request টা শুধু copy করলেই হয়ে যায়।</p>
-<p>আমার বেশ কয়েকবার এরকম হয়েছে যে নতুন environment এ বা ২ টা machine থেকে কাজ করতে গিয়ে .bashrc বা .zshrc file হারিয়ে গেছে । আর তখন ( বা অনেক সময় ) খেয়াল থাকে না কি কি environment variable ছিলো । আবার আগের মত setup এর জন্য একি variable name করতে হয় । যেটা আরেকটা hassle.</p>
-<p>At least আমার কাছে hassle. তাই আমি ভাবছিলাম, dot files গুলোর সাথে যদি একটা private file ও commit করা যেতো, যেটাতে আমার secret env variable গুলো থাকবে । কিন্ত value commit করতে চাচ্ছি না ।</p>
-<h2>The Solution (kinda)তাই একটা bash script add করেছি, যেটা git এর pre-commit hook এ run করে KEY গুলো রেখে value গুলো strip করে ফেলে । আর commit হলে গেলে, আরেকটা post-commit hook এর মাধ্যমে original value টা আবার restore করে দেয় ।</h2>
-<p>আর আমার local এ private.original একটা file এ original file টা রেখে দেয়, যেটা থেকে আবার restore করতে পারে । private.original টা .gitignore এ রাখা। So, no keys are pushed to version control.</p>
-<p>Not that fancy, but আমার জন্য, একটা problem এর solution. :D</p>
-<p>যদি আপনার এরকম কিছুর প্রয়োজন হয়, feel free to take a look the code.</p>
-<h4>Pre-commit hook```</h4>
-<h1>!/bin/bash</h1>
-<h1>pre-commit hook</h1>
-<h1>Set the path to the file you want to process</h1>
-<p>FILE_PATH=&quot;zsh/private&quot;</p>
-<h1>Check if the file exists</h1>
-<p>if [ ! -f &quot;$FILE_PATH&quot; ]; then
-echo &quot;Error: File '$FILE_PATH' not found.&quot;
-exit 1
-fi</p>
-<h1>Check if the file has been modified in the staging area</h1>
-<p>if ! git diff --cached --name-only | grep -q &quot;$FILE_PATH&quot;; then
-echo &quot;File '$FILE_PATH' not modified. Skipping secret stripping.&quot;
-exit 0
-fi</p>
-<h1>Create a backup of the original file</h1>
-<p>ORIGINAL_FILE_PATH=&quot;private.original&quot;</p>
-<h1>backup</h1>
-<p>cat &quot;$FILE_PATH&quot; &gt; &quot;$ORIGINAL_FILE_PATH&quot;</p>
-<h1>Create a temporary file to store the modified content</h1>
-<p>TEMP_FILE=$(mktemp)</p>
-<h1>Process the file line by line</h1>
-<p>while IFS= read -r line; do
-if [[ &quot;$line&quot; =~ ^[^#]*= ]]; then</p>
-<h1>If the line contains an assignment (key=value), strip the value</h1>
-<pre><code>key=$(echo "$line" | cut -d'=' -f1)
-echo "$key=\"\"" &gt;&gt; "$TEMP_FILE"</code></pre>
-<p>else</p>
-<h1>Otherwise, keep the line as it is (comments, empty lines, etc.)</h1>
-<pre><code>echo "$line" &gt;&gt; "$TEMP_FILE"</code></pre>
-<p>fi
-done &lt; &quot;$FILE_PATH&quot;</p>
-<h1>Replace the original file with the modified content</h1>
-<p>mv &quot;$TEMP_FILE&quot; &quot;$FILE_PATH&quot;</p>
-<p>echo &quot;Stripped values in '$FILE_PATH'.&quot;</p>
-<h1>Add the modified file to the staging area</h1>
-<p>git add &quot;$FILE_PATH&quot;</p>
-<p>echo &quot;Staged stripped secrets.&quot;</p>
-<h1>Allow the commit to continue. The commit message will be modified after this hook completes.</h1>
-<p>exit 0
-<code>#### Post-commit hook</code></p>
-<h1>!/bin/bash</h1>
-<h1>post-commit hook</h1>
-<p>FILE_PATH=&quot;zsh/private&quot;
-ORIGINAL_FILE_PATH=&quot;private.original&quot;</p>
-<p>if [ -f &quot;$ORIGINAL_FILE_PATH&quot; ]; then</p>
-<h1>Replace instead of concat</h1>
-<pre><code>cat "$ORIGINAL_FILE_PATH" &gt; "$FILE_PATH"
-echo "Original private file restored after commit."</code></pre>
-<p>else
-echo &quot;Original private file backup not found. Skipping restore.&quot;
-fi</p>
-<p>exit 0</p>
-<pre><code class="language-Test">
+                    <h1>Managing Dotfiles and Sensitive Environment Variables: A Workaround</h1>
+<h2>The Problem</h2>
+<p>Do you commit secret tokens or API keys that are in your shell RC file to git? If you do, GitHub/GitLab should flag it. Some API keys/tokens often need to be in shell files (some programs take them from environment variables). And passing env variables every time is a hassle. An alternative option is something like opening 1password and copy-pasting. Not a fan of that.</p>
+<p>For example, DigitalOcean API has curl requests that work with <code>DIGITALOCEAN_TOKEN</code>. If it's set up in env, you just need to copy the curl request and it works.</p>
+<p>I've had this happen several times where I lost my <code>.bashrc</code> or <code>.zshrc</code> file in a new environment or when working from 2 machines. And then (or often) I don't remember what environment variables there were. And to set it up like before, I have to use the same variable names. Which is another hassle.</p>
+<p>At least it's a hassle for me. So I was thinking, if I could commit a private file along with the dotfiles, which would have my secret env variables. But I don't want to commit the values.</p>
+<h2>The Solution (kinda)</h2>
+<p>So I added a bash script that runs in git's pre-commit hook that keeps the KEYs and strips out the values. And when it's committed, another post-commit hook restores the original values.</p>
+<p>And in my local, it keeps the original file in a file called <code>private.original</code>, from which it can restore again. <code>private.original</code> is kept in <code>.gitignore</code>. So, no keys are pushed to version control.</p>
+<p>Not that fancy, but for me, a solution to a problem. :D</p>
+<p>If you need something like this, feel free to take a look at the code.</p>
+<h3>Pre-commit hook</h3>
+<pre><code class="language-bash">#!/bin/bash
 
-![](https://substackcdn.com/image/fetch/$s_!qTpv!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F97756404-a8a7-43f4-8432-c0f5c5c74b8f_1896x1410.png)আর এটা পুশ করার পরে github এ গিয়ে check করলে দেখতে পাচ্ছি
+# pre-commit hook
+# Set the path to the file you want to process
+FILE_PATH="zsh/private"
 
-![](https://substackcdn.com/image/fetch/$s_!S5eV!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F55d274b3-8385-4cd7-88a6-f7489961aa73_2402x398.png)আপনার যদি অল্প কিছু env variable থাকে plus একাধিক environment এ কাজ করতে না হয়, তাহলে এই approach unnecessary. আমার কয়েকশো env variable এর মত হয়েছে যেগুলো over the years আমার setup এর জন্য use করি।
+# Check if the file exists
+if [ ! -f "$FILE_PATH" ]; then
+  echo "Error: File '$FILE_PATH' not found."
+  exit 1
+fi
 
-Thanks for reading until this bit! Feel free to subscribe for free to receive new posts and support my work.
+# Check if the file has been modified in the staging area
+if ! git diff --cached --name-only | grep -q "$FILE_PATH"; then
+  echo "File '$FILE_PATH' not modified. Skipping secret stripping."
+  exit 0
+fi
 
-এছাড়া আমার কিছু dotfiles (shortcuts/alias/functions/settings) এখানে পাবেন
+# Create a backup of the original file
+ORIGINAL_FILE_PATH="private.original"
+# backup
+cat "$FILE_PATH" &gt; "$ORIGINAL_FILE_PATH"
 
-[https://github.com/thearyanahmed/dotfiles](https://github.com/thearyanahmed/dotfiles) । বর্তমানে এটা incomplete. তবে আমি আমার dotfiles গুলো overtime collect করে share করবো inshallah. 
+# Create a temporary file to store the modified content
+TEMP_FILE=$(mktemp)
 
-![](https://substackcdn.com/image/fetch/$s_!BAXj!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8e7cf956-d717-4484-b836-d596ba8d6263_2602x2898.png)However, আমি কি এটা নিয়ে happy ? পুরোপুরি না। তাই maybe I should build something a bit more … um manageable? 
+# Process the file line by line
+while IFS= read -r line; do
+  if [[ "$line" =~ ^[^#]*= ]]; then
+    # If the line contains an assignment (key=value), strip the value
+    key=$(echo "$line" | cut -d'=' -f1)
+    echo "$key=\"\"" &gt;&gt; "$TEMP_FILE"
+  else
+    # Otherwise, keep the line as it is (comments, empty lines, etc.)
+    echo "$line" &gt;&gt; "$TEMP_FILE"
+  fi
+done &lt; "$FILE_PATH"
 
-আমার অন্য কিছু article</code></pre>
+# Replace the original file with the modified content
+mv "$TEMP_FILE" "$FILE_PATH"
+
+echo "Stripped values in '$FILE_PATH'."
+
+# Add the modified file to the staging area
+git add "$FILE_PATH"
+
+echo "Staged stripped secrets."
+
+#Allow the commit to continue. The commit message will be modified after this hook completes.
+exit 0</code></pre>
+<h3>Post-commit hook</h3>
+<pre><code class="language-bash">#!/bin/bash
+
+# post-commit hook
+FILE_PATH="zsh/private"
+ORIGINAL_FILE_PATH="private.original"
+
+if [ -f "$ORIGINAL_FILE_PATH" ]; then
+    # Replace instead of concat
+    cat "$ORIGINAL_FILE_PATH" &gt; "$FILE_PATH"
+    echo "Original private file restored after commit."
+else
+    echo "Original private file backup not found. Skipping restore."
+fi
+
+exit 0</code></pre>
+<h2>Testing</h2>
+<p>If you want to test it, you can put some file values in <code>~/.private</code> and commit and push to see. After I set <code>API_TOKEN</code> in my <code>~/.private</code> and pushed:</p>
+<p><a href="https://github.com/thearyanahmed/dotfiles/blob/master/zsh/private">https://github.com/thearyanahmed/dotfiles/blob/master/zsh/private</a></p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F97756404-a8a7-43f4-8432-c0f5c5c74b8f_1896x1410.png" alt="" /></p>
+<p>And after pushing this, when I check on GitHub I see:</p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F55d274b3-8385-4cd7-88a6-f7489961aa73_2402x398.png" alt="" /></p>
+<h2>When to use this</h2>
+<p>If you have only a few env variables plus don't have to work in multiple environments, then this approach is unnecessary. I have like hundreds of env variables that I use for my setup over the years.</p>
+<hr />
+<p>Thanks for reading until this bit! Feel free to subscribe for free to receive new posts and support my work.</p>
+<h2>My dotfiles</h2>
+<p>You can also find some of my dotfiles (shortcuts/alias/functions/settings) here:</p>
+<p><a href="https://github.com/thearyanahmed/dotfiles">https://github.com/thearyanahmed/dotfiles</a></p>
+<p>Currently it's incomplete. But I will collect and share my dotfiles over time, inshallah.</p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8e7cf956-d717-4484-b836-d596ba8d6263_2602x2898.png" alt="" /></p>
+<p>However, am I happy with this? Not completely. So maybe I should build something a bit more … um manageable?</p>
+<hr />
+<p>Some of my other articles</p>
                 </div>
             </div>
         </div>
@@ -332,7 +352,7 @@ Thanks for reading until this bit! Feel free to subscribe for free to receive ne
             <span>
                 v<span class="text-gray-400">2.27.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">331</span>ヅ<span class="text-gray-500/60">ddd178719a0e56174264354fe989455d654d4614</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">335</span>ヅ<span class="text-gray-500/60">fb16503ef8bb55b97b77738353a0d4a57d0250fa</span></span>
         </div>
     </footer>
 </body>

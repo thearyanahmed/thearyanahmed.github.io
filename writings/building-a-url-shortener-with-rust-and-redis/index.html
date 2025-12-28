@@ -233,16 +233,17 @@
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>Our approach will be to make a plan for the features and work our way through.</p>
+                    <h1>Building a URL Shortener with Rust and Redis</h1>
+<p>Our approach will be to make a plan for the features and work our way through.</p>
 <blockquote>
 <p>All the code could be found at <a href="https://github.com/thearyanahmed/lucy">https://github.com/thearyanahmed/lucy</a></p>
 </blockquote>
 <p>So, getting started, our url shortener is a program, that stores a longer form of url (text) against an unique and short text. You can think of a hashmap. Where the values are URLs and keys are unique ids.</p>
-<p>We’ll need to identify the url based on the unique id. If it exists, we return it, if not, return a different result.</p>
-<p>The unique ids should contain characters that can create a valid url. Because usually we’ll have an endpoint that contains the unique id. So we’ll use [0-9,a-z,A-Z] values.</p>
+<p>We'll need to identify the url based on the unique id. If it exists, we return it, if not, return a different result.</p>
+<p>The unique ids should contain characters that can create a valid url. Because usually we'll have an endpoint that contains the unique id. So we'll use [0-9,a-z,A-Z] values.</p>
 <h2>Unique IDs</h2>
 <p>How many unique ids can be created from these values? 0–9 = 10, a-z and A-Z both containing 26 each. Total 10+26+26= 62 possible characters. If we use 6 characters, we should be able to create 62^6 = 56,800,235,584 values.</p>
-<p>For our simple project, this should be more than enough. The formula is number of characters we can choose ^ characters we’ll use.</p>
+<p>For our simple project, this should be more than enough. The formula is number of characters we can choose ^ characters we'll use.</p>
 <blockquote>
 <p>A ^ n = Number of possible values</p>
 </blockquote>
@@ -251,7 +252,7 @@ Build a program that stores valid urls against an unique id</p>
 <p>Have the functionality to find an url by its id</p>
 <p>We will be focusing on the core part of functionalities now. We want to build a library that gives us a the mentioned features.</p>
 <h2>Coding with Rust</h2>
-<p>We’ll have a simple library, that exposes find , record and all functions to our clients. And will support multiple datastores. I want to lay out the approach from a user’s perspective. We have a service (struct) called Lucy , that gives us the functionality for the following.</p>
+<p>We'll have a simple library, that exposes find , record and all functions to our clients. And will support multiple datastores. I want to lay out the approach from a user's perspective. We have a service (struct) called Lucy , that gives us the functionality for the following.</p>
 <ul>
 <li>Saving a new record</li>
 <li>Finding a record by uuid</li>
@@ -261,246 +262,196 @@ Build a program that stores valid urls against an unique id</p>
 <h2>Datastore</h2>
 <p>We want our service class to have access to a datastore via a public trait object. So we can have support for multiple data stores.</p>
 <pre><code class="language-rust">pub trait Datastore {
-```rust
-fn find(&amp;mut self, uuid: &amp;str) -&gt; Result&lt;Record, LucyError&gt;;
+    fn find(&amp;mut self, uuid: &amp;str) -&gt; Result&lt;Record, LucyError&gt;;
 
-fn record(&amp;mut self, record: Record) -&gt; Result&lt;bool, String&gt;;
+    fn record(&amp;mut self, record: Record) -&gt; Result&lt;bool, String&gt;;
 
-fn all(&amp;mut self) -&gt; Vec&lt;Record&gt;;</code></pre>
-<p>}</p>
-<pre><code>We’ll call our library Lucy (just needed a name). And the structure is simple.
-
-```rust
-pub struct Lucy {
-```rust
-ds: Box&lt;dyn Datastore&gt;,</code></pre>
-<p>}</p>
-<p>impl Lucy {</p>
-<pre><code class="language-rust">pub fn new(driver: DatastoreDriver) -&gt; Lucy {
-
-}
-
-pub fn find(&amp;mut self, uuid: &amp;str) -&gt; Result&lt;Record, LucyError&gt; {
-}
-
-pub fn record(&amp;mut self, record: Record) -&gt; Result&lt;bool, String&gt; {
-}
-
-pub fn all(&amp;mut self) -&gt; Vec&lt;Record&gt; {
+    fn all(&amp;mut self) -&gt; Vec&lt;Record&gt;;
 }</code></pre>
-<p>}</p>
-<pre><code>
-I’d like to address a few other things. The Record from the above code is simply a structure for holding an uuid and url.
+<p>We'll call our library Lucy (just needed a name). And the structure is simple.</p>
+<pre><code class="language-rust">pub struct Lucy {
+    ds: Box&lt;dyn Datastore&gt;,
+}
 
-```rust
-pub struct Record {
-```rust
-pub url: String,
-pub uuid: String,</code></pre>
-<p>}</p>
-<pre><code>And LucyError is an enum for the errors specific from this library.
-
-```rust
-pub enum LucyError {
-```rust
-UrlNotFoundError,
-NotAValidUrlError</code></pre>
-<p>}</p>
-<p>impl LucyError {</p>
-<pre><code class="language-rust">pub fn to_string(&amp;self) -&gt; String {
-    match *self {
-        Self::UrlNotFoundError =&gt; "url not found".to_string(),
-        Self::NotAValidUrlError =&gt; "not a valid url".to_string(),
-    }
-}</code></pre>
-<p>}</p>
-<pre><code>
-## Implement Lucy
-Our simple Lucy needs to be instantiated with a datastore , which can be selected from the outside.
-
-```rust
 impl Lucy {
-```rust
-pub fn new(driver: DatastoreDriver) -&gt; Lucy {
-    let ds = Lucy::get_datastore(driver);
-    Lucy { ds }
+    pub fn new(driver: DatastoreDriver) -&gt; Lucy {
+
+    }
+
+    pub fn find(&amp;mut self, uuid: &amp;str) -&gt; Result&lt;Record, LucyError&gt; {
+    }
+
+    pub fn record(&amp;mut self, record: Record) -&gt; Result&lt;bool, String&gt; {
+    }
+
+    pub fn all(&amp;mut self) -&gt; Vec&lt;Record&gt; {
+    }
+
+}</code></pre>
+<p>I'd like to address a few other things. The Record from the above code is simply a structure for holding an uuid and url.</p>
+<pre><code class="language-rust">pub struct Record {
+    pub url: String,
+    pub uuid: String,
+}</code></pre>
+<p>And LucyError is an enum for the errors specific from this library.</p>
+<pre><code class="language-rust">pub enum LucyError {
+    UrlNotFoundError,
+    NotAValidUrlError
 }
 
-fn get_datastore(driver: DatastoreDriver) -&gt; Box&lt;dyn Datastore&gt; {
-    match driver {
-        DatastoreDriver::InMemoryHashmap =&gt; Box::new(HashmapStore::new()),
-        DatastoreDriver::Redis =&gt; Box::new(RedisStore::new()),
-    }
-}</code></pre>
-<p>}</p>
-<pre><code>
-We want our datastore to be something dynamic, something that implements Datastore trait, anything that implements Datastore trait. For starters, we had two options, either go with generics or dynamic dispatch.
-
-Box is a pointer to heap allocation. More details here.
-
-From our library’s user point of view, a user (dev) would run the following code to create an instance of our Lucyservice.
-
-```rust
-let mut lucy = Lucy::new(DatastoreDriver::InMemoryHashmap);
-To record (save) an url, we call,
-
-for _ in 0..100 {
-  match lucy.record(Record::new(faker.gen(&amp;FakeOption::URL))) {
-```rust
-Err(err) =&gt; println!("error: {}",err),
-  _ =&gt; {},
-}</code></pre>
-<p>}</p>
-<pre><code>To find a specific one,
-
-```rust
-match lucy.find(&amp;y) {
-```rust
-Ok(r) =&gt; {
-    println!("FOUND URL: {}",r.url)
-  },
-
-Err(e) =&gt; print!("NOT FOUND {}",e.to_string()),</code></pre>
-<p>}</p>
-<pre><code>
-And to find all of them,
-
-```rust
-for record in lucy.all() {
-```rust
-println!("uuid: {} url:{}",record.uuid, record.url);</code></pre>
-<p>}</p>
-<pre><code>It’s a very simple API. Let’s implement the RedisStore to satisfy Datastore trait.
-
-## Implement RedisStore
-
-Our redis store for only holds a connect for now. We use the conventional new function to return an new instance that has the connection to communicate with redis.
-
-```rust
-pub struct RedisStore {
-```rust
-con: redis::Connection,</code></pre>
-<p>}</p>
-<p>impl RedisStore {</p>
-<pre><code class="language-rust">pub fn new() -&gt; RedisStore {
-    // @TODO take connection string as parameter.
-    let client = redis::Client::open("redis://127.0.0.1/").expect("could not connect to redis");
-
-    let con = client
-        .get_connection()
-        .expect("could not get connection to redis");
-
-    RedisStore { con }
-}</code></pre>
-<p>}</p>
-<pre><code>
-## Implement Datastore for RedisStore
-For redis’s data structure, it’ll only be a simple string SET KEY VALUE where the KEY is an uuid and value is the URL itself. I’m using redis-rs crate.
-
-**record** To set a record, we just run SET with given arguments.
-
-```rust
-fn record(&amp;mut self, record: Record) -&gt; Result&lt;bool, String&gt; {
-```rust
-    match redis::cmd("SET").arg(record.uuid).arg(record.url).query::&lt;String&gt;(&amp;mut self.con) {
-        Ok(_) =&gt; Ok(true),
-        Err(err) =&gt; Err(err.to_string()),
-    }
-}</code></pre>
-<pre><code>Explanation, we run a command using cmd , with our arguments. The order of the arguments are necessary.
-
-find To find a record, we use the previous approach, simply with GET command.
-
-```rust
-  fn find(&amp;mut self, uuid: &amp;str) -&gt; Result&lt;Record, LucyError&gt; {
-```rust
-    match redis::cmd("GET").arg(uuid).query::&lt;String&gt;(&amp;mut self.con) {
-        Ok(url) =&gt; {
-            match Record::from(url, uuid.to_string()) {
-                Ok(record) =&gt; Ok(record),
-                Err(_) =&gt; Err(LucyError::NotAValidUrlError)
-            }
-        },
-        Err(_) =&gt; Err(LucyError::UrlNotFoundError),
-    }
-}</code></pre>
-<pre><code>
-all To implement all method, which will retrieve all saved records in our datastore, we first need to get all the keys and then find all the uuids and then making a bulk call using MGET key1 key2 … keyNwith all the given ids.
-
-```rust
-```rust
-fn all(&amp;mut self) -&gt; Vec&lt;Record&gt; {
-    // Get all the keys
-    let keys = match redis::cmd("KEYS").arg("*").query::&lt;Vec&lt;String&gt;&gt;(&amp;mut self.con) {
-        Ok(keyset) =&gt; keyset,
-        Err(_) =&gt; vec![],
-    };
-
-    if keys.len() == 0 {
-        return vec![];
-    }
-
-    let mut cmd = redis::cmd("MGET");
-
-    // build the command
-    for k in keys.clone() {
-        cmd.arg(k);
-    }
-
-    // get redis results using MGET key1, key2, ..., keyN
-    let urls = match cmd.query::&lt;Vec&lt;String&gt;&gt;(&amp;mut self.con) {
-        Ok(results) =&gt; results,
-        Err(_) =&gt; vec![],
-    };
-
-    if urls.len() == 0 {
-        return vec![];
-    }
-
-    // Result mapping
-    let mut res : Vec&lt;Record&gt; = vec![];
-
-    for (i, uuid) in keys.iter().enumerate() {
-        let url = &amp;urls[i];
-
-        match Record::from(url.to_string(), uuid.to_string()) {
-            Ok(record) =&gt; res.push(record),
-            Err(_) =&gt; {},
+impl LucyError {
+    pub fn to_string(&amp;self) -&gt; String {
+        match *self {
+            Self::UrlNotFoundError =&gt; "url not found".to_string(),
+            Self::NotAValidUrlError =&gt; "not a valid url".to_string(),
         }
     }
-
-    res
 }</code></pre>
-<pre><code>And that does it. This is the core. Using it with a REST api, gRPC or even building a CLI or anything else is up to the dev. If the given datastores don’t work, simply write a datastore that implements Datastore.
+<h2>Implement Lucy</h2>
+<p>Our simple Lucy needs to be instantiated with a datastore , which can be selected from the outside.</p>
+<pre><code class="language-rust">impl Lucy {
+    pub fn new(driver: DatastoreDriver) -&gt; Lucy {
+        let ds = Lucy::get_datastore(driver);
+        Lucy { ds }
+    }
 
-## Notes
+    fn get_datastore(driver: DatastoreDriver) -&gt; Box&lt;dyn Datastore&gt; {
+        match driver {
+            DatastoreDriver::InMemoryHashmap =&gt; Box::new(HashmapStore::new()),
+            DatastoreDriver::Redis =&gt; Box::new(RedisStore::new()),
+        }
+    }
+}</code></pre>
+<p>We want our datastore to be something dynamic, something that implements Datastore trait, anything that implements Datastore trait. For starters, we had two options, either go with generics or dynamic dispatch.</p>
+<p>Box is a pointer to heap allocation. More details here.</p>
+<p>From our library's user point of view, a user (dev) would run the following code to create an instance of our Lucyservice.</p>
+<pre><code class="language-rust">let mut lucy = Lucy::new(DatastoreDriver::InMemoryHashmap);</code></pre>
+<p>To record (save) an url, we call,</p>
+<pre><code class="language-rust">for _ in 0..100 {
+  match lucy.record(Record::new(faker.gen(&amp;FakeOption::URL))) {
+    Err(err) =&gt; println!("error: {}",err),
+      _ =&gt; {},
+    }
+}</code></pre>
+<p>To find a specific one,</p>
+<pre><code class="language-rust">match lucy.find(&amp;y) {
+    Ok(r) =&gt; {
+        println!("FOUND URL: {}",r.url)
+      },
 
-- This code doesn’t have any tests written, not yet at least.
-- This is just a demo project.
-- Doesn’t have a method for find_by_url to check if an url exists already.
-- Welcoming mistakes to be pointed out.
-- UUID collision was not addressed in the code, not yet at least.
-- An implementation for serving to the web and over gRPC using Tokio Tonic is in drafts (built for learning purpose only).
+    Err(e) =&gt; print!("NOT FOUND {}",e.to_string()),
+}</code></pre>
+<p>And to find all of them,</p>
+<pre><code class="language-rust">for record in lucy.all() {
+    println!("uuid: {} url:{}",record.uuid, record.url);
+}</code></pre>
+<p>It's a very simple API. Let's implement the RedisStore to satisfy Datastore trait.</p>
+<h2>Implement RedisStore</h2>
+<p>Our redis store for only holds a connect for now. We use the conventional new function to return an new instance that has the connection to communicate with redis.</p>
+<pre><code class="language-rust">pub struct RedisStore {
+    con: redis::Connection,
+}
 
-The following logic was using to generate uuid of a given length.
+impl RedisStore {
+    pub fn new() -&gt; RedisStore {
+        // @TODO take connection string as parameter.
+        let client = redis::Client::open("redis://127.0.0.1/").expect("could not connect to redis");
 
-## Generate UUID
+        let con = client
+            .get_connection()
+            .expect("could not get connection to redis");
 
-```rust
-let unique_string: String = rand::thread_rng()
-```rust
-    .sample_iter(&amp;Alphanumeric)
-    .take(char_length)
-    .map(char::from)
-    .collect();</code></pre>
-<pre><code>```rust
-</code></pre>
+        RedisStore { con }
+    }
+}</code></pre>
+<h2>Implement Datastore for RedisStore</h2>
+<p>For redis's data structure, it'll only be a simple string SET KEY VALUE where the KEY is an uuid and value is the URL itself. I'm using redis-rs crate.</p>
+<p><strong>record</strong> To set a record, we just run SET with given arguments.</p>
+<pre><code class="language-rust">fn record(&amp;mut self, record: Record) -&gt; Result&lt;bool, String&gt; {
+        match redis::cmd("SET").arg(record.uuid).arg(record.url).query::&lt;String&gt;(&amp;mut self.con) {
+            Ok(_) =&gt; Ok(true),
+            Err(err) =&gt; Err(err.to_string()),
+        }
+    }</code></pre>
+<p>Explanation, we run a command using cmd , with our arguments. The order of the arguments are necessary.</p>
+<p>find To find a record, we use the previous approach, simply with GET command.</p>
+<pre><code class="language-rust">  fn find(&amp;mut self, uuid: &amp;str) -&gt; Result&lt;Record, LucyError&gt; {
+        match redis::cmd("GET").arg(uuid).query::&lt;String&gt;(&amp;mut self.con) {
+            Ok(url) =&gt; {
+                match Record::from(url, uuid.to_string()) {
+                    Ok(record) =&gt; Ok(record),
+                    Err(_) =&gt; Err(LucyError::NotAValidUrlError)
+                }
+            },
+            Err(_) =&gt; Err(LucyError::UrlNotFoundError),
+        }
+    }</code></pre>
+<p>all To implement all method, which will retrieve all saved records in our datastore, we first need to get all the keys and then find all the uuids and then making a bulk call using MGET key1 key2 … keyNwith all the given ids.</p>
+<pre><code class="language-rust">    fn all(&amp;mut self) -&gt; Vec&lt;Record&gt; {
+        // Get all the keys
+        let keys = match redis::cmd("KEYS").arg("*").query::&lt;Vec&lt;String&gt;&gt;(&amp;mut self.con) {
+            Ok(keyset) =&gt; keyset,
+            Err(_) =&gt; vec![],
+        };
+
+        if keys.len() == 0 {
+            return vec![];
+        }
+
+        let mut cmd = redis::cmd("MGET");
+
+        // build the command
+        for k in keys.clone() {
+            cmd.arg(k);
+        }
+
+        // get redis results using MGET key1, key2, ..., keyN
+        let urls = match cmd.query::&lt;Vec&lt;String&gt;&gt;(&amp;mut self.con) {
+            Ok(results) =&gt; results,
+            Err(_) =&gt; vec![],
+        };
+
+        if urls.len() == 0 {
+            return vec![];
+        }
+
+        // Result mapping
+        let mut res : Vec&lt;Record&gt; = vec![];
+
+        for (i, uuid) in keys.iter().enumerate() {
+            let url = &amp;urls[i];
+
+            match Record::from(url.to_string(), uuid.to_string()) {
+                Ok(record) =&gt; res.push(record),
+                Err(_) =&gt; {},
+            }
+        }
+
+        res
+    }</code></pre>
+<p>And that does it. This is the core. Using it with a REST api, gRPC or even building a CLI or anything else is up to the dev. If the given datastores don't work, simply write a datastore that implements Datastore.</p>
+<h2>Notes</h2>
+<ul>
+<li>This code doesn't have any tests written, not yet at least.</li>
+<li>This is just a demo project.</li>
+<li>Doesn't have a method for find_by_url to check if an url exists already.</li>
+<li>Welcoming mistakes to be pointed out.</li>
+<li>UUID collision was not addressed in the code, not yet at least.</li>
+<li>An implementation for serving to the web and over gRPC using Tokio Tonic is in drafts (built for learning purpose only).</li>
+</ul>
+<p>The following logic was using to generate uuid of a given length.</p>
+<h2>Generate UUID</h2>
+<pre><code class="language-rust">let unique_string: String = rand::thread_rng()
+        .sample_iter(&amp;Alphanumeric)
+        .take(char_length)
+        .map(char::from)
+        .collect();</code></pre>
 <h2>Quick Links</h2>
 <ul>
 <li>A video on using <a href="https://www.youtube.com/watch?v=gocwRvLhDf8&amp;t=1s&amp;ab_channel=TomScott">alpha numeric ids for n characters by Tom Scott</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Consistent_hashing">Consistent hashing</a></li>
 <li>An article on <a href="https://tom-e-white.com/2007/11/consistent-hashing.html">Consistent hashing</a> by Tom E White</li>
-<li>More on <a href="https://doc.rust-lang.org/std/boxed/struct.Box.html">Rust’s std::boxed::Box</a></li>
+<li>More on <a href="https://doc.rust-lang.org/std/boxed/struct.Box.html">Rust's std::boxed::Box</a></li>
 </ul>
                 </div>
             </div>
@@ -541,7 +492,7 @@ let unique_string: String = rand::thread_rng()
             <span>
                 v<span class="text-gray-400">2.27.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">331</span>ヅ<span class="text-gray-500/60">ddd178719a0e56174264354fe989455d654d4614</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">335</span>ヅ<span class="text-gray-500/60">fb16503ef8bb55b97b77738353a0d4a57d0250fa</span></span>
         </div>
     </footer>
 </body>

@@ -1,3 +1,5 @@
+# Kubernetes Cluster Architecture
+
 **Master Node**
 
    - Communication using the API Server. Think of it as the frontend
@@ -28,7 +30,7 @@ Pod is one single unit of deployment. Most basic construct. Most simple unit. Cr
    - Unique network IP
    - Options that govern how container(s) should run
 
-Pods don’t self heal. Never creates itself. Don’t use a pod directly, use controller.
+Pods don't self heal. Never creates itself. Don't use a pod directly, use controller.
 
 Pod states:
 
@@ -49,54 +51,38 @@ Benefits of Controllers:
 Kinds of controllers
 
    - **ReplicaSets**
-```rust
-  - Ensures a specificed number of replicas are running at all times. Needs to be used inside a deployment. Uses want vs have condition. New deployment will trigger new replica set while keeping the old ones, in case of rollbacks.
-```
+     - Ensures a specificed number of replicas are running at all times. Needs to be used inside a deployment. Uses want vs have condition. New deployment will trigger new replica set while keeping the old ones, in case of rollbacks.
    - **Deployments**
-```rust
-  - Declartive updates config objects Allows us to do pod managment. Running replicate set allows us to deploy a number of pods and check their status as a single unit.
-  - Sclaing a replicateSet sacles out the pods, allows for the deployment to handle more traffic.
-  - Pause and resume During pause state, only updates are paused. Network will flow to existing ReplicaSets
-  - Status
-```
+     - Declartive updates config objects Allows us to do pod managment. Running replicate set allows us to deploy a number of pods and check their status as a single unit.
+     - Sclaing a replicateSet sacles out the pods, allows for the deployment to handle more traffic.
+     - Pause and resume During pause state, only updates are paused. Network will flow to existing ReplicaSets
+     - Status
    - **DaemonSets**
-```rust
-  - Ensures all nodes run a copy of a specific pod. DaemonSets will add or remove the required pods.
-```
+     - Ensures all nodes run a copy of a specific pod. DaemonSets will add or remove the required pods.
    - **Jobs**
-```rust
-  - Supervisor process for pods carrying out batch jobs. Usually runs as a cron.
-```
+     - Supervisor process for pods carrying out batch jobs. Usually runs as a cron.
    - **Services**
-```rust
-  - Allows communication between one set of deployments with another. Solves the problem of new (dynamic) IP (I guess). Service as DNS.
-  - Kinds:
-     - Internal service: IP is reachable within the cluster
-     - External : Endpoint available through node ip. NodePort.
-     - Load Balancer: Exposes application to the internet with a load balancer.
-```
+     - Allows communication between one set of deployments with another. Solves the problem of new (dynamic) IP (I guess). Service as DNS.
+     - Kinds:
+        - Internal service: IP is reachable within the cluster
+        - External : Endpoint available through node ip. NodePort.
+        - Load Balancer: Exposes application to the internet with a load balancer.
 
 **Labels, Selectors and Namespaces**
 
    Labes:
 
-```rust
-  - Key-Value pairs. For developers, image tags with value. Label keys are unique per object.
-```
+     - Key-Value pairs. For developers, image tags with value. Label keys are unique per object.
 
    Selectors:
 
-```rust
-  - Equality based selectors. `=` and `!=` .
-  - Set based selectors. Has: `IN` , `NOTIN` and `EXISTS`
-```
+     - Equality based selectors. `=` and `!=` .
+     - Set based selectors. Has: `IN` , `NOTIN` and `EXISTS`
 
    Namespaces:
 
-```rust
-  - Multiple virtual clusters backed by a single physical server. Mainly for separation or concern and divide cluster resoruces.
-  - K8s starts with default namespace. Newer applications install with their resources in a different namespace.
-```
+     - Multiple virtual clusters backed by a single physical server. Mainly for separation or concern and divide cluster resoruces.
+     - K8s starts with default namespace. Newer applications install with their resources in a different namespace.
 
 **Kubelet**
 
@@ -122,7 +108,7 @@ For a new service, kube-proxy opens a randomly chosen port on the local node.
 **What does ClusterIP, NodePort, and LoadBalancer mean?**
 
 - **ClusterIP**
-   - The default value. The service is only accessible from within the Kubernetes cluster. You can’t make requests to your Pods from outside the cluster!
+   - The default value. The service is only accessible from within the Kubernetes cluster. You can't make requests to your Pods from outside the cluster!
 - **NodePort**
    - This makes the service accessible on a static port on each Node in the cluster. This means that the service can handle requests that originate from outside the cluster.
 - **LoadBalancer**
@@ -130,14 +116,14 @@ For a new service, kube-proxy opens a randomly chosen port on the local node.
 
 **Service config**
 
-```go
-kind: Service 
-apiVersion: v1 
+```yaml
+kind: Service
+apiVersion: v1
 metadata:
-  name: hostname-service 
+  name: hostname-service
 spec:
   # Expose the service on a static port on each node
-  # so that we can access the service from outside the cluster 
+  # so that we can access the service from outside the cluster
   type: NodePort
 
   # When the node receives a request on the static port (30163)
@@ -145,20 +131,16 @@ spec:
   # select pod where label = 'app' and label_value = 'echo-hostname'
   # and forward the request to one of them
   selector:
-```rust
-app: echo-hostname 
-```
+    app: echo-hostname
 
   ports:
-```rust
-# Three types of ports for a service
-# nodePort - a static port assigned on each the node
-# port - port exposed internally in the cluster
-# targetPort - the container port to send requests to
-- nodePort: 30163
-  port: 8080 // the service is internally available on this port
-  targetPort: 80 // the container running inside the port exposes this port
-```
+    # Three types of ports for a service
+    # nodePort - a static port assigned on each the node
+    # port - port exposed internally in the cluster
+    # targetPort - the container port to send requests to
+    - nodePort: 30163
+      port: 8080 # the service is internally available on this port
+      targetPort: 80 # the container running inside the port exposes this port
 ```
 
 **Kubectl Commands**
@@ -173,8 +155,8 @@ kubectl get pods —selector dev-lead=$name
 kubectl get pods —selectors dev-lead=$name,env=staging
 kubectl get pods —selectors dev-lead!=$name # not equals operator
 kubectl get pods -l # shortcuts for selectors
-kubectl get pods -l ‘release version in (1.0, 2.0)’
-kubectl get pods -l ‘release version notin (1.0, 2.0)’  # not in operator
+kubectl get pods -l 'release version in (1.0, 2.0)'
+kubectl get pods -l 'release version notin (1.0, 2.0)'  # not in operator
 kubectl delete pods -l deve-lead=$name
 kubectl create -f $config.yml —record # to record rollout history
 kubectl set image deployment/$deploymentName helloworld=$image:$tag # updates image

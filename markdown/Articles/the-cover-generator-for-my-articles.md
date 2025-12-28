@@ -1,3 +1,5 @@
+# The Cover Generator for My Articles
+
 This article was created using chatGPT.
 
 Visit [thearyanahmed.com/cover-generator](/cover-generator),

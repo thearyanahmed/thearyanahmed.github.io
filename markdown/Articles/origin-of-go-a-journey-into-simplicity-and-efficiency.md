@@ -1,3 +1,5 @@
+# Origin of Go: A Journey into Simplicity and Efficiency
+
 In the fast-paced world of programming languages, each one has its unique story and purpose. One language that has steadily gained prominence for its simplicity, efficiency, and performance is Go. Developed by the tech giants at Google, Go, or Golang, was born out of the necessity to address the challenges faced in large-scale software development.
 
 ## A Collaborative Creation
@@ -15,21 +17,21 @@ Go was conceived as a response to the limitations and complexities of existing l
 ## Key Design Principles
 The development of Go was guided by a set of fundamental design principles that laid the foundation for its success:
 
-**Readability Matters** 
+**Readability Matters**
 > Code is read more often than it's written
 
 Go code is designed to be readable and understandable. The language avoids unnecessary symbols and conventions, making it easy for developers to grasp the intent of the code quickly.
- 
+
 > GOOD CODE is a love letter to the next developer who will maintain it
 _Though the quote is about good code, but readability is a key attribute of good code._
 
-**Minimalist Syntax** : Go embraces a minimalist syntax that focuses on essentials. This deliberate design choice reduces the learning curve and allows developers to express complex ideas in a straightforward manner. 
+**Minimalist Syntax** : Go embraces a minimalist syntax that focuses on essentials. This deliberate design choice reduces the learning curve and allows developers to express complex ideas in a straightforward manner.
 
 For example, some languages have 7-10 or even more functions for an array. Eg: in javascript, we have `concat`, `filter`, `map`, `reduce`,  `find`, `indexOf`, `slice`, `splice`, `push`, `pop`, `shift`, `unshift`, `some`, `every`.
 
 On top of that, there are 3-4 types of foor loops.`forEach`, `for`, `for in` etc. However, you can achieve the same using 1 for loop. And that would be the `go` way. Go have only one kind of loop. `for` loop (more on loops later).
 
-In go, there are two different ways you can write a for loop, one the regular `for loop` and another `for range`. However, the other functions are `append`, `cap` and `len`. Unlike javascript, these are for different things. 
+In go, there are two different ways you can write a for loop, one the regular `for loop` and another `for range`. However, the other functions are `append`, `cap` and `len`. Unlike javascript, these are for different things.
 
 One might argue, it would've been easier to have all those functions in Go, while it can be a matter of preference. But the creators of Go and the community decided having only one kind of loop (`for`) is more than enough. This way, you don't need to keep track of which functions do what and focus on the business logic.
 

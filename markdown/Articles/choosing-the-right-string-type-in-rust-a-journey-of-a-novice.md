@@ -1,4 +1,6 @@
-Rust has been a favorite. While doing so, I’ve come across various scenarios where choosing the right string type can significantly impact both performance and code maintainability. In this blog post, I’ll share some insights into when to use different string types in Rust, based on real-world use cases.
+# Choosing the Right String Type in Rust: A Journey of a Novice
+
+Rust has been a favorite. While doing so, I've come across various scenarios where choosing the right string type can significantly impact both performance and code maintainability. In this blog post, I'll share some insights into when to use different string types in Rust, based on real-world use cases.
 
 ## String
 
@@ -24,9 +26,7 @@ The `&str` type, often called a "string slice," represents a borrowed reference 
 Example:
 ```rust
 fn print_greeting(greeting: &str) {
-```rust
-println!("{}", greeting);
-```
+    println!("{}", greeting);
 }
 ```
 
@@ -43,9 +43,7 @@ Example:
 use std::borrow::Cow;
 
 fn process_text(text: Cow<str>) {
-```rust
-// ...
-```
+    // ...
 }
 ```
 
@@ -61,9 +59,7 @@ Example:
 use std::ffi::{OsString, OsStr};
 
 fn read_file(file_path: &OsStr) -> Result<OsString, std::io::Error> {
-```rust
-// ...
-```
+    // ...
 }
 ```
 

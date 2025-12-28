@@ -1,18 +1,20 @@
+# Learning Rust Part One: Intro to Rust
+
 ### Introduction to Rust
 In the ever-evolving world of programming, there's a constant quest for languages that excel in both speed and reliability. Enter Rust, a cutting-edge systems programming language rapidly gaining traction. Designed by Mozilla, Rust addresses the common pitfalls of low-level languages like C and C++ while offering modern features that boost productivity and code dependability.
 
-One of Rust's core goals is to eliminate bug classes like null pointer dereferences, buffer overflows, and data races, which frequently lead to security vulnerabilities and system crashes in other languages. 
+One of Rust's core goals is to eliminate bug classes like null pointer dereferences, buffer overflows, and data races, which frequently lead to security vulnerabilities and system crashes in other languages.
 
 This is achieved through Rust's unique ownership system, ensuring memory safety without the need for garbage collection. By enforcing strict compile-time checks, Rust empowers developers to write robust code, free from many common errors. Additionally, its emphasis on zero-cost abstractions and performance guarantees make it ideal for systems programming tasks where efficiency is paramount.
 
 **Welcome to the Rust Programming Series!**
 This would be my take on learning rust.
 
-This series serves as your guide to the exciting world of Rust, from its fundamental building blocks to advanced concepts. We'll embark on a journey that delves into Rust's syntax, control flow, functions, and memory management, concurrency, equipping you with the skills to conquer various programming challenges. 
+This series serves as your guide to the exciting world of Rust, from its fundamental building blocks to advanced concepts. We'll embark on a journey that delves into Rust's syntax, control flow, functions, and memory management, concurrency, equipping you with the skills to conquer various programming challenges.
 
 Along the way, we'll explore the language's strengths and potential hurdles, providing practical solutions and best practices. Whether you're a seasoned programmer or just starting out, this series will equip you to harness the power of Rust and build robust software for the future.
 
-Some points to consider regarding Rust, 
+Some points to consider regarding Rust,
 * **Safety and Speed:** Rust is known for being both safe and fast. Unlike some other languages, Rust's memory management system helps prevent crashes and security vulnerabilities from memory errors. At the same time, Rust's performance rivals that of C and C++, making it suitable for applications where speed is crucial.
 * **Concurrency:**  Rust promotes safe concurrent programming, which is becoming increasingly important in the age of multi-core processors. This means you can write code that can take advantage of multiple cores without worrying about data races or other concurrency problems.
 * **Embedded Systems and IoT:**  Rust's focus on memory safety, small binaries, and efficient resource management makes it a great choice for developing embedded systems and Internet of Things (IoT) devices.  These devices often have limited resources and need to be secure and reliable.
@@ -33,12 +35,12 @@ And amazon too
 ![Amazon services that uses Rust (source: workfall) ](https://lh6.googleusercontent.com/WEM69oIXzvjjBaY_VQbM2WdvqRAQBeo2OUD16Fq2csWLVztJ6zI598mB3lElPPNEvi-yreVY7hqpedi9RVxDeFoTbYMkOjI-HQbQS2DpCHWRHiQnqqf0ZNw0Ne61H-E5LOM-JCtVvtpY_d1K5pYc7Q)
 
 ### Essence of small changes
-A small imperfection here and there leads up to a big buggy code everywhere. I'm not claiming writing rust code would be 'perfect'. 
+A small imperfection here and there leads up to a big buggy code everywhere. I'm not claiming writing rust code would be 'perfect'.
 
 However, the way rust enforces the programmer to handle all edge cases and other features like the borrow checker removing the need for a garbage collector, it is likely that the same programmer would be less mistakes with rust. As it is baked into the rust ecosystem.
 
-> But when we repeat 1 percent errors, day after day, by replicating poor decisions, duplicating tiny mistakes, and rationalising little excuses,  our small choices compound into toxic results. It’s the accumulation of many missteps - a 1 percent decline here and there - that eventually leads to a problem. 
-> 
+> But when we repeat 1 percent errors, day after day, by replicating poor decisions, duplicating tiny mistakes, and rationalising little excuses,  our small choices compound into toxic results. It's the accumulation of many missteps - a 1 percent decline here and there - that eventually leads to a problem.
+>
 > *Atomic Habits*
 
 - **Enforces Memory Safety**: Unlike some other languages, Rust prevents memory-related errors like dangling pointers, buffer overflows, and use-after-free. These errors can be subtle and hard to detect, but they can lead to crashes, security vulnerabilities, and unexpected behavior. By eliminating this entire class of errors, Rust helps you write code that's more reliable and less prone to regressions.
@@ -51,61 +53,59 @@ By following these principles, we can use Rust to write code with fewer errors, 
 
 ### Installing
 You can install rust with the following command
-```
+```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
-For other installation methods, you can find detailed instructions at [Other Installation Methods - Rust Forge](https://forge.rust-lang.org/infra/other-installation-methods.html) 
+For other installation methods, you can find detailed instructions at [Other Installation Methods - Rust Forge](https://forge.rust-lang.org/infra/other-installation-methods.html)
 
-You can also try rust online from [Rust Playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021). 
+You can also try rust online from [Rust Playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021).
 ### Hello World
 In a folder, create a file called `main.rs` and add the following code,
 ```rust
 fn main() {
-```rust
-println!("Hello World!");
-```
+    println!("Hello World!");
 }
 ```
- 
+
 And then run `rustc main.rs` . It will create a compiled binary with the file name. For our case, `main` . Then simply run
 ```bash
 ./main
 ```
 
-The output should be “Hello World”. Rust will try to run the entrypoint file’s main function (by default). In our case, main.rs is the entry file. And `fn main` is the main function that will be invoked upon running the program. 
+The output should be "Hello World". Rust will try to run the entrypoint file's main function (by default). In our case, main.rs is the entry file. And `fn main` is the main function that will be invoked upon running the program.
 
 ### Hello World, Again!
-This time, we want to use `cargo` . Cargo is rust’s build system and package manager. You can see your cargo version with `cargo --version`. To create a new project, we need to run `cargo new hello_world`. It will create a project called *hello_world*. Running `cargo --list` will show all available commands. 
-If you want to create a library, you can add the `—lib` flag at the end of the `cargo new` command. 
+This time, we want to use `cargo` . Cargo is rust's build system and package manager. You can see your cargo version with `cargo --version`. To create a new project, we need to run `cargo new hello_world`. It will create a project called *hello_world*. Running `cargo --list` will show all available commands.
+If you want to create a library, you can add the `—lib` flag at the end of the `cargo new` command.
 
 ![hello world again project structure](https://raw.githubusercontent.com/thearyanahmed/thearyanahmed.github.io/master/markdown/assets/learning-rust/part-01-hello-world-again.png)
 
-If you take a look at the project structure, it starts with an empty .git repo. Has the `main.rs` file inside `src`, where most of our code will live. The `target` is a folder created by cargo. When we run `cargo run` (see the bottom part of the screen shot). For now, we can ignore this directory. It holds some files related to build. 
+If you take a look at the project structure, it starts with an empty .git repo. Has the `main.rs` file inside `src`, where most of our code will live. The `target` is a folder created by cargo. When we run `cargo run` (see the bottom part of the screen shot). For now, we can ignore this directory. It holds some files related to build.
 
 We also have a `Cargo.toml` file. It is the project manifest. Here's a breakdown of what Cargo.toml typically includes:
-* **Package Metadata:** Information about your project, such as its name, version, authors, and license.
-* **Dependencies:** A list of other Rust crates (libraries) your project relies on to function. You can specify the version requirement for each dependency.
-* **Optional Features:** A mechanism to enable or disable functionalities within your crate or its dependencies. This allows for conditional compilation and creating leaner builds.
-* **Build Instructions:** You can define custom build instructions or settings within the manifest.
+* **Package Metadata:** Information about your project, such as its name, version, authors, and license.
+* **Dependencies:** A list of other Rust crates (libraries) your project relies on to function. You can specify the version requirement for each dependency.
+* **Optional Features:** A mechanism to enable or disable functionalities within your crate or its dependencies. This allows for conditional compilation and creating leaner builds.
+* **Build Instructions:** You can define custom build instructions or settings within the manifest.
 
-The `Cargo.lock` file stores some extra information for our libraries and dependencies, their versions etc. It will be auto generated / auto updated when we update `Cargo.toml` file. 
+The `Cargo.lock` file stores some extra information for our libraries and dependencies, their versions etc. It will be auto generated / auto updated when we update `Cargo.toml` file.
 
-Before we move forward, I want to point towards the output message by cargo. It says, 
+Before we move forward, I want to point towards the output message by cargo. It says,
 ```txt
 Finished dev [unoptimized + debuginfo] target(s) in 0.05s
 Running `target/debug/hello_world`
 ```
- 
-This build is **unoptimized** and contains **debuginfo**. Which will make the file size a lot bigger. This is useful for, unsurprisingly, debugging. We’ll discuss release builds and how to improve builds based on our needs in a future episode. 
-You can also see, it is running `target/debug/hello_world` . Running an `ls` on the target would give you something like 
+
+This build is **unoptimized** and contains **debuginfo**. Which will make the file size a lot bigger. This is useful for, unsurprisingly, debugging. We'll discuss release builds and how to improve builds based on our needs in a future episode.
+You can also see, it is running `target/debug/hello_world` . Running an `ls` on the target would give you something like
 ```txt
 $ ls target/debug/
-build/         
-deps/          
-examples/      
+build/
+deps/
+examples/
 hello_world*   <----- Cargo is running this binary
-hello_world.d  
+hello_world.d
 incremental/
 ```
 
-And as expected, in the terminal, we see “Hello, world, Again!” in the final output. With this setup ready, we can start diving into what rust offers as a language and ecosystem. In the next chapter, I have written about basic concepts like [variables and data types](https://thearyanahmed.com/blog/articles/learning-rust-part-two-variables-and-data-types).
+And as expected, in the terminal, we see "Hello, world, Again!" in the final output. With this setup ready, we can start diving into what rust offers as a language and ecosystem. In the next chapter, I have written about basic concepts like [variables and data types](https://thearyanahmed.com/blog/articles/learning-rust-part-two-variables-and-data-types).

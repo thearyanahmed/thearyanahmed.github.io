@@ -229,7 +229,8 @@
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p><img src="https://cdn-images-1.medium.com/max/2000/1*tmEFJ0LreB8wabdi67XY-Q.jpeg" alt="" /></p>
+                    <h1>Prepared Statements in SQL</h1>
+<p><img src="https://cdn-images-1.medium.com/max/2000/1*tmEFJ0LreB8wabdi67XY-Q.jpeg" alt="" /></p>
 <p><strong>Prepared statement</strong>s are a common thing sql world. It has many benefits like it can execute the same (or similar) SQL statements repeatedly with high efficiency. It can also prevent one of the biggest security vulnerabilities, <strong>SQL injection</strong>.</p>
 <p>Compared to executing the query directly, there are primarily 3 advantages. Taking these points from w3schools,</p>
 <ol>
@@ -246,43 +247,43 @@
 <h3>SQL Injections</h3>
 <p>During an SQL injection attack, the attacker tries to bind malicious sql code with the input parameter. In earlier days, we saw http queries like <code>user?id=1</code>, the id would be an input for the <code>id</code> of the users table. Behind the scene, the backend code is doing making some query using that input.</p>
 <p>Imagine we want to just read the user data from database where the id is $id (from query param). Our sql query would translate to something like this</p>
-<pre><code class="language-rust">SELECT (coulmns…) FROM users WHERE id = 1;</code></pre>
+<pre><code class="language-sql">SELECT (coulmns…) FROM users WHERE id = 1;</code></pre>
 <p>But what if the the attacker used the following instead of the id</p>
-<pre><code class="language-rust">user?id=1;DROP TABLE users;</code></pre>
+<pre><code class="language-sql">user?id=1;DROP TABLE users;</code></pre>
 <p>As HTTP requests are parsed as strings (primarily), though we want id to be numeric, without proper sanitization the query would be</p>
-<pre><code class="language-rust">SELECT (coulmns…) FROM users WHERE id = 1; DROP TABLE users;</code></pre>
+<pre><code class="language-sql">SELECT (coulmns…) FROM users WHERE id = 1; DROP TABLE users;</code></pre>
 <p>And given that there is sufficient permissions, this query would execute and drop the users table; A permanent mutation.</p>
 <h3>Prepared Statements</h3>
 <p>This can be prevented by using <code>prepared statement</code>s. The root cause of that problem was not separating the sql code and input data. And <strong>the query and the data are sent to the database server separately</strong>.</p>
-<p>Using prepared statements, we’ll have something like</p>
-<pre><code class="language-rust">SELECT (columns…) FROM users where id=?"</code></pre>
+<p>Using prepared statements, we'll have something like</p>
+<pre><code class="language-sql">SELECT (columns…) FROM users where id=?"</code></pre>
 <p>and data would be <code>**1**</code>;</p>
-<p>As our SQL query is <strong>a valid program as of itself</strong>, if we are directly making a query, we are dynamically building the query aka <em>program</em> in the runtime and sending it to the sql server, but using prepared statements, we first send the query <code>*SELECT (columns…) FROM users where id=?”*</code> first. And thats our program.</p>
+<p>As our SQL query is <strong>a valid program as of itself</strong>, if we are directly making a query, we are dynamically building the query aka <em>program</em> in the runtime and sending it to the sql server, but using prepared statements, we first send the query <code>*SELECT (columns…) FROM users where id=?"*</code> first. And thats our program.</p>
 <p>Now, this program needs 1 (<em>id=?</em>) parameter in this example. Now we send the second piece, our data is <em>$data=1</em>;</p>
 <p>In this approach, our core SQL program (the query) can not be altered, the second request is only feeding the data itself.</p>
 <h3>Command vs Data</h3>
 <p>Or <em>to execute or not to</em>. So what happens if we still use the same input <code>?id=1;DROP TABLE users;</code> ? Well, the input is not parsed, neither executed. Imagine having an executable but not executing it.</p>
 <p>Lets take a look at the following code,</p>
-<pre><code class="language-rust">$data = "1; DROP TABLE users;"
+<pre><code class="language-php">$data = "1; DROP TABLE users;"
 $db-&gt;prepare("SELECT (columns…) FROM users WHERE id=?");
 
 $db-&gt;execute($data);</code></pre>
-<p>Shouldn’t this also translate to the same query? Well, the answer is <strong>no</strong>. AS mentioned, the query is a command that is executed, the data is not. For our instance, the data <code>*1; DROP Table users*</code> would fail to find a valid result.</p>
+<p>Shouldn't this also translate to the same query? Well, the answer is <strong>no</strong>. AS mentioned, the query is a command that is executed, the data is not. For our instance, the data <code>*1; DROP Table users*</code> would fail to find a valid result.</p>
 <p>Here are some scenarios,</p>
 <ul>
 <li>
 <p><strong>If we have proper constraints and imagine the <code>id</code> column is <code>numeric</code> (eg int)</strong> the query should not return any results because <code>*1;DROP TABLE users;*</code> is not a numeric value and not compareable.</p>
 </li>
 <li>
-<p><strong>If we don’t have proper constraints and <code>id</code> is not <code>numeric</code> either. Say its a <code>text</code> field</strong> well, its used as value and the query translate to something like <code>*SELECT (columns…) FROM users WHERE id=”1; DROP TABLE users”;*</code>. The <code>*1; DROP TABLE users”;*</code> portion is the data. In direct queries and sql injections, this would translate to <code>*1*</code> being the data and the later part would be a query, acting as data but also being executed, causing the injection.</p>
+<p><strong>If we don't have proper constraints and <code>id</code> is not <code>numeric</code> either. Say its a <code>text</code> field</strong> well, its used as value and the query translate to something like <code>*SELECT (columns…) FROM users WHERE id="1; DROP TABLE users";*</code>. The <code>*1; DROP TABLE users";*</code> portion is the data. In direct queries and sql injections, this would translate to <code>*1*</code> being the data and the later part would be a query, acting as data but also being executed, causing the injection.</p>
 </li>
 <li>
-<p><strong>If its a write query</strong> in this scenario, given its numeric, it’ll cause an error because that payload is not a numeric value, and if it’s a text field, it will be inserted in the field. In summary, it will behave according to the constraints but <strong>WILL NOT EXECUTE</strong>.</p>
+<p><strong>If its a write query</strong> in this scenario, given its numeric, it'll cause an error because that payload is not a numeric value, and if it's a text field, it will be inserted in the field. In summary, it will behave according to the constraints but <strong>WILL NOT EXECUTE</strong>.</p>
 </li>
 </ul>
 <p>But either way, whether we get the results or not (with invalid inputs), and maybe the input was not sanitized, but not getting any results are not an vulnerability.</p>
 <p>Simple, yet amazing, is it not?</p>
-<p>Feel free to point out any mistakes I’ve made.</p>
+<p>Feel free to point out any mistakes I've made.</p>
                 </div>
             </div>
         </div>
@@ -322,7 +323,7 @@ $db-&gt;execute($data);</code></pre>
             <span>
                 v<span class="text-gray-400">2.27.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">331</span>ヅ<span class="text-gray-500/60">ddd178719a0e56174264354fe989455d654d4614</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">335</span>ヅ<span class="text-gray-500/60">fb16503ef8bb55b97b77738353a0d4a57d0250fa</span></span>
         </div>
     </footer>
 </body>

@@ -211,7 +211,8 @@
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p><img src="https://substackcdn.com/image/fetch/$s_!nm7H!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png" alt="" /></p>
+                    <h1>localhost and 127.0.0.1</h1>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png" alt="" /></p>
 <blockquote>
 <p>Based on true events.</p>
 </blockquote>
@@ -220,7 +221,7 @@
 <p>Thanks for reading Aryan's Journal! Subscribe for free to receive new posts and support my work.</p>
 <p>So while setting up the remote MCP pipeline, I saw that CI was failing on E2E. Although locally, both mac and linux tests were passing! It was failing because I (myself) had overlooked a very basic thing.</p>
 <h2>Failing CI and Where It's Coming From</h2>
-<p><img src="https://substackcdn.com/image/fetch/$s_!hMkt!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2ca8a880-a68a-4207-8c0a-90b27c7bb75c_2720x678.png" alt="" /></p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2ca8a880-a68a-4207-8c0a-90b27c7bb75c_2720x678.png" alt="" /></p>
 <p>A failed test from our internal pipeline. The error is:</p>
 <pre><code>transport error: failed to send request: failed to send request: Post "http://localhost:32772/mcp": read tcp [::1]:41406-&gt;[::1]:32772: read: connection reset by peer</code></pre>
 <p>Now if we look at the error, it's showing that after requesting from localhost, the request is establishing but then the request is being closed. Connection reset by peer doesn't mean both parties agreed to close the connection, it's more like slamming the door!</p>
@@ -231,18 +232,18 @@
 <h2>Root Cause Analysis</h2>
 <p>Here, the client is first requesting a local container running in github action, through localhost. Connection is establishing. But it established with <strong>IPv6</strong> (<code>**[::1]**</code>). Because when going through localhost, a hostname resolution lookup happens. Which returns IPv6. Although we didn't explicitly request for IPv6, we still got IPv6 result because the go client actually sends 2 requests by default when establishing a connection. This could have been configured with the <strong>DualStack</strong> boolean. DualStack means trying to dial IPv4 + IPv6 together (Happy Eyeballs algorithm).</p>
 <p>On Aug 31, 2016, this feature was added to go's <strong>net/http</strong> package: <a href="https://go-review.googlesource.com/c/go/+/28077/3/src/net/http/transport.go">https://go-review.googlesource.com/c/go/+/28077/3/src/net/http/transport.go</a>.</p>
-<p><img src="https://substackcdn.com/image/fetch/$s_!peTi!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F50ccff0d-fc4a-4b9d-ae46-123be894a278_3080x800.png" alt="" /></p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F50ccff0d-fc4a-4b9d-ae46-123be894a278_3080x800.png" alt="" /></p>
 <p>But the problem is, <strong>FakeWebsocketServer</strong> is only listening on IPv4 <a href="https://github.com/digitalocean-labs/mcp-digitalocean/blob/main/testing/e2e_websocket_test.go#L136-L141">digitalocean-labs/mcp-digitalocean/testing/e2e_websocket_test.go</a>.</p>
-<p><img src="https://substackcdn.com/image/fetch/$s_!ARBE!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffa1d7f61-1b41-4a5d-b726-c8cac1850f93_1360x442.png" alt="" /></p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffa1d7f61-1b41-4a5d-b726-c8cac1850f93_1360x442.png" alt="" /></p>
 <p>If we look at go's <code>net/</code> package documentation, this is the following:</p>
-<p><img src="https://substackcdn.com/image/fetch/$s_!P8TU!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe0cc6bd3-9e4f-4a16-9615-df9d34a36b5c_2508x628.png" alt="" /></p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe0cc6bd3-9e4f-4a16-9615-df9d34a36b5c_2508x628.png" alt="" /></p>
 <p>Here I'm highlighting <code>**a literal unspecified IP address**</code>, we're explicitly specifying IPv4 with <code>**0.0.0.0**</code>. Trying to show a sequence.</p>
-<p><img src="https://substackcdn.com/image/fetch/$s_!l4tY!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F88975377-5dab-4005-9690-793f76d35944_2650x4536.png" alt="" /></p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F88975377-5dab-4005-9690-793f76d35944_2650x4536.png" alt="" /></p>
 <p>We didn't get connection failed from the start. A connection was established, then it failed while reading the stream. So, in short, we're getting connection RST (reset) from the linux kernel due to a mix and match of IPv6 and IPv4 here.</p>
 <h2>Solution</h2>
 <p>As a solution, if we don't leave it to go to decide whether to request on IPv6 or IPv4, but take control ourselves and tell it to request on IPv4, our problem is solved. This is the small PR <a href="https://github.com/digitalocean-labs/mcp-digitalocean/pull/195">https://github.com/digitalocean-labs/mcp-digitalocean/pull/195</a>. The changes in this PR simply change from localhost to 127.0.0.1.</p>
-<p><img src="https://substackcdn.com/image/fetch/$s_!nm7H!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png" alt="" /></p>
-<p><img src="https://substackcdn.com/image/fetch/$s_!a8qX!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff9d58541-1c43-47ab-9e05-79ac76a27cba_2252x776.png" alt="" /></p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png" alt="" /></p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff9d58541-1c43-47ab-9e05-79ac76a27cba_2252x776.png" alt="" /></p>
 <p>And our CI is green.</p>
 <h2>localhost and 127.0.0.1</h2>
 <p>Many of us use localhost and 127.0.0.1 interchangeably. However, there's a fundamental difference between them. 127.0.0.1 is a <strong>fixed IP address</strong> in a larger loopback range. 127.0.0.1 is actually part of <strong>127.0.0.0/8</strong>. Being a specific IP, it doesn't require DNS resolution or hostname resolution here.</p>
@@ -261,9 +262,9 @@
 ::1             facebook.com       # For IPv6
 127.0.0.1       www.facebook.com
 ::1             www.facebook.com   # For www. subdomain, IPv6</code></pre>
-<p><img src="https://substackcdn.com/image/fetch/$s_!cZEp!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4d7a0932-4544-40b4-b0da-43b2838bbc2e_3252x2214.png" alt="" /></p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4d7a0932-4544-40b4-b0da-43b2838bbc2e_3252x2214.png" alt="" /></p>
 <p>And running a ping command <code>**ping facebook.com**</code>; this is also failing. If you note the IP for ping, <strong>127.0.0.1</strong>!</p>
-<p><img src="https://substackcdn.com/image/fetch/$s_!tjM8!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7f2ad1fc-94a9-40ec-96dc-ffde7c55f548_1286x306.png" alt="" /></p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7f2ad1fc-94a9-40ec-96dc-ffde7c55f548_1286x306.png" alt="" /></p>
 <p>If you tried this and facebook.com still keeps resolving, the reason is DNS caching. There's a program called dscacheutil that will help you show the resolved IP.</p>
 <pre><code>dscacheutil -q host -a name facebook.com
 name: facebook.com
@@ -277,7 +278,7 @@ ip_address: 127.0.0.1</code></pre>
 <h2>Docker and Container Networking</h2>
 <p>Understanding this in containerized environments is important. Many people mix and match here (I used to too at one time), and a lot of time was spent debugging.</p>
 <p>Both localhost and 127.0.0.1 always refer to the loopback interface of the current network namespace. However, each container has its own isolated network namespace. Let's say we have an app running:</p>
-<pre><code># From host machine:
+<pre><code class="language-bash"># From host machine:
 docker run -p 8080:8080 projectlighthouse
 
 # On the host, localhost/127.0.0.1 refer to the HOST namespace:
@@ -310,7 +311,7 @@ curl http://127.0.0.1:8080</code></pre>
 <p>For production systems, prefer explicit IP addresses in binding configurations. And for development, use <code>127.0.0.1</code> when you need predictable IPv4 behavior.</p>
 <p>Understanding the difference between these two things in production debugging can save you hours of troubleshooting mysterious connection failures… hopefully.</p>
 <p>¹Just fyi, in 2019, DualStack was deprecated again <a href="https://go-review.googlesource.com/c/go/+/146659">https://go-review.googlesource.com/c/go/+/146659</a>, now it's enabled by default.</p>
-<p><img src="https://substackcdn.com/image/fetch/$s_!myib!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff6576728-9859-47cd-97f8-23e880e87361_3074x1848.png" alt="" /></p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff6576728-9859-47cd-97f8-23e880e87361_3074x1848.png" alt="" /></p>
                 </div>
             </div>
         </div>
@@ -350,7 +351,7 @@ curl http://127.0.0.1:8080</code></pre>
             <span>
                 v<span class="text-gray-400">2.27.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">331</span>ヅ<span class="text-gray-500/60">ddd178719a0e56174264354fe989455d654d4614</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">335</span>ヅ<span class="text-gray-500/60">fb16503ef8bb55b97b77738353a0d4a57d0250fa</span></span>
         </div>
     </footer>
 </body>

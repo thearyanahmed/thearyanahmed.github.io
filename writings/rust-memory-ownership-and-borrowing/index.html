@@ -235,19 +235,20 @@
                 </div>
                 <div
                     class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
-                    <p>Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don’t understand it quite well, then it’ll be difficult for you to write good rust code.</p>
-<p>It’s the ownership model. That keeps us safe and lets us sleep at night after we deploy we rust code to production. This is also how rust avoids a garbage collector.</p>
-<p>This is my take on the matter, as I’m learning, I might have made a mistake while writing, feel free to point it out.</p>
+                    <h1>Rust Memory Ownership and Borrowing</h1>
+<p>Rust has a pretty good approach to handling this. There is a bit of learning curve. But if you skip it for any reason, or don't understand it quite well, then it'll be difficult for you to write good rust code.</p>
+<p>It's the ownership model. That keeps us safe and lets us sleep at night after we deploy we rust code to production. This is also how rust avoids a garbage collector.</p>
+<p>This is my take on the matter, as I'm learning, I might have made a mistake while writing, feel free to point it out.</p>
 <p>Lets get started,</p>
 <h2>The Stack</h2>
 <blockquote>
-<p><em>In computer science, a stack is an abstract data type that serves as a collection of elements, with two main principal operations: </em>Push, which adds an element to the collection, and Pop, which removes the most recently added element that was not yet removed. — WikiPedia</p>
+<p>In computer science, a stack is an abstract data type that serves as a collection of elements, with two main principal operations: Push, which adds an element to the collection, and Pop, which removes the most recently added element that was not yet removed. — WikiPedia</p>
 </blockquote>
 <p>So, a stack, the idea is to say have objects on top of another. When we add an object, we add it to the top. And when we remove anything from it, we also do it from the top.</p>
 <h2>The Stack Frame</h2>
 <p>Our code, in terms of execution, think that it is loaded in the stack. So, for rust, we start from the main function. We put our main function on the stack.</p>
 <p>How to put it…? Imagine our stack frame is a sheet of paper. And the function body is on the sheet of paper.</p>
-<p>And imagine our processor is a person, who reads the current sheet of paper in-front of him, and does what’s instructed.</p>
+<p>And imagine our processor is a person, who reads the current sheet of paper in-front of him, and does what's instructed.</p>
 <p>The current stackframe is also, in other words the scope.</p>
 <h2>When a function is called</h2>
 <p>When a function is called, that is when we actually put our sheet of paper on top of our stack. Lets take a look at the following code,</p>
@@ -271,15 +272,15 @@ fn print_another_variable() {
 <blockquote>
 <p>Stack is very fast</p>
 </blockquote>
-<p>Now, when we put something on the stack, we need to tell it how much memory we need. For an i32 for example, the size is know. It’s a 32 bit signed integer.</p>
-<p>If we try to remember, the maximum value for an integer is 2147483647. If we try to put anything beyond that, it’ll overflow. But the key point is we know the bits. 32 bits fixed. Putting something bigger won’t make it 33 bits. It’ll always be 32 bits.</p>
+<p>Now, when we put something on the stack, we need to tell it how much memory we need. For an i32 for example, the size is know. It's a 32 bit signed integer.</p>
+<p>If we try to remember, the maximum value for an integer is 2147483647. If we try to put anything beyond that, it'll overflow. But the key point is we know the bits. 32 bits fixed. Putting something bigger won't make it 33 bits. It'll always be 32 bits.</p>
 <blockquote>
 <p>Size Unknown
-Putting stuff on the stack works fine when the size is known. But what about the times we don’t know the size? For example a slice or vector? Or a string (not a char) .</p>
+Putting stuff on the stack works fine when the size is known. But what about the times we don't know the size? For example a slice or vector? Or a string (not a char) .</p>
 </blockquote>
-<p>Let’s think for a moment, we want to store dynamic values. Where the value can grow or shrink. Take an array. Array’s has a fixed length. An array[5] can hold 5 elements at max.</p>
+<p>Let's think for a moment, we want to store dynamic values. Where the value can grow or shrink. Take an array. Array's has a fixed length. An array[5] can hold 5 elements at max.</p>
 <p>But a vector can grow, you can start with 5 elements, end up having N where N is &lt;, = or &gt; than 5. We can not ask our stack to give us unlimited space.</p>
-<p>For these problems, let’s add a layer in between. We don’t directly put the growable data in to the stack, we put our growable dynamic data somewhere else. And, we put a pointer, which’s size is known, we put the point to our stack.</p>
+<p>For these problems, let's add a layer in between. We don't directly put the growable data in to the stack, we put our growable dynamic data somewhere else. And, we put a pointer, which's size is known, we put the point to our stack.</p>
 <blockquote>
 <p>Heap
 Our heap is not as fast and efficient as our stack, but it gives us support for handling dynamic content like strings or vectors.</p>
@@ -289,7 +290,7 @@ Our heap is not as fast and efficient as our stack, but it gives us support for 
 <pre><code class="language-rust">fn main() {
     let a = String::from("Hello, World");
 }</code></pre>
-<p>For this piece of code, we tell the heap to store “Hello, World” string into memory. It checks how much space does it need based on what we have currently. We have 12 characters (comma and space included).</p>
+<p>For this piece of code, we tell the heap to store &quot;Hello, World&quot; string into memory. It checks how much space does it need based on what we have currently. We have 12 characters (comma and space included).</p>
 <p>The heap takes say memory address 0xAB0001 (lets assume), and starts putting our string. Imagine the sequence goes on like this 0xAB0001, 0xAB0002 … 0xABN.</p>
 <p>Our hello world string ends at 0xAB0012. But what do we store in our stack? Our stack holds the following values,</p>
 <p>ptr = 0xAB0001 # a pointer to our first memory address
@@ -297,10 +298,10 @@ cap = 12 # cap stands for capacity
 len = 12 # len stands for length
 If we update the string to Hello, our capacity still remain 12, but our length will be 5.</p>
 <p>And we know the size of the pointer variable itself. If we break down capacity and length, we know their value too.</p>
-<p>So we have a solution. Let’s take a look at the 3 rules of ownership rust tells us about.</p>
+<p>So we have a solution. Let's take a look at the 3 rules of ownership rust tells us about.</p>
 <h2>3 Rules of Ownership</h2>
 <ol>
-<li>Each value in Rust has a variable that’s called its owner.</li>
+<li>Each value in Rust has a variable that's called its owner.</li>
 <li>There can only be one owner at a time.</li>
 <li>When the owner goes out of scope, the value will be dropped.</li>
 </ol>
@@ -308,24 +309,24 @@ If we update the string to Hello, our capacity still remain 12, but our length w
 <p>Lets take this example for a moment</p>
 <pre><code class="language-rust">let x = 100;
 let y = x;</code></pre>
-<p>This will trigger a COPY. Copy of the value 100. Cause x in this case is an integer, or in other words, a known sized variable. Same for other known sized. It’s cheap and fast to copy them around.</p>
+<p>This will trigger a COPY. Copy of the value 100. Cause x in this case is an integer, or in other words, a known sized variable. Same for other known sized. It's cheap and fast to copy them around.</p>
 <p>But, for the following code,</p>
 <pre><code class="language-rust">let a = String::from("Hello");
 let b = a ;</code></pre>
-<p>So, like before, a should be a pointer to the heap memory, holding the data “Hello”. If so, now when we assign b, if it copies the pointer like we would do for an integer or known sized data type, then our “Hello” would have two owners.</p>
+<p>So, like before, a should be a pointer to the heap memory, holding the data &quot;Hello&quot;. If so, now when we assign b, if it copies the pointer like we would do for an integer or known sized data type, then our &quot;Hello&quot; would have two owners.</p>
 <h2>2 Owners &amp; Double Free Error</h2>
-<p>For our analogy mentioned above, Hello has two owners. But if one changes, there isn’t any way for the other one to know that something has changed.</p>
-<p>Maybe for a we have changed it to “Hello, Universe, this is from the Milky Way galaxy.”, <strong>the capacity and length both has changed. But for b, it doesn’t know yet! The pointers get out of sync</strong>.</p>
-<p>Now when it’s time to clean up the memory, both owners a and b tries to clear the memory. That will trigger error, cause say a clears the memory at first, and then (imagine), even if it is the very next step b tries to clear the memory.</p>
+<p>For our analogy mentioned above, Hello has two owners. But if one changes, there isn't any way for the other one to know that something has changed.</p>
+<p>Maybe for a we have changed it to &quot;Hello, Universe, this is from the Milky Way galaxy.&quot;, the capacity and length both has changed. But for b, it doesn't know yet! The pointers get out of sync.</p>
+<p>Now when it's time to clean up the memory, both owners a and b tries to clear the memory. That will trigger error, cause say a clears the memory at first, and then (imagine), even if it is the very next step b tries to clear the memory.</p>
 <p>But it has already been cleared!</p>
-<p>Let’s think of another scenario, our capacity was 12. Now we assign a very long string, and make the length (and capacity) of the string 500.</p>
+<p>Let's think of another scenario, our capacity was 12. Now we assign a very long string, and make the length (and capacity) of the string 500.</p>
 <p>These are 500 characters of single chars. They need to sit next to one another. Just like an array. Remember array takes a fixed memory, so all the elements sits next to another according to the sequence?</p>
-<p>Now, the CPU sees that there isn’t 500 free blocks of memory from that 0xAB0001. Meaning, we would need from 0xAB0001 to 0xAB0500 continuous.</p>
+<p>Now, the CPU sees that there isn't 500 free blocks of memory from that 0xAB0001. Meaning, we would need from 0xAB0001 to 0xAB0500 continuous.</p>
 <p>Seeing that the space is not available, it reassigns the value to a next memory address. Maybe 0xQQ0001 to OxQQ0500.</p>
 <p>But for b, there is no way to know that the string *ptr -&gt; should not longer point to 0xAB0001. Resulting in garbage value.</p>
-<h2>Rust’s solution</h2>
-<p>So for rust, when assigning let b = a where a is a string or of unknown sized data type, it triggers a move instead of copy. Meaning, the pointer information that was stored in a, is now stored in b, and a doesn’t have that information.</p>
-<p>If we run the following program, it’ll cause an error, saying `move occurs because a has type String, which does not implement the Copy.</p>
+<h2>Rust's solution</h2>
+<p>So for rust, when assigning let b = a where a is a string or of unknown sized data type, it triggers a move instead of copy. Meaning, the pointer information that was stored in a, is now stored in b, and a doesn't have that information.</p>
+<p>If we run the following program, it'll cause an error, saying `move occurs because a has type String, which does not implement the Copy.</p>
 <pre><code class="language-rust">let a = String::from("Hello");
 println!("{}",a);
 
@@ -334,7 +335,7 @@ let b = a;
 println!("b = {}",b);
 println!("a = {}",a);</code></pre>
 <h2>Copying the unknown sized data</h2>
-<p>If we wanted to copy the actual value “Hello” to be, we need to do a Clone instead like let b = a.clone(). And take a moment to realise that these solutions abide by the rules of ownership.</p>
+<p>If we wanted to copy the actual value &quot;Hello&quot; to be, we need to do a Clone instead like let b = a.clone(). And take a moment to realise that these solutions abide by the rules of ownership.</p>
 <h2>Rule 3 — Out of scopes</h2>
 <p>Take a look at the following,</p>
 <pre><code class="language-rust">fn main() {
@@ -349,10 +350,10 @@ fn print_something(a : String) {
  println!("inside the function =&gt; {}", a);
 }</code></pre>
 <p>Function params behave in a similar way. In this print_something() function, we pass in an argument a : String . See the function does not return anything.</p>
-<p>So, the variable’s pointer information is passed to that function’s a parameter. Just like let b = a example mentioned above. Also, remember that functions are like a sheet of paper? So when the call ends, it’s torn apart.</p>
-<p>In rust’s words, the value is dropped.</p>
-<p>What happens here? This program will throw an error. Once the ownership of a has been passed to print_something, and print_something has been executed, it goes out of scope. And as the function doesn’t return anything, all the value inside it is dropped.</p>
-<p>Therefore, in the main function, we don’t have any value for a. We gave the ownership away. Now running println!(“a in main =&gt; {}”, a); after calling print_something() will trigger an error.</p>
+<p>So, the variable's pointer information is passed to that function's a parameter. Just like let b = a example mentioned above. Also, remember that functions are like a sheet of paper? So when the call ends, it's torn apart.</p>
+<p>In rust's words, the value is dropped.</p>
+<p>What happens here? This program will throw an error. Once the ownership of a has been passed to print_something, and print_something has been executed, it goes out of scope. And as the function doesn't return anything, all the value inside it is dropped.</p>
+<p>Therefore, in the main function, we don't have any value for a. We gave the ownership away. Now running println!(&quot;a in main =&gt; {}&quot;, a); after calling print_something() will trigger an error.</p>
 <p>But if we called the print_something() function after println, then it would not be a problem cause during println, the a variable still holds the information.</p>
 <h2>Returning the ownership</h2>
 <p>Another way to solve it is to return a value from the function. Take the following code and it will run just fine.</p>
@@ -372,7 +373,7 @@ fn print_something(a : String) -&gt; String {
 
  a // here we are returning a string value
 }</code></pre>
-<p>We needed to add mut because rust’s variables are by default immutable. But the key point here is in a = print_something(a), we are getting back a string from the print_something() function.</p>
+<p>We needed to add mut because rust's variables are by default immutable. But the key point here is in a = print_something(a), we are getting back a string from the print_something() function.</p>
 <h2>Borrowing | Passing the reference</h2>
 <p>Another solution would be to pass the reference. Take the following example</p>
 <pre><code class="language-rust">fn main() {
@@ -395,15 +396,15 @@ fn print_something(a : &amp;String) {
 
 let b = &amp;mut a;
 let c = &amp;mut a;</code></pre>
-<p>It’ll throw an error. Going back to the same problem, imagine b changes some data but c doesn’t know about it.</p>
+<p>It'll throw an error. Going back to the same problem, imagine b changes some data but c doesn't know about it.</p>
 <p>Ownership, Read only borrow , Mutable borrow and Returning ownership
 You can tell what a function do.</p>
 <pre><code class="language-rust">fn a_func(takes_ownership: String, read_only_borrow: &amp;str, mutable_borrow: &amp;mut String){}</code></pre>
-<p>// add '-&gt; String' before the first curly brace if you want it to return some ownership.// add '-&gt; String' before the first curly brace if you want it to return some ownership.
-<strong>Update</strong>: I would like add the following two sections based on the feedback I’ve received.</p>
+<p>// add '-&gt; String' before the first curly brace if you want it to return some ownership.
+Update: I would like add the following two sections based on the feedback I've received.</p>
 <h2>Borrow vs Move under the hood</h2>
 <blockquote>
-<p>that “borrow” keeps the data at the same place on the stack and passes a memory pointer only, but “move” always copies it from one place of the stack to other one. Therefore, only sized data can be moved, and it can cause a performance issue. In this way lifetime is automatically ensured by how stack works.
+<p>that &quot;borrow&quot; keeps the data at the same place on the stack and passes a memory pointer only, but &quot;move&quot; always copies it from one place of the stack to other one. Therefore, only sized data can be moved, and it can cause a performance issue. In this way lifetime is automatically ensured by how stack works.
 -Tibor Erdelyi , Lead Software Engineer at Upland BA Insight</p>
 </blockquote>
 <p>Multiple mutation</p>
@@ -458,7 +459,7 @@ You can tell what a function do.</p>
             <span>
                 v<span class="text-gray-400">2.27.0</span>
             </span>
-            <span class="text-sm"><span class="text-gray-500/60">331</span>ヅ<span class="text-gray-500/60">ddd178719a0e56174264354fe989455d654d4614</span></span>
+            <span class="text-sm"><span class="text-gray-500/60">335</span>ヅ<span class="text-gray-500/60">fb16503ef8bb55b97b77738353a0d4a57d0250fa</span></span>
         </div>
     </footer>
 </body>

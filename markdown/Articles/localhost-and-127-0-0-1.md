@@ -1,4 +1,6 @@
-![](https://substackcdn.com/image/fetch/$s_!nm7H!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png)
+# localhost and 127.0.0.1
+
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png)
 
 > Based on true events.
 
@@ -12,7 +14,7 @@ So while setting up the remote MCP pipeline, I saw that CI was failing on E2E. A
 
 ## Failing CI and Where It's Coming From
 
-![](https://substackcdn.com/image/fetch/$s_!hMkt!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2ca8a880-a68a-4207-8c0a-90b27c7bb75c_2720x678.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2ca8a880-a68a-4207-8c0a-90b27c7bb75c_2720x678.png)
 
 A failed test from our internal pipeline. The error is:
 
@@ -34,19 +36,19 @@ Here, the client is first requesting a local container running in github action,
 
 On Aug 31, 2016, this feature was added to go's **net/http** package: [https://go-review.googlesource.com/c/go/+/28077/3/src/net/http/transport.go](https://go-review.googlesource.com/c/go/+/28077/3/src/net/http/transport.go).
 
-![](https://substackcdn.com/image/fetch/$s_!peTi!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F50ccff0d-fc4a-4b9d-ae46-123be894a278_3080x800.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F50ccff0d-fc4a-4b9d-ae46-123be894a278_3080x800.png)
 
 But the problem is, **FakeWebsocketServer** is only listening on IPv4 [digitalocean-labs/mcp-digitalocean/testing/e2e_websocket_test.go](https://github.com/digitalocean-labs/mcp-digitalocean/blob/main/testing/e2e_websocket_test.go#L136-L141).
 
-![](https://substackcdn.com/image/fetch/$s_!ARBE!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffa1d7f61-1b41-4a5d-b726-c8cac1850f93_1360x442.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffa1d7f61-1b41-4a5d-b726-c8cac1850f93_1360x442.png)
 
 If we look at go's `net/` package documentation, this is the following:
 
-![](https://substackcdn.com/image/fetch/$s_!P8TU!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe0cc6bd3-9e4f-4a16-9615-df9d34a36b5c_2508x628.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe0cc6bd3-9e4f-4a16-9615-df9d34a36b5c_2508x628.png)
 
 Here I'm highlighting `**a literal unspecified IP address**`, we're explicitly specifying IPv4 with `**0.0.0.0**`. Trying to show a sequence.
 
-![](https://substackcdn.com/image/fetch/$s_!l4tY!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F88975377-5dab-4005-9690-793f76d35944_2650x4536.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F88975377-5dab-4005-9690-793f76d35944_2650x4536.png)
 
 We didn't get connection failed from the start. A connection was established, then it failed while reading the stream. So, in short, we're getting connection RST (reset) from the linux kernel due to a mix and match of IPv6 and IPv4 here.
 
@@ -54,9 +56,9 @@ We didn't get connection failed from the start. A connection was established, th
 
 As a solution, if we don't leave it to go to decide whether to request on IPv6 or IPv4, but take control ourselves and tell it to request on IPv4, our problem is solved. This is the small PR [https://github.com/digitalocean-labs/mcp-digitalocean/pull/195](https://github.com/digitalocean-labs/mcp-digitalocean/pull/195). The changes in this PR simply change from localhost to 127.0.0.1.
 
-![](https://substackcdn.com/image/fetch/$s_!nm7H!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png)
 
-![](https://substackcdn.com/image/fetch/$s_!a8qX!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff9d58541-1c43-47ab-9e05-79ac76a27cba_2252x776.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff9d58541-1c43-47ab-9e05-79ac76a27cba_2252x776.png)
 
 And our CI is green.
 
@@ -85,11 +87,11 @@ If we change the /etc/hosts file and set facebook.com to 127.0.0.1 IP, then goin
 ::1             www.facebook.com   # For www. subdomain, IPv6
 ```
 
-![](https://substackcdn.com/image/fetch/$s_!cZEp!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4d7a0932-4544-40b4-b0da-43b2838bbc2e_3252x2214.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4d7a0932-4544-40b4-b0da-43b2838bbc2e_3252x2214.png)
 
 And running a ping command `**ping facebook.com**`; this is also failing. If you note the IP for ping, **127.0.0.1**!
 
-![](https://substackcdn.com/image/fetch/$s_!tjM8!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7f2ad1fc-94a9-40ec-96dc-ffde7c55f548_1286x306.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7f2ad1fc-94a9-40ec-96dc-ffde7c55f548_1286x306.png)
 
 If you tried this and facebook.com still keeps resolving, the reason is DNS caching. There's a program called dscacheutil that will help you show the resolved IP.
 
@@ -114,7 +116,7 @@ Understanding this in containerized environments is important. Many people mix a
 
 Both localhost and 127.0.0.1 always refer to the loopback interface of the current network namespace. However, each container has its own isolated network namespace. Let's say we have an app running:
 
-```
+```bash
 # From host machine:
 docker run -p 8080:8080 projectlighthouse
 
@@ -153,4 +155,4 @@ Understanding the difference between these two things in production debugging ca
 
 ¹Just fyi, in 2019, DualStack was deprecated again [https://go-review.googlesource.com/c/go/+/146659](https://go-review.googlesource.com/c/go/+/146659), now it's enabled by default.
 
-![](https://substackcdn.com/image/fetch/$s_!myib!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff6576728-9859-47cd-97f8-23e880e87361_3074x1848.png)
+![](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff6576728-9859-47cd-97f8-23e880e87361_3074x1848.png)

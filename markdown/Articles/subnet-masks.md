@@ -1,5 +1,4 @@
-It’s an essential component of IP addressing and subnetting, allowing devices on a network to determine which portion of an IP address identifies the network itself and which portion identifies individual devices within that network.
-
+# Subnet Masks
 
 A subnet mask is a fundamental concept in computer networking that is used to divide an IP address into two parts: the network address and the host address. It's an essential component of IP addressing and subnetting, allowing devices on a network to determine which portion of an IP address identifies the network itself and which portion identifies individual devices within that network.
 
