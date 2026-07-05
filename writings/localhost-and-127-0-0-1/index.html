@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="og:type" content="website" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:A note taking app" content="A note taking app" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Building projectlighthouse - commitment towards correctness" content="Building projectlighthouse - commitment towards correctness" />
+<title>localhost and 127.0.0.1</title>
+<meta property="og:title" content="localhost and 127.0.0.1" />
+<meta name="twitter:title" content="localhost and 127.0.0.1" />
+<meta name="embedx:title" content="localhost and 127.0.0.1" />
+<meta name="description" content="A deep dive into the difference between localhost and 127.0.0.1, and how this subtle distinction caused a production CI failure. Learn about IPv4 vs IPv6, network namespaces, and why these seemingly interchangeable terms matter." />
+<meta property="og:description" content="A deep dive into the difference between localhost and 127.0.0.1, and how this subtle distinction caused a production CI failure. Learn about IPv4 vs IPv6, network namespaces, and why these seemingly interchangeable terms matter." />
+<meta name="twitter:description" content="A deep dive into the difference between localhost and 127.0.0.1, and how this subtle distinction caused a production CI failure. Learn about IPv4 vs IPv6, network namespaces, and why these seemingly interchangeable terms matter." />
+<meta name="embedx:description" content="A deep dive into the difference between localhost and 127.0.0.1, and how this subtle distinction caused a production CI failure. Learn about IPv4 vs IPv6, network namespaces, and why these seemingly interchangeable terms matter." />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="twitter:card" content="A deep dive into the difference between localhost and 127.0.0.1, and how this subtle distinction caused a production CI failure. Learn about IPv4 vs IPv6, network namespaces, and why these seemingly interchangeable terms matter." />
+<meta property="og:site_name" content="thearyanahmed.com" />
+<link rel="canonical" href="https://thearyanahmed.substack.com/p/localhost-127001" />
+<meta property="article:localhost and 127.0.0.1" content="localhost and 127.0.0.1" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+    <link href="https://thearyanahmed.com/css/app.css" rel="stylesheet">
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-90CDQWTTNW"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-90CDQWTTNW');
+</script>
+</head>
+
+<body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
+
+    <div
+    class="notsticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-transparent">
+    <nav class="w-full mx-auto bg-white">
+        <div class="px-2 sm:px-6 lg:px-8 dotted-bg">
+            <div class="relative flex justify-between h-16">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <!-- Mobile menu button -->
+                    <button onclick="toggleMobileMenu()" type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="justify-center w-full mx-auto hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="https://thearyanahmed.com" title="thearyanahmed's blog" target="_self"
+                            class="text-gray-800 hover:underline font-semibold text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            home
+                        </a>
+                        <a href="https://thearyanahmed.com/writings" title="Technical Writings"
+                            class="text-gray-800 hover:underline font-semibold text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            technical writings
+                        </a>
+                        <a href="https://thearyanahmed.com/abcd" title="ABCD for Kids"
+                            class="text-gray-800 hover:underline font-semibold text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            abcd for kids
+                        </a>
+
+                        
+                        
+
+
+                        <a href="https://github.com/thearyanahmed" title="thearyanahmed's github"
+                            class="text-gray-900 inline-flex items-center px-1 pt-1 text-base" target="_blank">
+                            <svg width="24" height="24" fill="currentColor"
+                                class="text-gray-800 hover:underline mr-3 text-opacity-50 transform">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.463 2 11.97c0 4.404 2.865 8.14 6.839 9.458.5.092.682-.216.682-.48 0-.236-.008-.864-.013-1.695-2.782.602-3.369-1.337-3.369-1.337-.454-1.151-1.11-1.458-1.11-1.458-.908-.618.069-.606.069-.606 1.003.07 1.531 1.027 1.531 1.027.892 1.524 2.341 1.084 2.91.828.092-.643.35-1.083.636-1.332-2.22-.251-4.555-1.107-4.555-4.927 0-1.088.39-1.979 1.029-2.675-.103-.252-.446-1.266.098-2.638 0 0 .84-.268 2.75 1.022A9.606 9.606 0 0112 6.82c.85.004 1.705.114 2.504.336 1.909-1.29 2.747-1.022 2.747-1.022.546 1.372.202 2.386.1 2.638.64.696 1.028 1.587 1.028 2.675 0 3.83-2.339 4.673-4.566 4.92.359.307.678.915.678 1.846 0 1.332-.012 2.407-.012 2.734 0 .267.18.577.688.48C19.137 20.107 22 16.373 22 11.969 22 6.463 17.522 2 12 2z">
+                                </path>
+                            </svg>
+                        </a>
+
+                        <a href="https://linkedin.com/in/thearyanahmed" title="thearyanahmed's linkedin"
+                            class="text-gray-900 inline-flex items-center px-1 pt-1 text-base" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-linkedin h-5 w-5 text-gray-800 hover:underline mr-3 text-opacity-50 transform"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="hidden dotted-bg" id="mobile-menu">
+            <div class="pt-6 pb-4 space-y-1">
+                <a href="https://thearyanahmed.com"
+                    class="font-semibold border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
+                <a href="https://thearyanahmed.com/writings" title="Technical Writings"
+                    class="font-semibold border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">
+                    technical writings</a>
+
+                <a href="https://thearyanahmed.com/abcd" title="ABCD for Kids"
+                    class="font-semibold border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">
+                    abcd</a>
+
+                
+
+                
+
+                <a href="https://github.com/thearyanahmed" target="_blank"
+                    class="font-semibold border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Github</a>
+
+                <a href="https://linkedin.com/in/thearyanahmed" target="_blank"
+                    class="font-semibold border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Linkedin</a>
+
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+    <main class="lg:relative">
+        <div class="max-w-3xl mx-auto px-4 mt-8">
+        <div class="relative py-16 bg-white overflow-hidden rounded-lg">
+            <div class="relative px-4 sm:px-6 lg:px-8">
+                <div class="text-lg max-w-prose mx-auto">
+                    <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
+                        localhost and 127.0.0.1
+                    </h1>
+                </div>
+
+                
+                <div class="text-lg max-w-prose mx-auto">
+                    <p class="mt-8 text-xl text-gray-500 leading-8">
+                        A deep dive into the difference between localhost and 127.0.0.1, and how this subtle distinction caused a production CI failure. Learn about IPv4 vs IPv6, network namespaces, and why these seemingly interchangeable terms matter.
+                    </p>
+                </div>
+                <div class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
+                    <p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png" alt="" /></p>
+<blockquote>
+<p>Based on true events.</p>
+</blockquote>
+<p>I came to this article from a real production issue. Let me start by sharing the problem. DigitalOcean's current MCP server is a local MCP: <a href="https://github.com/digitalocean-labs/mcp-digitalocean">https://github.com/digitalocean-labs/mcp-digitalocean</a>. But adding remote MCP in MCP tooling is easier, and many tools can't integrate with local MCP, for example, remote MCP is suitable with chatGPT, local MCP is not.</p>
+<p>DigitalOcean's practice is to have a lot of tests written here, various types of tests. E2E (end-to-end) tests are written for remote MCP. Which run in our internal pipeline. However, the tests are public and you can see them <a href="https://github.com/digitalocean-labs/mcp-digitalocean/tree/main/testing">here</a>.</p>
+<p>Thanks for reading Aryan's Journal! Subscribe for free to receive new posts and support my work.</p>
+<p>So while setting up the remote MCP pipeline, I saw that CI was failing on E2E. Although locally, both mac and linux tests were passing! It was failing because I (myself) had overlooked a very basic thing.</p>
+<h2>Failing CI and Where It's Coming From</h2>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2ca8a880-a68a-4207-8c0a-90b27c7bb75c_2720x678.png" alt="" /></p>
+<p>A failed test from our internal pipeline. The error is:</p>
+<pre><code>transport error: failed to send request: failed to send request: Post "http://localhost:32772/mcp": read tcp [::1]:41406-&gt;[::1]:32772: read: connection reset by peer</code></pre>
+<p>Now if we look at the error, it's showing that after requesting from localhost, the request is establishing but then the request is being closed. Connection reset by peer doesn't mean both parties agreed to close the connection, it's more like slamming the door!</p>
+<p>The interesting thing is that it successfully runs on local machine, both mac and linux, but not in github action! So what's happening? Many of you might have figured it out. For those still guessing, here's a hint:</p>
+<blockquote>
+<pre><code>Post "http://localhost:32772/mcp": read tcp [::1]:41406-&gt;[::1]:32772</code></pre>
+</blockquote>
+<h2>Root Cause Analysis</h2>
+<p>Here, the client is first requesting a local container running in github action, through localhost. Connection is establishing. But it established with <strong>IPv6</strong> (<code>**[::1]**</code>). Because when going through localhost, a hostname resolution lookup happens. Which returns IPv6. Although we didn't explicitly request for IPv6, we still got IPv6 result because the go client actually sends 2 requests by default when establishing a connection. This could have been configured with the <strong>DualStack</strong> boolean. DualStack means trying to dial IPv4 + IPv6 together (Happy Eyeballs algorithm).</p>
+<p>On Aug 31, 2016, this feature was added to go's <strong>net/http</strong> package: <a href="https://go-review.googlesource.com/c/go/+/28077/3/src/net/http/transport.go">https://go-review.googlesource.com/c/go/+/28077/3/src/net/http/transport.go</a>.</p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F50ccff0d-fc4a-4b9d-ae46-123be894a278_3080x800.png" alt="" /></p>
+<p>But the problem is, <strong>FakeWebsocketServer</strong> is only listening on IPv4 <a href="https://github.com/digitalocean-labs/mcp-digitalocean/blob/main/testing/e2e_websocket_test.go#L136-L141">digitalocean-labs/mcp-digitalocean/testing/e2e_websocket_test.go</a>.</p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ffa1d7f61-1b41-4a5d-b726-c8cac1850f93_1360x442.png" alt="" /></p>
+<p>If we look at go's <code>net/</code> package documentation, this is the following:</p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe0cc6bd3-9e4f-4a16-9615-df9d34a36b5c_2508x628.png" alt="" /></p>
+<p>Here I'm highlighting <code>**a literal unspecified IP address**</code>, we're explicitly specifying IPv4 with <code>**0.0.0.0**</code>. Trying to show a sequence.</p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F88975377-5dab-4005-9690-793f76d35944_2650x4536.png" alt="" /></p>
+<p>We didn't get connection failed from the start. A connection was established, then it failed while reading the stream. So, in short, we're getting connection RST (reset) from the linux kernel due to a mix and match of IPv6 and IPv4 here.</p>
+<h2>Solution</h2>
+<p>As a solution, if we don't leave it to go to decide whether to request on IPv6 or IPv4, but take control ourselves and tell it to request on IPv4, our problem is solved. This is the small PR <a href="https://github.com/digitalocean-labs/mcp-digitalocean/pull/195">https://github.com/digitalocean-labs/mcp-digitalocean/pull/195</a>. The changes in this PR simply change from localhost to 127.0.0.1.</p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F198801a6-f498-4a34-a8fc-a34cbcc16e23_2766x358.png" alt="" /></p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff9d58541-1c43-47ab-9e05-79ac76a27cba_2252x776.png" alt="" /></p>
+<p>And our CI is green.</p>
+<h2>localhost and 127.0.0.1</h2>
+<p>Many of us use localhost and 127.0.0.1 interchangeably. However, there's a fundamental difference between them. 127.0.0.1 is a <strong>fixed IP address</strong> in a larger loopback range. 127.0.0.1 is actually part of <strong>127.0.0.0/8</strong>. Being a specific IP, it doesn't require DNS resolution or hostname resolution here.</p>
+<p>On the other hand, localhost is a <strong>hostname</strong>. A hostname is a human-readable label/name for network connected devices. For example, printer.local, raspberrypi.local etc. If we dial/request with localhost, then the IP address needs to be resolved for that device first. Back to basics, OSI Networking layer 2.</p>
+<p>Since DNS isn't being used here, the <strong>/etc/hosts</strong> file (on unix like systems) has some records, which state which IP for which hostname. Same file on Mac too.</p>
+<p>If we change the /etc/hosts file and set facebook.com to 127.0.0.1 IP, then going to facebook.com from that machine will show unable to connect. My /etc/hosts file:</p>
+<pre><code>##
+# Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1       localhost
+
+127.0.0.1       facebook.com
+::1             facebook.com       # For IPv6
+127.0.0.1       www.facebook.com
+::1             www.facebook.com   # For www. subdomain, IPv6</code></pre>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4d7a0932-4544-40b4-b0da-43b2838bbc2e_3252x2214.png" alt="" /></p>
+<p>And running a ping command <code>**ping facebook.com**</code>; this is also failing. If you note the IP for ping, <strong>127.0.0.1</strong>!</p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7f2ad1fc-94a9-40ec-96dc-ffde7c55f548_1286x306.png" alt="" /></p>
+<p>If you tried this and facebook.com still keeps resolving, the reason is DNS caching. There's a program called dscacheutil that will help you show the resolved IP.</p>
+<pre><code>dscacheutil -q host -a name facebook.com
+name: facebook.com
+ipv6_address: ::1
+
+name: facebook.com
+ip_address: 127.0.0.1</code></pre>
+<p>Pretty cool hah?</p>
+<h2>A Fun Fact</h2>
+<p>Several years ago, using this technique, Bangladesh gray hat hackers (or rotating rotor whose admin it was) claimed to have hacked 3CA (3xp1r3 Cyber Army)'s forum, gave a video as proof. But actually, they edited the 3CA forum's hostname in /etc/hosts and uploaded a video of serving a local file as far as I remember &gt;_&lt;.</p>
+<h2>Docker and Container Networking</h2>
+<p>Understanding this in containerized environments is important. Many people mix and match here (I used to too at one time), and a lot of time was spent debugging.</p>
+<p>Both localhost and 127.0.0.1 always refer to the loopback interface of the current network namespace. However, each container has its own isolated network namespace. Let's say we have an app running:</p>
+<pre><code class="language-bash"># From host machine:
+docker run -p 8080:8080 projectlighthouse
+
+# On the host, localhost/127.0.0.1 refer to the HOST namespace:
+# Connects to host's 127.0.0.1:8080 (port forwarded to container)
+curl http://localhost:8080
+
+# Same - connects to host's loopback
+curl http://127.0.0.1:8080
+
+# Inside the container, localhost/127.0.0.1 refer to the CONTAINER namespace:
+docker exec -it projectlighthouse bash
+
+# Connects to service INSIDE this container only
+curl http://localhost:8080
+
+# Same - container's loopback, NOT the host
+curl http://127.0.0.1:8080</code></pre>
+<h2>127.0.0.1 != 127.0.0.1</h2>
+<p>An important point: <strong>container's 127.0.0.1 and host machine's 127.0.0.1 are different</strong>. Different namespaces. When we port forward from outside the container (-p 8000:8000), it creates a mapping, but it goes through the host's network interface, not loopback.</p>
+<h2>Conclusion</h2>
+<p>Although we often use localhost and 127.0.0.1 interchangeably, they are fundamentally different:</p>
+<ul>
+<li>
+<p><strong>127.0.0.1</strong> is a concrete IPv4 address with guaranteed behavior</p>
+</li>
+<li>
+<p><strong>localhost</strong> is a hostname, subject to resolution, configuration, and protocol negotiation</p>
+</li>
+</ul>
+<p>For production systems, prefer explicit IP addresses in binding configurations. And for development, use <code>127.0.0.1</code> when you need predictable IPv4 behavior.</p>
+<p>Understanding the difference between these two things in production debugging can save you hours of troubleshooting mysterious connection failures… hopefully.</p>
+<p>¹Just fyi, in 2019, DualStack was deprecated again <a href="https://go-review.googlesource.com/c/go/+/146659">https://go-review.googlesource.com/c/go/+/146659</a>, now it's enabled by default.</p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff6576728-9859-47cd-97f8-23e880e87361_3074x1848.png" alt="" /></p>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="h-20"></div>
+    </div>
+    </main>
+
+    <!-- Calendly link widget begin -->
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+        <!-- Highlight.js for syntax highlighting -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+
+        <script type="module">
+            const imgs = document.getElementsByTagName('img')
+
+            for (let i = 0; i < imgs.length; i++) {
+                const img = imgs[i]
+
+                let src = img.getAttribute('src')
+
+                if (src.startsWith('art::')) {
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    img.setAttribute('src', src)
+                }
+            }
+        </script>
+
+    <script src="https://thearyanahmed.com/js/functions.js"></script>
+    <footer class="max-w-lg mx-auto flex text-center mb-20">
+        <div class="flex flex-col mx-auto text-gray-300">
+            <span>
+                v<span class="text-gray-400">2.28.0</span>
+            </span>
+            <span class="text-sm"><span class="text-gray-500/60">343</span>ヅ<span class="text-gray-500/60">1b1ef916998a736b8287558a9764162c6704af87</span></span>
+        </div>
+    </footer>
+</body>
+
+</html>

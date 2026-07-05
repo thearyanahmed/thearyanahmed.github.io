@@ -1,4 +1,4 @@
-Rust has been a favorite. While doing so, I’ve come across various scenarios where choosing the right string type can significantly impact both performance and code maintainability. In this blog post, I’ll share some insights into when to use different string types in Rust, based on real-world use cases.
+Rust has been a favorite. While doing so, I've come across various scenarios where choosing the right string type can significantly impact both performance and code maintainability. In this blog post, I'll share some insights into when to use different string types in Rust, based on real-world use cases.
 
 ## String
 

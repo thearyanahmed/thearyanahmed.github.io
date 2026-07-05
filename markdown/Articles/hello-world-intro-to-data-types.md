@@ -4,7 +4,6 @@ In the vast realm of programming, data types play a crucial role. They're the bu
 Before we go deep, let's start with a classic "Hello World" using fmt.Println(). This simple line of code lays the foundation for our journey into Golang's syntax.
 
 ```go
-
 package main
 
 import "fmt"

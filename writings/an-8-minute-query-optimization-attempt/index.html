@@ -6,17 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <meta name="author" content="Aryan Ahmed" />
-<title>Aryan&#039;s Journal</title>
-<meta property="og:title" content="Aryan&#039;s Journal" />
-<meta name="twitter:title" content="Aryan&#039;s Journal" />
-<meta name="embedx:title" content="Aryan&#039;s Journal" />
-<meta name="description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta property="og:description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta name="twitter:description" content="My personal site, recording my journey, writing some articles, sometimes." />
-<meta name="embedx:description" content="My personal site, recording my journey, writing some articles, sometimes." />
 <meta name="author" content="Aryan Ahmed" />
-<meta name="twitter:card" content="My personal site, recording my journey, writing some articles, sometimes." />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="og:type" content="website" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:A note taking app" content="A note taking app" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Building projectlighthouse - commitment towards correctness" content="Building projectlighthouse - commitment towards correctness" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:localhost and 127.0.0.1" content="localhost and 127.0.0.1" />
+<title>An 8-Minute Query Optimization Attempt</title>
+<meta property="og:title" content="An 8-Minute Query Optimization Attempt" />
+<meta name="twitter:title" content="An 8-Minute Query Optimization Attempt" />
+<meta name="embedx:title" content="An 8-Minute Query Optimization Attempt" />
+<meta name="description" content="A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds." />
+<meta property="og:description" content="A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds." />
+<meta name="twitter:description" content="A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds." />
+<meta name="embedx:description" content="A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds." />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="twitter:card" content="A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds." />
 <meta property="og:site_name" content="thearyanahmed.com" />
+<link rel="canonical" href="https://thearyanahmed.substack.com/p/minute-query-optimization" />
+<meta property="article:An 8-Minute Query Optimization Attempt" content="An 8-Minute Query Optimization Attempt" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -152,183 +164,66 @@
 </div>
 
     <main class="lg:relative">
-        <div class="group max-w-2xl mx-auto mt-20 mb-16 bg-white rounded-md p-4 lg:p-10 xl:p-20">
-        <p class="">/ thearyanahmed</p>
-        <p class="fredericka-the-great font-medium text-6xl text-black">Aryan Ahmed</p>
+        <div class="max-w-3xl mx-auto px-4 mt-8">
+        <div class="relative py-16 bg-white overflow-hidden rounded-lg">
+            <div class="relative px-4 sm:px-6 lg:px-8">
+                <div class="text-lg max-w-prose mx-auto">
+                    <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
+                        An 8-Minute Query Optimization Attempt
+                    </h1>
+                </div>
 
-        <p class="mt-4 text-gray-600 text-xl font-medium">
-            I'm a programmer. I build stuff
-            <svg id="offset" class="offset-icon rotate cursor-pointer" xmlns="http://www.w3.org/2000/svg"
-     style="width: 20px;height: 20px;display: inline-block;position: relative;opacity: 0.6;"
-     class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
-     onclick="this.classList.add('glitch'); setTimeout(() => this.classList.remove('glitch'), 500);">
-    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-</svg>
-        </p>
-
-        <p class="group-hover:cursor-pointer mt-12 text-gray-600 text-lg font-medium">
-            Software engineer with a focus on the backend, automation, and infrastructure. And a keen
-            spirit
-            for
-            writing code for humans & machines.
-        </p>
-
-        <p class="mt-4 text-gray-600 text-lg font-medium">
-            My primary tech stack includes <span class="font-bold text-gray-800 ">Go, Docker, Kubernetes,
-                Linux</span>.
-            Experienced with different cloud
-            providers as well. I get the basic cloud thing. Also built some tools and services with <span
-                class="font-bold text-red-400">Rust</span>
-            too.
-            And
-            it has became a new favorite.
-            Prefer working on the low level stuff that is close to the processor and hardware.
-        </p>
-
-        <p class="mt-4 text-gray-600 text-xl font-medium">
-            Working as a <a href="https://www.digitalocean.com/products/app-platform" target="_blank"
-                class="text-black font-semibold hover:underline decoration-2">Software Engineer at DigitalOcean</a>,
-            part of
-            the
-            team
-            building
-            the cloud for
-            this world.
-        </p>
-
-        <p class="mt-4 text-gray-600 text-lg font-medium">
-            Sometimes I like to tinker with different tools, trying to build different things. Here I'm trying
-            to
-            <a target="_blank" href="https://github.com/thearyanahmed/trust"
-                class="font-bold text-gray-800 hover:underline decoration-2 hover:text-gray-900">implement TCP
-                stack</a>.
-            And here, trying to <a href="https://github.com/thearyanahmed/curiOS"
-                class="font-bold text-gray-800 hover:underline decoration-2 hover:text-gray-900" target="_blank">build
-                my own
-                Kernel</a>.
-            Doesn't work though! But I got to learn some things.
-        </p>
-
-
-
-        <p class="mt-4 text-gray-600 text-xl font-medium">
-            I often write about my experiences and share my thoughts on kinda <strong class="font-bold text-black">`low
-                level`</strong> and
-            <strong class="font-bold text-black">`systems programming`</strong>, and
-            life and tech in general.
-        </p>
-
-        <div class="mt-20 pt-12">
-            <p class="inline-flex items-center mb-6 text-sm font-semibold text-amber-500 tracking-wide uppercase">
-                <span class="rounded-full bg-amber-400 inline-block"></span>
-                Lighthouse
-            </p>
-
-            <p class="text-gray-600 text-lg font-medium">
-                I'm building <a href="https://projectlighthouse.io" target="_blank"
-                    class="font-bold text-gray-800 hover:underline decoration-2">projectlighthouse.io</a> — a
-                hands-on systems programming education platform where you learn by actually building things. You implement real systems: a Redis clone, a Docker runtime, a TCP
-                stack — from scratch.
-            </p>
-
-            <p class="mt-4 text-gray-600 text-lg font-medium">
-                The platform is aimed at engineers who want to go deeper. If you've ever wondered how a database
-                engine stores data, how a container runtime manages namespaces, or what actually happens inside a
-                TCP handshake — lighthouse is where you find out by building it yourself.
-                Feel free to <a href="https://projectlighthouse.io" target="_blank"
-                    class="font-bold text-gray-800 hover:underline decoration-2">visit the lighthouse</a>.
-            </p>
+                
+                <div class="text-lg max-w-prose mx-auto">
+                    <p class="mt-8 text-xl text-gray-500 leading-8">
+                        A database index is a type of data structure that we can use to greatly improve data retrieval performance. This is a story of how removing index hints brought an 8-minute query down to 2 seconds.
+                    </p>
+                </div>
+                <div class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
+                    <p>A database index is a type of data structure that we can use to greatly improve data retrieval performance. Typically, if we need to search the whole dataset, especially in larger datasets, the query time can increase significantly because this algorithm's time complexity is O(n), where n = length of dataset.</p>
+<p>But what if the dataset length was smaller? Then it would take less time just like before (under normal circumstances, for most common scenarios).</p>
+<p>So, indexes can help us a lot in these cases, for our query planner and engine. Kind of like reducing the lookup dataset's length. And indexing is very common and considered the de facto database optimization by many.</p>
+<p>At the same time, we need to ORDER our dataset. And sometimes we can satisfy the ORDER BY clause with an index. If the query needs to sort data on a column that has an index, the optimizer might choose that path. Remember, database software is a combination of many components. Our simple SELECT $columns FROM $somewhere is not so simple to the database engine. It goes through a lot of steps to get you the data you are looking for.</p>
+<p>Anyways, the optimizer can sometimes use index (pre-satisfied) sorting rather than executing a separate sorting step (filesorting)!</p>
+<p>Having said that, is indexing always beneficial? Well, not really. Recently, we had a table that runs JOIN queries with several other tables. Not the most complex query in our system. That query is quite common and is used in several places.</p>
+<p>A few days ago, one of our engineers noticed that the query was getting quite slow for certain users. After running EXPLAIN, we found that data read per join was around 70 MB. So, you can imagine that per table access, our database engine was reading about 70 MB of data. Which is quite a lot.</p>
+<p>As a solution, one proposal was to use NO_ORDER_INDEX, which tells the database query optimizer <strong>not to use a specific index (or any index) for sorting rows</strong> (i.e., for ORDER BY clauses).</p>
+<p>This brought the <strong>~8 minute query down to ~2 seconds</strong>! That is pretty cool, no? In the database world, this table doesn't have that many rows. Only around <strong>50 million</strong>. However, a lot depends on the column types, the types of tables being JOINed, and how those joins are happening.</p>
+<p>What's the tradeoff of this optimization? The tradeoff is that filesort uses both memory and disk, so now the chance of our db buffer pool getting exhausted increases significantly if we adopt this solution.</p>
+<p>Btw, only about <strong>10 rows were being fetched</strong> from this overall database. There was no SELECT *. So it's not only about how much data is being fetched but also about which path is being taken to fetch it. It was about the journey, not the destination :D</p>
+<p>Also, don't use functions on columns where you wish to utilize the index.</p>
+                </div>
+            </div>
         </div>
 
-        <div class="mt-20">
-
-        </div>
-        <div class="w-full flex flex-col">
-    <h2 class="text-2xl text-center"><span class="text-gray-300">some</span> stuff I work<span
-            class="text-gray-300">(ed)</span> with
-    </h2>
-
-    <div class="mt-12 md:mt-8 grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-2 md:gap-3">
-        <div class="max-md:order-2">
-            <h4 class="font-bold text-gray-400 text-sm uppercase">Languages</h4>
-            <p class="mt-4">Go</p>
-            <p class="">PHP</p>
-            <p class="">Rust</p>
-            <p class="">Shell Script</p>
-            <p class="line-through">JavaScript</p>
-            <p class="line-through">TypeScript</p>
-        </div>
-
-        <div class="max-md:order-3 text-right md:text-left">
-            <h4 class="font-bold text-gray-400 text-sm uppercase">Tools &
-                Containers
-            </h4>
-            <p class="">Docker</p>
-            <p class="">Kubernetes</p>
-            <p class="">Terraform</p>
-            <p class="">Kata Containers</p>
-            <p class="">gVisor</p>
-            <p class="">Prometheus</p>
-            <p class="">Kibana</p>
-        </div>
-        <div class="max-md:order-3">
-            <h4 class="font-bold text-gray-400 text-sm uppercase">Databases</h4>
-            <p class="mt-4">MySQL</p>
-            <p class="">Postgres</p>
-            <p class="">Redis</p>
-            <p class="">Kafka</p>
-            <p class="">Elastic Search</p>
-            
-        </div>
-
-        <div class="max-md:order-3 text-right md:text-left">
-            <h4 class="font-bold text-gray-400 text-sm uppercase">Servers</h4>
-            <p class="">AWS</p>
-            <p class="">GCP</p>
-            <p class="font-semibold text-blue-400 cursor-pointer" onclick="alert('i work here')"
-                title="I work here">DigitalOcean</p>
-            <p class="">Laravel Forge</p>
-            <p class="">Give me *shell</p>
-        </div>
-
-        <div class="max-md:order-3">
-            <h4 class="font-bold text-gray-400 text-sm uppercase">Some keywords I know
-            </h4>
-            <p class="mt-4">nginx*</p>
-            <p class="">Testing <small>(Unit, Integration, Smoke, E2E)</small></p>
-            <p class="">REST / graphQL</p>
-            <p class="">rpc / gRPC</p>
-            <p class="">Serverless</p>
-            <p class="">Microservice</p>
-            <p class="">Github actions</p>
-            <p class="">
-                Monolith
-                <span class="font-bold text-red-400">
-                    <3 </span>
-            </p>
-            <p class="">Event Driven Stuff</p>
-        </div>
-
-        <div class="max-md:order-3 text-right md:text-left">
-            <h4 class="font-bold text-gray-400 text-sm uppercase">Frameworks & Stuff
-            </h4>
-            <p class="mt-4">Tokio</p>
-            <p class="">Laravel + InertiaJS</p>
-            <p class="line-through">Express</p>
-            <p class="">Go / Echo / Chi / Http*</p>
-            <p class="">Cobra <small class="text-gray-500">(go)</small> / Clap <small
-                    class="text-gray-500">(rust)</small></p>
-            <p class="line-through">Vue / NuxtJs</p>
-        </div>
-    </div>
-</div>
-
+        
+        <div class="h-20"></div>
     </div>
     </main>
 
     <!-- Calendly link widget begin -->
         <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
         <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+        <!-- Highlight.js for syntax highlighting -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+
+        <script type="module">
+            const imgs = document.getElementsByTagName('img')
+
+            for (let i = 0; i < imgs.length; i++) {
+                const img = imgs[i]
+
+                let src = img.getAttribute('src')
+
+                if (src.startsWith('art::')) {
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    img.setAttribute('src', src)
+                }
+            }
+        </script>
 
     <script src="https://thearyanahmed.com/js/functions.js"></script>
     <footer class="max-w-lg mx-auto flex text-center mb-20">

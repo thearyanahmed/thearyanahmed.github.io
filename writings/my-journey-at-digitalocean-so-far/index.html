@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="og:type" content="website" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:A note taking app" content="A note taking app" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Building projectlighthouse - commitment towards correctness" content="Building projectlighthouse - commitment towards correctness" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:localhost and 127.0.0.1" content="localhost and 127.0.0.1" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:An 8-Minute Query Optimization Attempt" content="An 8-Minute Query Optimization Attempt" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Transmitting Morse Code from the Lighthouse" content="Transmitting Morse Code from the Lighthouse" />
+<meta name="author" content="Aryan Ahmed" />
+<meta property="article:Managing Dotfiles and Sensitive Environment Variables: A Workaround" content="Managing Dotfiles and Sensitive Environment Variables: A Workaround" />
+<title>My Journey at DigitalOcean So Far</title>
+<meta property="og:title" content="My Journey at DigitalOcean So Far" />
+<meta name="twitter:title" content="My Journey at DigitalOcean So Far" />
+<meta name="embedx:title" content="My Journey at DigitalOcean So Far" />
+<meta name="description" content="A year ago, I got the opportunity to join DigitalOcean. This is my story of working on the App Platform team, from debugging network packets to managing Kubernetes clusters, and everything in between." />
+<meta property="og:description" content="A year ago, I got the opportunity to join DigitalOcean. This is my story of working on the App Platform team, from debugging network packets to managing Kubernetes clusters, and everything in between." />
+<meta name="twitter:description" content="A year ago, I got the opportunity to join DigitalOcean. This is my story of working on the App Platform team, from debugging network packets to managing Kubernetes clusters, and everything in between." />
+<meta name="embedx:description" content="A year ago, I got the opportunity to join DigitalOcean. This is my story of working on the App Platform team, from debugging network packets to managing Kubernetes clusters, and everything in between." />
+<meta name="author" content="Aryan Ahmed" />
+<meta name="twitter:card" content="A year ago, I got the opportunity to join DigitalOcean. This is my story of working on the App Platform team, from debugging network packets to managing Kubernetes clusters, and everything in between." />
+<meta property="og:site_name" content="thearyanahmed.com" />
+<link rel="canonical" href="https://thearyanahmed.substack.com/p/my-journey-at-digitalocean-so-far" />
+<meta property="article:My Journey at DigitalOcean So Far" content="My Journey at DigitalOcean So Far" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+    <link href="https://thearyanahmed.com/css/app.css" rel="stylesheet">
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-90CDQWTTNW"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'G-90CDQWTTNW');
+</script>
+</head>
+
+<body class="antialiased dotted-bg text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">
+
+    <div
+    class="notsticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-transparent">
+    <nav class="w-full mx-auto bg-white">
+        <div class="px-2 sm:px-6 lg:px-8 dotted-bg">
+            <div class="relative flex justify-between h-16">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <!-- Mobile menu button -->
+                    <button onclick="toggleMobileMenu()" type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="justify-center w-full mx-auto hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="https://thearyanahmed.com" title="thearyanahmed's blog" target="_self"
+                            class="text-gray-800 hover:underline font-semibold text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            home
+                        </a>
+                        <a href="https://thearyanahmed.com/writings" title="Technical Writings"
+                            class="text-gray-800 hover:underline font-semibold text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            technical writings
+                        </a>
+                        <a href="https://thearyanahmed.com/abcd" title="ABCD for Kids"
+                            class="text-gray-800 hover:underline font-semibold text-opacity-75 inline-flex items-center px-1 pt-1 text-base">
+                            abcd for kids
+                        </a>
+
+                        
+                        
+
+
+                        <a href="https://github.com/thearyanahmed" title="thearyanahmed's github"
+                            class="text-gray-900 inline-flex items-center px-1 pt-1 text-base" target="_blank">
+                            <svg width="24" height="24" fill="currentColor"
+                                class="text-gray-800 hover:underline mr-3 text-opacity-50 transform">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.463 2 11.97c0 4.404 2.865 8.14 6.839 9.458.5.092.682-.216.682-.48 0-.236-.008-.864-.013-1.695-2.782.602-3.369-1.337-3.369-1.337-.454-1.151-1.11-1.458-1.11-1.458-.908-.618.069-.606.069-.606 1.003.07 1.531 1.027 1.531 1.027.892 1.524 2.341 1.084 2.91.828.092-.643.35-1.083.636-1.332-2.22-.251-4.555-1.107-4.555-4.927 0-1.088.39-1.979 1.029-2.675-.103-.252-.446-1.266.098-2.638 0 0 .84-.268 2.75 1.022A9.606 9.606 0 0112 6.82c.85.004 1.705.114 2.504.336 1.909-1.29 2.747-1.022 2.747-1.022.546 1.372.202 2.386.1 2.638.64.696 1.028 1.587 1.028 2.675 0 3.83-2.339 4.673-4.566 4.92.359.307.678.915.678 1.846 0 1.332-.012 2.407-.012 2.734 0 .267.18.577.688.48C19.137 20.107 22 16.373 22 11.969 22 6.463 17.522 2 12 2z">
+                                </path>
+                            </svg>
+                        </a>
+
+                        <a href="https://linkedin.com/in/thearyanahmed" title="thearyanahmed's linkedin"
+                            class="text-gray-900 inline-flex items-center px-1 pt-1 text-base" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-linkedin h-5 w-5 text-gray-800 hover:underline mr-3 text-opacity-50 transform"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="hidden dotted-bg" id="mobile-menu">
+            <div class="pt-6 pb-4 space-y-1">
+                <a href="https://thearyanahmed.com"
+                    class="font-semibold border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">home</a>
+                <a href="https://thearyanahmed.com/writings" title="Technical Writings"
+                    class="font-semibold border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">
+                    technical writings</a>
+
+                <a href="https://thearyanahmed.com/abcd" title="ABCD for Kids"
+                    class="font-semibold border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">
+                    abcd</a>
+
+                
+
+                
+
+                <a href="https://github.com/thearyanahmed" target="_blank"
+                    class="font-semibold border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Github</a>
+
+                <a href="https://linkedin.com/in/thearyanahmed" target="_blank"
+                    class="font-semibold border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base">Linkedin</a>
+
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+    <main class="lg:relative">
+        <div class="max-w-3xl mx-auto px-4 mt-8">
+        <div class="relative py-16 bg-white overflow-hidden rounded-lg">
+            <div class="relative px-4 sm:px-6 lg:px-8">
+                <div class="text-lg max-w-prose mx-auto">
+                    <h1 class="mt-2 block text-6xl text-center fredericka-the-great tracking-tight text-gray-900">
+                        My Journey at DigitalOcean So Far
+                    </h1>
+                </div>
+
+                
+                <div class="text-lg max-w-prose mx-auto">
+                    <p class="mt-8 text-xl text-gray-500 leading-8">
+                        A year ago, I got the opportunity to join DigitalOcean. This is my story of working on the App Platform team, from debugging network packets to managing Kubernetes clusters, and everything in between.
+                    </p>
+                </div>
+                <div class="article-content-markdown mt-6 prose prose-indigo prose-lg text-gray-800 mx-auto">
+                    <p>A year ago, I got the opportunity to join DigitalOcean by the grace of Allah. And I took the chance to get on board the App Platform team.</p>
+<p>So, what is App Platform? App Platform is DigitalOcean's serverless offering. Developers focus on their application, and we manage the infrastructure to run their apps properly and hassle-free. This is not like a service-based company; in fact, it's a product. Our alternatives include AWS Beanstalk + Lambda, GCP App Engine + Cloud Run, Heroku, and Vercel. So we kinda do what they do.</p>
+<p>Getting a production server ready requires doing many things. For example:</p>
+<ul>
+<li>
+<p>Ensure the server has proper access so that random people can't SSH in or bruteforce/attempt alternative attacks</p>
+</li>
+<li>
+<p>Configure domain/subdomain (if needed)</p>
+</li>
+<li>
+<p>Ensure HTTPS</p>
+</li>
+<li>
+<p>Prevent DDoS, malicious requests, bot attacks</p>
+</li>
+<li>
+<p>Ensure zero downtime deployment, easy rollback if needed</p>
+</li>
+<li>
+<p>CDN for static assets or content</p>
+</li>
+<li>
+<p>Log analysis, alerting, monitoring</p>
+</li>
+<li>
+<p>Auto scaling based on resource usage</p>
+</li>
+<li>
+<p>Arrange for internal services that aren't connected to the outside world (ingress)</p>
+</li>
+<li>
+<p>Queue worker, job setup</p>
+</li>
+<li>
+<p>Secure connection for databases etc</p>
+</li>
+</ul>
+<p>These kinds of features are very essential for modern-day applications, but properly setting up and managing them is very time-consuming. Also, in many cases, dedicated (human) resources need to be hired. App Platform automates and manages these along with several other features.</p>
+<h2>My Contribution</h2>
+<p>My contribution is very small. A lot of beautiful work has been done here. Simple code that works. At the moment, I am currently the newest member of the team. However, the work here is quite diverse. It hardly gets boring.</p>
+<p>Along with regularly maintaining our existing features, we work on new features. Although I can't talk about these features, we are a community cloud. One way to stay engaged with the community can be found at <a href="https://ideas.digitalocean.com/app-platform?sort=top">Ideas for App Platform</a>. We look for what our users are telling us. If you have any ideas, you can share them here. Most of my work so far has been on the maintenance side.</p>
+<h3>Packets</h3>
+<p>One of my contributions has been directly solving customer problems. For example, once a customer complained that their app's database connection was failing very randomly. Well, although this might sound (and seem) normal, hunting it down… it was an adventure.</p>
+<p>In the end, we had to do network packet capture with tcpdump and analyze it. I used wireshark for the analysis.</p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff271469b-0b0c-4709-b6a5-9c4271ef9499_4400x2532.png" alt="" /></p>
+<p>Note: this is not the actual packet capture but of one of my private networks. We can learn so much from packet captures. You should try it often if you have interest in these.</p>
+<h3>Benchmarking</h3>
+<p>Another interesting task was testing and documenting the load-bearing capability of our underlying infrastructure. Though can't say much about that, but 2 load testing tools were <a href="https://github.com/rakyll/hey">https://github.com/rakyll/hey</a> and <a href="https://github.com/tsenart/vegeta">https://github.com/tsenart/vegeta</a>.</p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F8ed24afb-cf1e-4bd6-8492-fe7371715148_2020x1260.gif" alt="" /></p>
+<p>Note: This is not the actual benchmark image</p>
+<h3>Kubernetes</h3>
+<p>The underlying infrastructure needs to be managed along with the features. DigitalOcean App Platform uses Kubernetes. Well, at one layer. Regularly maintaining Kubernetes and its components is part of the job. And for those who are new to DevOps/similar roles wanting to work with Kubernetes microservices but are still exploring, well, most of the time, it's not always that much fun.</p>
+<p>Reading the release notes of each component, checking breaking changes, improvements, and security issues, testing them in different environments, and then slowly deploying them to clusters is often tiresome.</p>
+<h3>conntrack -L</h3>
+<p>And if the components fall behind once, catching up can be very troublesome. A lot of interesting things come with Kubernetes upgrades. For example, once after kube-proxy was updated, it was directly overriding conntrack. Our conntrack was set at another layer and it took 3 of us, 2 days to figure out.</p>
+<p><img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff34f0166-ed52-4dbf-bb2a-d8ccfd8eb3ee_2218x826.png" alt="" /></p>
+<p>Note: This is not the actual conntrack image</p>
+<p>Besides these, another prominent task is investigation work. Something happened, we don't know why, and let's figure out why. Sometimes out-of-the-box solutions don't work either. For example, I'm working on a project where there's a POC going on to build something similar to the mechanism that Kubernetes uses to monitor desired vs current state for an internal task.</p>
+<h3>Terraform, RPC, Automation</h3>
+<p>Besides all these, various small tasks like updating terraform providers, making some changes in gRPC (since I came here, REST API hasn't been worked on; I guess this is the equivalent for that). Successfully migrating our PostgreSQL 12 users to PostgreSQL 13 or above (due to PostgreSQL coming to an End of Life last year). We often need to add/maintain various features in our internal tools. I really enjoy these bits; being able to automate is very fun. So much time-saving, not only for me but for everyone.</p>
+<h3>gVisor, Kata, cloud-hypervisor</h3>
+<p>Currently, I'm taking on another challenging (for me) task, which is maintaining our gVisor and kata container components. App Platform uses both in different places. And we use them so that bad actors can't exit from their container and tamper with other apps or cluster information + there are some other benefits. However, security is a big feature.</p>
+<p>One problem + feature of gVisor is that if there's a problem in the Linux kernel, even knowing that, the same issue is implemented to maintain compatibility and exact behavior &gt;_&lt;. If you're wondering what gVisor is, gVisor is Google's user-space kernel.</p>
+<p>There is always a tradeoff. One tradeoff of Container vs VM is security. And that is why projects like gVisor, kata container, cloud-hypervisor exist. And thanks to Allah that it does exist! This is currently one of my learning topics. I have close to zero idea about this.</p>
+<p>In the future, I'll write more about Kubernetes, gVisor, kata, and many other things inshallah. If you're interested in these topics and like my writing style, you can subscribe.</p>
+<h2>Things I Like</h2>
+<p>I haven't had to write a single line of JavaScript here, haven't even seen it.</p>
+<p>Our team, in fact DigitalOcean as a whole, is RFC driven. Before working on a feature, a lot of research is done about it—technical, non-technical, competitor analysis, UI, UX, security, scalability, etc., everything is documented. And we discuss these and move forward.</p>
+<p>And the collaboration here is also amazing. No matter who is responsible for the feature, everyone gives input according to their ability. There are no silly questions. Everything is documented. Usually preceded or succeeded by a POC.</p>
+<p>Another place for team collaboration is Pull request review. Here anyone can ask for code changes from anyone, even a junior engineer can ask a senior engineer to change code, can say that the code isn't clear or can be done differently, or this isn't right.</p>
+<p>Team members; I think this is one of the best features. Folks here have amazing experience in different sectors and I'm able to learn a lot from everyone. And they really like to go in-depth. I'll share an incident.</p>
+<h4>Another Day at the Office</h4>
+<p>Once we got some alerts that a cluster ingress fail count had increased. But all the ingress nodes were up and running. The alert auto-resolved after a while. This happened 3-4 times. But why? While digging and discussing with our platform architect + now principal engineer, it was found that the bare-metal to which the hypervisor of the virtual machine of that node of that cluster was connected had failed on its primary ethernet and had fallen back to the secondary. Which doesn't give as much fast throughput as the primary.</p>
+<p>Because of this, very few connections were dropped, but it didn't cross the threshold that would signal Kubernetes that nodes or even pods are failing. Kubernetes was retrying on its own (I think), which is why even if it failed a bit, the next one was successful. But our alert is based on success and failure, not on Kubernetes retries.</p>
+<p>And all these network and hardware-related information are coming from a software engineer (our principal software engineer).</p>
+<p>Fascinating? To me, it damn well is.</p>
+<p>While on this topic, our alert system is quite aggressive? Proactive? Can't find the right word. But so far, all the problems that have occurred could have been much worse if these alerts weren't there.</p>
+<p>Also, DigitalOcean is fully worldwide remote. Next time if someone says remote isn't possible, well, it's a management skill issue, mostly. Our team alone works with people from 5 different timezones. Also, for team synchronization, we don't have the time-wasting unnecessary meeting called daily standup.</p>
+<p>Moreover, I'll say that having an engineer as a manager who works with similar technology is a blessing. And lastly, I'll say my most favorite part: I'm able to learn a lot. And I only have alhamdulillah to say.</p>
+<p>From building apps for the cloud to building the cloud itself, the journey continues.</p>
+<p>If you have any questions/suggestions, you can directly reach out at <a href="https://www.linkedin.com/in/thearyanahmed/">linkedin.com/thearyanahmed</a>.</p>
+<p>I'll often share these kinds of learnings along with my journey's learnings. If you are interested in reading, you can follow or subscribe. If you subscribe, you'll get articles in your inbox.</p>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="h-20"></div>
+    </div>
+    </main>
+
+    <!-- Calendly link widget begin -->
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+        <!-- Highlight.js for syntax highlighting -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+
+        <script type="module">
+            const imgs = document.getElementsByTagName('img')
+
+            for (let i = 0; i < imgs.length; i++) {
+                const img = imgs[i]
+
+                let src = img.getAttribute('src')
+
+                if (src.startsWith('art::')) {
+                    src = src.replace('art::', 'https://raw.githubusercontent.com/thearyanahmed/art/master/')
+                    img.setAttribute('src', src)
+                }
+            }
+        </script>
+
+    <script src="https://thearyanahmed.com/js/functions.js"></script>
+    <footer class="max-w-lg mx-auto flex text-center mb-20">
+        <div class="flex flex-col mx-auto text-gray-300">
+            <span>
+                v<span class="text-gray-400">2.28.0</span>
+            </span>
+            <span class="text-sm"><span class="text-gray-500/60">343</span>ヅ<span class="text-gray-500/60">1b1ef916998a736b8287558a9764162c6704af87</span></span>
+        </div>
+    </footer>
+</body>
+
+</html>
